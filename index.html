@@ -98,7 +98,7 @@ async function ghRead(){
   const f=await r.json();
   _sha=f.sha;
   _cache=JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\s/g,'')))));
-  if(!_cache.capital)_cache.capital={};
+  if(!_cache.capital)_cache.capital={};if(!_cache.returns)_cache.returns={};
   return _cache;
 }
 async function ghWrite(updater){
@@ -110,7 +110,7 @@ async function processQ(){
   const{updater,res,rej}=_queue.shift();
   try{
     const data=_cache?JSON.parse(JSON.stringify(_cache)):await ghRead();
-    if(!data.capital)data.capital={};
+    if(!data.capital)data.capital={};if(!data.returns)data.returns={};
     updater(data);data.ts=Date.now();
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
     const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/data.json`,{
@@ -135,7 +135,7 @@ const ADMIN_TABS=[
   {id:0,ico:'🏠',lbl:'الرئيسية'},{id:1,ico:'📦',lbl:'المنتجات'},
   {id:2,ico:'💰',lbl:'المبيعات'},{id:3,ico:'📊',lbl:'المصاريف'},
   {id:4,ico:'🏦',lbl:'الصناديق'},{id:8,ico:'💼',lbl:'رأس المال'},
-  {id:5,ico:'📅',lbl:'التقارير'},{id:6,ico:'📈',lbl:'الأرباح'},
+  {id:5,ico:'📅',lbl:'التقارير'},{id:9,ico:'↩️',lbl:'المرتجعات'},{id:6,ico:'📈',lbl:'الأرباح'},
   {id:7,ico:'⚙️',lbl:'الإعدادات'},
 ];
 const SALES_TABS=[
@@ -154,11 +154,12 @@ const mk=d=>(d||'').slice(0,7);
 const mName=k=>{if(!k)return'';const[y,m]=k.split('-');return`${MN[+m-1]} ${y}`;};
 function notify(msg){const el=document.getElementById('notif');if(!el)return;el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
 
-const calcFin=(sales,expenses,withdrawals,mFilter=null)=>{
+const calcFin=(sales,expenses,withdrawals,returns=[],mFilter=null)=>{
   const f=mFilter?x=>mk(x.date)===mFilter:()=>true;
-  const s=sales.filter(f),e=expenses.filter(f),w=withdrawals.filter(f);
-  const totalSales=s.reduce((a,x)=>a+(x.total||0),0);
-  const totalCost=s.reduce((a,x)=>a+(x.cost||0),0);
+  const s=sales.filter(f),e=expenses.filter(f),w=withdrawals.filter(f),rt=returns.filter(f);
+  const retRev=rt.reduce((a,x)=>a+(x.totalRefund||0),0);const retCost=rt.reduce((a,x)=>a+(x.totalCost||0),0);
+  const totalSales=Math.max(0,s.reduce((a,x)=>a+(x.total||0),0)-retRev);
+  const totalCost=Math.max(0,s.reduce((a,x)=>a+(x.cost||0),0)-retCost);
   const gross=totalSales-totalCost;
   const fuel=e.filter(x=>x.type==='fuel').reduce((a,x)=>a+(x.amount||0),0);
   const other=e.filter(x=>x.type!=='fuel').reduce((a,x)=>a+(x.amount||0),0);
@@ -198,7 +199,7 @@ const exportExcel=(products,sales,expenses,withdrawals,capital)=>{
   add('رأس المال',[...capital].sort((a,b)=>a.date.localeCompare(b.date)).map(c=>{const p=PARTNERS.find(x=>x.id===c.pid);return{'التاريخ':c.date,'الشريك':p?.name||c.pid,'المبلغ':+c.amount||0,'الوصف':c.note||''};}));
 
   // Sheet 7: Partner Summary
-  const fin=calcFin(sales,expenses,withdrawals);
+  const fin=calcFin(sales,expenses,withdrawals,returns);
   add('ملخص الصناديق',fin.partners.map(p=>{
     const cap=capital.filter(c=>c.pid===p.id).reduce((a,x)=>a+(x.amount||0),0);
     return{'الشريك':p.name,'النسبة':`${(p.pct*100).toFixed(0)}%`,'رأس المال':+cap.toFixed(2),'حصة من الأرباح':+p.share.toFixed(2),'إجمالي السحوبات':+p.drawn.toFixed(2),'الرصيد الإجمالي':+(cap+p.share-p.drawn).toFixed(2)};
@@ -211,7 +212,7 @@ const exportExcel=(products,sales,expenses,withdrawals,capital)=>{
   allYrs.sort().forEach(yr=>{
     for(let m=1;m<=12;m++){
       const mKey=`${yr}-${String(m).padStart(2,'0')}`;
-      const mf=calcFin(sales,expenses,withdrawals,mKey);
+      const mf=calcFin(sales,expenses,withdrawals,returns,mKey);
       if(mf.totalSales>0||mf.fuel+mf.other>0)
         monthly.push({'السنة':yr,'الشهر':MN[m-1],'المبيعات':+mf.totalSales.toFixed(2),'تكلفة البضاعة':+mf.totalCost.toFixed(2),'إجمالي الربح':+mf.gross.toFixed(2),'مصاريف الوقود':+mf.fuel.toFixed(2),'مصاريف أخرى':+mf.other.toFixed(2),'صافي الربح':+mf.net.toFixed(2),'م.خالد 40%':+(mf.net*.4).toFixed(2),'ع.سعيد 40%':+(mf.net*.4).toFixed(2),'السيارة 20%':+(mf.net*.2).toFixed(2)});
     }
@@ -299,9 +300,9 @@ function LoginScreen({onLogin,cfgPwds}){
 }
 
 /* ══ DASHBOARD ══════════════════════════════════ */
-function Dashboard({sales,expenses,withdrawals,capital,partnerBal,onExcel}){
+function Dashboard({sales,expenses,withdrawals,capital,returns=[],partnerBal,onExcel}){
   const cm=today().slice(0,7);
-  const ms=useMemo(()=>calcFin(sales,expenses,withdrawals,cm),[sales,expenses,withdrawals]);
+  const ms=useMemo(()=>calcFin(sales,expenses,withdrawals,returns,cm),[sales,expenses,withdrawals]);
   const totalCap=PARTNERS.reduce((a,p)=>{const c=capital.filter(x=>x.pid===p.id).reduce((s,x)=>s+(x.amount||0),0);return a+c;},0);
   const rec=useMemo(()=>({s:[...sales].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5),e:[...expenses].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5)}),[sales,expenses]);
   const fin=useMemo(()=>calcFin(sales,expenses,withdrawals),[sales,expenses,withdrawals]);
@@ -423,7 +424,7 @@ function Products({products,onWrite}){
         <td style={{color:'#DC2626'}}>{fmt(p.buyP)}</td>
         <td style={{color:'#047857',fontWeight:700}}>{fmt(p.sellP)}</td><td>{p.stock}</td>{isAdmin&&<td style={{color:'#92400E'}}>{m}</td>}
         <td><div style={{display:'flex',gap:4}}>
-          {isAdmin&&<Btn v="g" style={{padding:'4px 8px',fontSize:12}} onClick={()=>{setForm({name:p.name,cat:p.cat,unit:p.unit,buyP:p.buyP,sellP:p.sellP,stock:p.stock,barcode:p.barcode||'',image:p.image||''});setEditId(p.id);}}>✏️</Btn>}
+          <Btn v="g" style={{padding:'4px 8px',fontSize:12}} onClick={()=>{setForm({name:p.name,cat:p.cat,unit:p.unit,buyP:p.buyP,sellP:p.sellP,stock:p.stock,barcode:p.barcode||'',image:p.image||''});setEditId(p.id);window.scrollTo({top:0,behavior:'smooth'});}}>✏️ تعديل</Btn>
           {isAdmin&&<Btn v="d" style={{padding:'4px 8px',fontSize:12}} onClick={()=>{if(window.confirm('حذف؟')){onWrite(d=>delete d.products[p.id]);notify('🗑️ تم الحذف');}}}>🗑️</Btn>}
         </div></td>
       </tr>);})}</tbody>
@@ -635,9 +636,9 @@ function Capital({capital,partnerBal,onWrite}){
 }
 
 /* ══ MONTHLY REPORT ════════════════════════════════ */
-function MonthlyReport({sales,expenses,withdrawals}){
+function MonthlyReport({sales,expenses,withdrawals,returns=[]}){
   const[sel,setSel]=useState(today().slice(0,7));
-  const stats=useMemo(()=>calcFin(sales,expenses,withdrawals,sel),[sales,expenses,withdrawals,sel]);
+  const stats=useMemo(()=>calcFin(sales,expenses,withdrawals,returns,sel),[sales,expenses,withdrawals,sel]);
   const mS=useMemo(()=>sales.filter(s=>mk(s.date)===sel).sort((a,b)=>b.date.localeCompare(a.date)),[sales,sel]);
   const mE=useMemo(()=>expenses.filter(e=>mk(e.date)===sel).sort((a,b)=>b.date.localeCompare(a.date)),[expenses,sel]);
   return(<div>
@@ -675,7 +676,7 @@ function MonthlyReport({sales,expenses,withdrawals}){
 }
 
 /* ══ P&L ════════════════════════════════════════ */
-function PL({sales,expenses,withdrawals,capital}){
+function PL({sales,expenses,withdrawals,capital,returns=[]}){
   const cy=String(new Date().getFullYear());const[year,setYear]=useState(cy);
   const months=Array.from({length:12},(_,i)=>`${year}-${String(i+1).padStart(2,'0')}`);
   const mData=useMemo(()=>months.map(m=>({key:m,...calcFin(sales,expenses,withdrawals,m)})),[sales,expenses,withdrawals,year]);
@@ -735,6 +736,169 @@ function PL({sales,expenses,withdrawals,capital}){
 }
 
 /* ══ SETTINGS ════════════════════════════════════ */
+/* ═══ RETURNS (مرتجعات) ══════════════════════ */
+let _dRBuf = [];  // module-level buffer for Dahhanat returns
+
+function Returns({returns,products,sales,onWrite}){
+  const{user}=useContext(AuthCtx);const isAdmin=user.role==='admin';
+  const[date,setDate]=useState(today());
+  const[note,setNote]=useState('');
+  const[reason,setReason]=useState('تالف أو معيب');
+  const[items,setItems]=useState([]);
+  const[selPid,setSelPid]=useState('');
+  const[selQty,setSelQty]=useState(1);
+  const[selPrice,setSelPrice]=useState('');
+  const[open,setOpen]=useState(false);
+  const REASONS=['تالف أو معيب','خطأ في الطلب','لم يعجب العميل','مشكلة في الجودة','أخرى'];
+
+  const addItem=()=>{
+    if(!selPid||!selQty)return;
+    const pr=products.find(p=>p.id===selPid);if(!pr)return;
+    const p2=+selPrice||pr.sellP||0;
+    _dRBuf=[..._dRBuf,{pid:pr.id,pname:pr.name,qty:+selQty||1,sellP:p2,cost:+pr.buyP||0}];
+    setItems([..._dRBuf]);
+    setSelPid('');setSelQty(1);setSelPrice('');
+  };
+  const removeItem=i=>{_dRBuf=_dRBuf.filter((_,j)=>j!==i);setItems([..._dRBuf]);};
+
+  const totalRefund=items.reduce((s,it)=>s+(it.qty*(it.sellP||0)),0);
+  const totalCost=items.reduce((s,it)=>s+(it.qty*(it.cost||0)),0);
+
+  const doSave=()=>{
+    if(!items.length)return;
+    const _id=uid();
+    const _date=date,_note=note,_reason=reason;
+    const _items=[..._dRBuf];
+    const _ref=totalRefund,_cst=totalCost;
+    onWrite(d=>{
+      // ✅ حفظ المرتجع
+      d.returns[_id]={id:_id,date:_date,note:_note,reason:_reason,items:_items,totalRefund:_ref,totalCost:_cst};
+      // 📦 إعادة المخزون
+      _items.forEach(it=>{if(it.pid&&d.products[it.pid])d.products[it.pid].stock=(Number(d.products[it.pid].stock)||0)+Number(it.qty||0);});
+    });
+    // reset
+    _dRBuf=[];setItems([]);setNote('');setDate(today());setReason('تالف أو معيب');setOpen(false);
+    notify('✅ تم تسجيل المرتجع وإعادة '+_items.length+' صنف للمخزون');
+  };
+
+  const delReturn=r=>{
+    if(!window.confirm('حذف المرتجع؟ سيُخصم المخزون مجدداً'))return;
+    onWrite(d=>{
+      const ret=d.returns[r.id];
+      if(ret)(ret.items||[]).forEach(it=>{if(it.pid&&d.products[it.pid])d.products[it.pid].stock=Math.max(0,(Number(d.products[it.pid].stock)||0)-Number(it.qty||0));});
+      delete d.returns[r.id];
+    });
+    notify('🗑️ تم حذف المرتجع');
+  };
+
+  const list=[...returns].sort((a,b)=>b.date.localeCompare(a.date));
+
+  return(<div>
+    <h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>↩️ المرتجعات</h2>
+    <p style={{fontSize:13,color:'#94A3B8',marginBottom:14}}>تسجيل المرتجع يُعيد المخزون ويُعدّل أرقام المبيعات والأرباح تلقائياً</p>
+
+    <div className="card" style={{background:'#FFF7ED',border:'1px solid #FED7AA',marginBottom:14}}>
+      <div style={{fontWeight:700,fontSize:13,color:'#92400E',marginBottom:6}}>📌 كيف يعمل المرتجع؟</div>
+      <div style={{fontSize:12,color:'#78350F',lineHeight:1.9}}>
+        ✅ يُعيد الكمية للمخزون تلقائياً<br/>
+        ✅ يُقلل إجمالي المبيعات في التقارير<br/>
+        ✅ يُعدّل أرباح الشركاء تلقائياً
+      </div>
+    </div>
+
+    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+      <span style={{fontWeight:700,fontSize:14}}>المرتجعات ({list.length})</span>
+      <Btn v="d" onClick={()=>{if(open){_dRBuf=[];setItems([]);}setOpen(v=>!v);}}>
+        {open?'✕ إغلاق':'↩️ مرتجع جديد'}
+      </Btn>
+    </div>
+
+    {open&&<div className="card" style={{border:'2px solid #FECACA',marginBottom:14}}>
+      <div style={{fontWeight:800,fontSize:14,color:'#DC2626',marginBottom:12}}>↩️ تسجيل مرتجع جديد</div>
+      <div className="fgrid" style={{marginBottom:12}}>
+        <Inp label="التاريخ" type="date" value={date} onChange={e=>setDate(e.target.value)}/>
+        <div className="fg"><label>سبب الإرجاع</label>
+          <select className="fc" value={reason} onChange={e=>setReason(e.target.value)}>
+            {REASONS.map(r=><option key={r}>{r}</option>)}
+          </select>
+        </div>
+        <Inp label="اسم العميل / ملاحظة" value={note} onChange={e=>setNote(e.target.value)} placeholder="اختياري"/>
+      </div>
+
+      <div style={{fontWeight:700,fontSize:13,color:'#475569',marginBottom:8}}>الأصناف المرتجعة:</div>
+      <div style={{display:'grid',gridTemplateColumns:'2fr 70px 100px auto',gap:8,marginBottom:10,alignItems:'end'}}>
+        <div className="fg"><label>المنتج</label>
+          <select className="fc" value={selPid} onChange={e=>{setSelPid(e.target.value);const pr=products.find(p=>p.id===e.target.value);if(pr)setSelPrice(String(pr.sellP||''));}}>
+            <option value="">-- اختر منتج --</option>
+            {products.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}
+          </select>
+        </div>
+        <Inp label="الكمية" type="number" value={selQty} onChange={e=>setSelQty(+e.target.value)} placeholder="1"/>
+        <Inp label="سعر البيع" type="number" value={selPrice} onChange={e=>setSelPrice(e.target.value)} placeholder="سعر الفاتورة الأصلي"/>
+        <div className="fg"><label>&nbsp;</label><Btn v="d" style={{width:'100%'}} onClick={addItem}>＋ أضف</Btn></div>
+      </div>
+
+      {items.length>0&&<>
+        <div style={{background:'#FEF2F2',borderRadius:10,border:'1px solid #FECACA',marginBottom:12}}>
+          <table style={{width:'100%',borderCollapse:'collapse',fontSize:13}}>
+            <thead><tr style={{background:'#DC2626',color:'white'}}>
+              {['المنتج','الكمية','سعر البيع','إجمالي الاسترداد','التكلفة',''].map(t=><th key={t} style={{padding:'7px 10px',background:'#DC2626',color:'white',textAlign:'right'}}>{t}</th>)}
+            </tr></thead>
+            <tbody>{items.map((it,i)=>(
+              <tr key={i} style={{borderBottom:'1px solid #FEE2E2'}}>
+                <td style={{padding:'7px 10px',fontWeight:700}}>{it.pname}</td>
+                <td style={{padding:'7px 10px',textAlign:'center'}}>{it.qty}</td>
+                <td style={{padding:'7px 10px',color:'#64748B'}}>{fmt(it.sellP)}</td>
+                <td style={{padding:'7px 10px',fontWeight:800,color:'#DC2626'}}>{fmt(it.qty*it.sellP)}</td>
+                <td style={{padding:'7px 10px',color:'#94A3B8'}}>{fmt(it.qty*it.cost)}</td>
+                <td style={{padding:'7px 10px'}}><Btn v="d" style={{padding:'3px 8px',fontSize:11}} onClick={()=>removeItem(i)}>✕</Btn></td>
+              </tr>
+            ))}</tbody>
+          </table>
+        </div>
+        <div style={{display:'flex',gap:12,marginBottom:12,flexWrap:'wrap',fontSize:13}}>
+          <span style={{background:'#FEF2F2',padding:'5px 12px',borderRadius:8,border:'1px solid #FECACA'}}>
+            إجمالي المسترد: <strong style={{color:'#DC2626'}}>{fmt(totalRefund)} ر.س</strong>
+          </span>
+          <span style={{background:'#F8FAFC',padding:'5px 12px',borderRadius:8,border:'1px solid #E2E8F0'}}>
+            التكلفة المُعادة: <strong style={{color:'#047857'}}>{fmt(totalCost)} ر.س</strong>
+          </span>
+        </div>
+        <Btn v="d" onClick={doSave}>💾 تسجيل المرتجع وإعادة المخزون</Btn>
+      </>}
+    </div>}
+
+    {list.length===0?<div className="card" style={{textAlign:'center',padding:32,color:'#94A3B8'}}>لا توجد مرتجعات مسجّلة</div>
+    :list.map(r=>(
+      <div key={r.id} className="card" style={{border:'1px solid #FECACA'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8,flexWrap:'wrap'}}>
+          <div>
+            <div style={{fontWeight:800,fontSize:14,color:'#DC2626'}}>↩️ {r.reason||'مرتجع'}</div>
+            <div style={{fontSize:12,color:'#94A3B8',margin:'3px 0'}}>{r.date}{r.note&&` — ${r.note}`}</div>
+            <div style={{fontSize:12,color:'#64748B'}}>{(r.items||[]).map(it=>`${it.pname} ×${it.qty}`).join(' · ')}</div>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <div style={{textAlign:'left'}}>
+              <div style={{fontWeight:800,color:'#DC2626',fontSize:15}}>{fmt(r.totalRefund)} ر.س</div>
+              <div style={{fontSize:11,color:'#94A3B8'}}>تكلفة: {fmt(r.totalCost)}</div>
+            </div>
+            {isAdmin&&<Btn v="d" style={{padding:'4px 10px',fontSize:12}} onClick={()=>delReturn(r)}>🗑️</Btn>}
+          </div>
+        </div>
+      </div>
+    ))}
+
+    {isAdmin&&list.length>0&&<div className="card" style={{background:'#F0FDF4',border:'1px solid #A7F3D0'}}>
+      <div style={{fontWeight:700,fontSize:13,color:'#047857',marginBottom:8}}>📊 ملخص المرتجعات</div>
+      <div style={{display:'flex',gap:12,flexWrap:'wrap',fontSize:13}}>
+        <span>عدد المرتجعات: <strong>{list.length}</strong></span>
+        <span>إجمالي المسترد: <strong style={{color:'#DC2626'}}>{fmt(list.reduce((s,r)=>s+(r.totalRefund||0),0))} ر.س</strong></span>
+        <span>التكلفة المُعادة للمخزون: <strong style={{color:'#047857'}}>{fmt(list.reduce((s,r)=>s+(r.totalCost||0),0))} ر.س</strong></span>
+      </div>
+    </div>}
+  </div>);
+}
+
 function Settings({onLogout,onWrite,products,sales,expenses,withdrawals,capital,cfgPwds,onExcel}){
   const[p,setP]=useState({mk:'',as:''});const[ok,setOk]=useState(false);
   const savePwd=()=>{if(!p.mk&&!p.as)return;onWrite(d=>{if(p.mk)d.config.pwd_mk=p.mk;if(p.as)d.config.pwd_as=p.as;});setOk(true);setP({mk:'',as:''});setTimeout(()=>setOk(false),3000);notify('✅ تم تغيير كلمة المرور');};
@@ -774,7 +938,7 @@ function App(){
   const[tab,setTab]=useState(0);
   const[products,setProducts]=useState([]);const[sales,setSales]=useState([]);
   const[expenses,setExpenses]=useState([]);const[withdrawals,setWithdrawals]=useState([]);
-  const[capital,setCapital]=useState([]);
+  const[capital,setCapital]=useState([]);const[returns,setReturns]=useState([]);
   const[cfgPwds,setCfgPwds]=useState({mk:'1234',as:'5678'});
   const[syncState,setSyncState]=useState('loading');const[lastTs,setLastTs]=useState(0);
   const[moreOpen,setMoreOpen]=useState(false);const[hasToken,setHasToken]=useState(!!getToken());
@@ -782,7 +946,7 @@ function App(){
   const applyData=(data)=>{
     setProducts(Object.values(data.products||{}));setSales(Object.values(data.sales||{}));
     setExpenses(Object.values(data.expenses||{}));setWithdrawals(Object.values(data.withdrawals||{}));
-    setCapital(Object.values(data.capital||{}));
+    setCapital(Object.values(data.capital||{}));setReturns(Object.values(data.returns||{}));
     setCfgPwds({mk:data.config?.pwd_mk||'1234',as:data.config?.pwd_as||'5678'});
     setLastTs(data.ts||0);
   };
@@ -806,7 +970,7 @@ function App(){
   const onExcel=()=>exportExcel(products,sales,expenses,withdrawals,capital);
 
   const partnerBal=useMemo(()=>{
-    const fin=calcFin(sales,expenses,withdrawals);
+    const fin=calcFin(sales,expenses,withdrawals,returns);
     return PARTNERS.map(p=>{
       const pd=fin.partners.find(x=>x.id===p.id);
       const capTotal=capital.filter(c=>c.pid===p.id).reduce((a,x)=>a+(x.amount||0),0);
@@ -827,15 +991,16 @@ function App(){
 
   const renderContent=()=>{
     switch(tab){
-      case 0:return isAdmin?<Dashboard sales={sales} expenses={expenses} withdrawals={withdrawals} capital={capital} partnerBal={partnerBal} onExcel={onExcel}/>:null;
+      case 0:return isAdmin?<Dashboard sales={sales} expenses={expenses} withdrawals={withdrawals} capital={capital} returns={returns} partnerBal={partnerBal} onExcel={onExcel}/>:null;
       case 1:return<Products products={products} onWrite={onWrite}/>;
       case 2:return<Sales sales={sales} products={products} onWrite={onWrite}/>;
       case 3:return<Expenses expenses={expenses} onWrite={onWrite}/>;
       case 4:return<Safes withdrawals={withdrawals} partnerBal={partnerBal} onWrite={onWrite}/>;
-      case 5:return isAdmin?<MonthlyReport sales={sales} expenses={expenses} withdrawals={withdrawals}/>:null;
-      case 6:return isAdmin?<PL sales={sales} expenses={expenses} withdrawals={withdrawals} capital={capital}/>:null;
+      case 5:return isAdmin?<MonthlyReport sales={sales} expenses={expenses} withdrawals={withdrawals} returns={returns}/>:null;
+      case 6:return isAdmin?<PL sales={sales} expenses={expenses} withdrawals={withdrawals} capital={capital} returns={returns}/>:null;
       case 7:return isAdmin?<Settings onLogout={handleLogout} onWrite={onWrite} products={products} sales={sales} expenses={expenses} withdrawals={withdrawals} capital={capital} cfgPwds={cfgPwds} onExcel={onExcel}/>:null;
       case 8:return isAdmin?<Capital capital={capital} partnerBal={partnerBal} onWrite={onWrite}/>:null;
+      case 9:return<Returns returns={returns} products={products} sales={sales} onWrite={onWrite}/>;
       default:return null;
     }
   };
