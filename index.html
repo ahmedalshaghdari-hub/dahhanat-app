@@ -174,7 +174,7 @@ const calcFin=(sales,expenses,withdrawals,returns=[],mFilter=null)=>{
 };
 
 /* ══ EXCEL EXPORT ══════════════════════════════ */
-const exportExcel=(products,sales,expenses,withdrawals,capital)=>{
+const exportExcel=(products,sales,expenses,withdrawals,capital,returns=[])=>{
   const wb=XLSX.utils.book_new();
   const add=(name,rows)=>{if(rows.length){const ws=XLSX.utils.json_to_sheet(rows);XLSX.utils.book_append_sheet(wb,ws,name);}};
 
@@ -205,6 +205,9 @@ const exportExcel=(products,sales,expenses,withdrawals,capital)=>{
     const cap=capital.filter(c=>c.pid===p.id).reduce((a,x)=>a+(x.amount||0),0);
     return{'الشريك':p.name,'النسبة':`${(p.pct*100).toFixed(0)}%`,'رأس المال':+cap.toFixed(2),'حصة من الأرباح':+p.share.toFixed(2),'إجمالي السحوبات':+p.drawn.toFixed(2),'الرصيد الإجمالي':+(cap+p.share-p.drawn).toFixed(2)};
   }));
+
+  // Sheet 7b: Returns
+  add('المرتجعات',[...returns].sort((a,b)=>a.date.localeCompare(b.date)).map(r=>({'التاريخ':r.date,'السبب':r.reason||'','ملاحظة':r.note||'','إجمالي المسترد':+r.totalRefund||0,'التكلفة المُعادة':+r.totalCost||0,'الأصناف':(r.items||[]).map(it=>it.pname+' ×'+it.qty).join(' · ')})));
 
   // Sheet 8: Monthly P&L
   const allYrs=[...new Set([...sales,...expenses].map(x=>(x.date||'').slice(0,4)).filter(Boolean))];
@@ -303,10 +306,10 @@ function LoginScreen({onLogin,cfgPwds}){
 /* ══ DASHBOARD ══════════════════════════════════ */
 function Dashboard({sales,expenses,withdrawals,capital,returns=[],partnerBal,onExcel}){
   const cm=today().slice(0,7);
-  const ms=useMemo(()=>calcFin(sales,expenses,withdrawals,returns,cm),[sales,expenses,withdrawals]);
+  const ms=useMemo(()=>calcFin(sales,expenses,withdrawals,returns,cm),[sales,expenses,withdrawals,returns,cm]);
   const totalCap=PARTNERS.reduce((a,p)=>{const c=capital.filter(x=>x.pid===p.id).reduce((s,x)=>s+(x.amount||0),0);return a+c;},0);
   const rec=useMemo(()=>({s:[...sales].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5),e:[...expenses].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5)}),[sales,expenses]);
-  const fin=useMemo(()=>calcFin(sales,expenses,withdrawals),[sales,expenses,withdrawals]);
+  const fin=useMemo(()=>calcFin(sales,expenses,withdrawals,returns),[sales,expenses,withdrawals,returns]);
   return(<div>
     <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:4,gap:8,flexWrap:'wrap'}}>
       <div><h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>📊 لوحة التحكم</h2><p style={{fontSize:13,color:'#94A3B8'}}>هذا الشهر: {mName(cm)}</p></div>
@@ -680,7 +683,7 @@ function MonthlyReport({sales,expenses,withdrawals,returns=[]}){
 function PL({sales,expenses,withdrawals,capital,returns=[]}){
   const cy=String(new Date().getFullYear());const[year,setYear]=useState(cy);
   const months=Array.from({length:12},(_,i)=>`${year}-${String(i+1).padStart(2,'0')}`);
-  const mData=useMemo(()=>months.map(m=>({key:m,...calcFin(sales,expenses,withdrawals,m)})),[sales,expenses,withdrawals,year]);
+  const mData=useMemo(()=>months.map(m=>({key:m,...calcFin(sales,expenses,withdrawals,returns,m)})),[sales,expenses,withdrawals,returns,year]);
   const tot=useMemo(()=>({totalSales:mData.reduce((s,m)=>s+m.totalSales,0),totalCost:mData.reduce((s,m)=>s+m.totalCost,0),gross:mData.reduce((s,m)=>s+m.gross,0),fuel:mData.reduce((s,m)=>s+m.fuel,0),other:mData.reduce((s,m)=>s+m.other,0),net:mData.reduce((s,m)=>s+m.net,0)}),[mData]);
   const aP=useMemo(()=>PARTNERS.map(p=>{
     const share=tot.net*p.pct;
@@ -968,7 +971,7 @@ function App(){
 
   const handleLogin=u=>{setUser(u);sessionStorage.setItem('pnt_u',JSON.stringify(u));setTab(u.role==='admin'?0:2);};
   const handleLogout=()=>{sessionStorage.removeItem('pnt_u');setUser(null);};
-  const onExcel=()=>exportExcel(products,sales,expenses,withdrawals,capital);
+  const onExcel=()=>exportExcel(products,sales,expenses,withdrawals,capital,returns);
 
   const partnerBal=useMemo(()=>{
     const fin=calcFin(sales,expenses,withdrawals,returns);
