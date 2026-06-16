@@ -92,8 +92,12 @@ function setToken(t){localStorage.setItem(TOKEN_KEY,t);}
 /* ══ GITHUB SYNC ══════════════════════════════ */
 async function ghRead(){
   const t=getToken();if(!t)throw new Error('no token');
-  const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/data.json`,
-    {headers:{Authorization:`Bearer ${t}`,Accept:'application/vnd.github.v3+json'}});
+  const ctrl=new AbortController();
+  const timer=setTimeout(()=>ctrl.abort(),12000); // 12s timeout
+  let r;
+  try{r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/data.json`,
+    {headers:{Authorization:`Bearer ${t}`,Accept:'application/vnd.github.v3+json'},signal:ctrl.signal});}
+  finally{clearTimeout(timer);}
   if(!r.ok)throw new Error('read '+r.status);
   const f=await r.json();
   _sha=f.sha;
@@ -984,6 +988,12 @@ function App(){
   },[sales,expenses,withdrawals,capital]);
 
   if(syncState==='notoken'||!hasToken)return<SetupScreen onDone={()=>{setHasToken(true);setSyncState('loading');}}/>;
+  if(syncState==='err')return(<div className="splash">
+    <div style={{fontSize:40,marginBottom:12}}>⚠️</div>
+    <div style={{fontWeight:800,fontSize:16,color:'#DC2626',marginBottom:8}}>تعذّر الاتصال بالخادم</div>
+    <div style={{fontSize:13,color:'#64748B',marginBottom:20}}>تحقق من الإنترنت ثم أعد المحاولة</div>
+    <button className="btn bp" onClick={()=>{setSyncState('loading');ghRead().then(d=>{applyData(d);setSyncState('ok');}).catch(()=>setSyncState('err'));}} style={{padding:'10px 24px',fontSize:14}}>🔄 إعادة المحاولة</button>
+  </div>);
   if(syncState==='loading')return<div className="splash"><div className="splash-icon">🎨</div><div style={{fontSize:16,fontWeight:800,color:'#1D4ED8'}}>جاري تحميل البيانات...</div></div>;
   if(!user)return<LoginScreen onLogin={handleLogin} cfgPwds={cfgPwds}/>;
 
@@ -1043,7 +1053,7 @@ ReactDOM.createRoot(document.getElementById('app')).render(<App/>);
 const manifest={name:'دهانات ومستلزمات البناء',short_name:'دهانات',start_url:'.',display:'standalone',background_color:'#1D4ED8',theme_color:'#1D4ED8',lang:'ar',dir:'rtl',icons:[{src:`data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#1D4ED8"/><text y="75" x="50" text-anchor="middle" font-size="62">🎨</text></svg>')}`,sizes:'any',type:'image/svg+xml'}]};
 const mb=new Blob([JSON.stringify(manifest)],{type:'application/json'});
 const ml=document.createElement('link');ml.rel='manifest';ml.href=URL.createObjectURL(mb);document.head.appendChild(ml);
-if('serviceWorker' in navigator){const sw=`const C='pnt-v4';self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.add('/'))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));`;navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});}
+if('serviceWorker' in navigator){const sw=`const C='pnt-v6';self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.add('/'))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));`;navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});}
 </script>
 </body>
 </html>
