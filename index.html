@@ -2,94 +2,275 @@
 <html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#1D4ED8">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="دهانات">
-<title>دهانات ومستلزمات البناء</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;font-family:'Cairo',sans-serif}
-body{background:#F1F5F9;color:#1E293B;direction:rtl}
-input,select,button,textarea{font-family:'Cairo',sans-serif}
-button{cursor:pointer}
-::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:4px}
-.splash{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:14px}
-.splash-icon{font-size:56px;animation:pulse 1.5s infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
-.setup-bg{min-height:100vh;background:linear-gradient(150deg,#0F2FB5,#1D4ED8);display:flex;align-items:center;justify-content:center;padding:20px}
-.setup-card{background:white;border-radius:20px;padding:28px 24px;width:100%;max-width:460px}
-.login-bg{min-height:100vh;background:linear-gradient(135deg,#1D4ED8,#0F2FB5);display:flex;align-items:center;justify-content:center;padding:20px}
-.login-card{background:white;border-radius:20px;padding:32px 24px;width:100%;max-width:380px;box-shadow:0 24px 60px rgba(0,0,0,.25)}
-.upick{padding:14px 10px;border-radius:12px;border:2px solid #E2E8F0;background:white;cursor:pointer;transition:all .2s;width:100%;text-align:center}
-.upick.sel-mk{border-color:#1D4ED8!important;background:#EFF6FF!important}
-.upick.sel-as{border-color:#047857!important;background:#ECFDF5!important}
-.app-header{background:linear-gradient(135deg,#1D4ED8,#1E40AF);color:white;padding:10px 16px;position:sticky;top:0;z-index:200;box-shadow:0 4px 20px rgba(29,78,216,.3)}
-.hinner{max-width:1200px;margin:0 auto}
-.hrow{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.dtabs{display:flex;gap:4px;flex-wrap:wrap}
-.dtab{padding:5px 12px;border-radius:20px;border:none;cursor:pointer;font-size:13px;font-family:'Cairo',sans-serif;font-weight:500;background:rgba(255,255,255,.15);color:white;transition:all .2s}
-.dtab.act{background:white;color:#1D4ED8;font-weight:800}
-.content{padding:16px;max-width:1200px;margin:0 auto;padding-bottom:90px}
-.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid #E2E8F0;z-index:200;padding-bottom:env(safe-area-inset-bottom,0px)}
-.bni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 2px 6px;border:none;background:none;color:#94A3B8;gap:2px;font-size:10px;font-family:'Cairo',sans-serif}
-.bni.act{color:#1D4ED8}.bni .ico{font-size:20px}
-.mmenu{position:fixed;bottom:68px;right:0;left:0;background:white;border-top:1px solid #E2E8F0;z-index:300;display:none;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.1)}
-.mmenu.open{display:flex}
-.mmi{flex:1 1 33%;display:flex;flex-direction:column;align-items:center;padding:14px 8px;border:none;background:none;color:#64748B;font-family:'Cairo',sans-serif;font-size:12px;gap:4px;border-top:1px solid #F1F5F9}
-.mmi.act{color:#1D4ED8}.mmi span{font-size:22px}
-.mov{position:fixed;inset:0;z-index:250;display:none}.mov.open{display:block}
-.sync-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-left:5px;flex-shrink:0}
-.sync-dot.ok{background:#4ADE80}.sync-dot.busy{background:#FCD34D;animation:pulse .8s infinite}.sync-dot.err{background:#FCA5A5}
-@media(max-width:640px){.bnav{display:flex}.dtabs{display:none}.content{padding:12px;padding-bottom:90px}}
-.card{background:white;border-radius:14px;padding:16px 18px;box-shadow:0 1px 6px rgba(0,0,0,.05);border:1px solid #E8EEF4;margin-bottom:14px}
-.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
-.fg{display:flex;flex-direction:column;gap:4px}
-.fg label{font-size:13px;font-weight:600;color:#475569}
-.fc{padding:9px 12px;border-radius:10px;border:1.5px solid #E2E8F0;font-family:'Cairo',sans-serif;font-size:14px;color:#1E293B;outline:none;direction:rtl;background:white;width:100%;transition:border-color .2s}
-.fc:focus{border-color:#93C5FD}
-.btn{padding:8px 16px;border-radius:10px;border:none;font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:all .15s}
-.bp{background:#1D4ED8;color:white}.bs{background:#047857;color:white}.bd{background:#FEF2F2;color:#DC2626}
-.bg2{background:#F8FAFC;color:#64748B}.bw{background:#92400E;color:white}.bxl{background:#217346;color:white}
-.blg{padding:12px 20px;font-size:15px;width:100%;border-radius:12px}
-.badge{padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;display:inline-block}
-.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
-.kcard{background:white;border-radius:12px;padding:13px 14px;border:1px solid #E8EEF4;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.pcgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-bottom:14px}
-.pc{border-radius:12px;padding:14px 16px}
-.twrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{padding:9px 10px;text-align:right;font-weight:700;color:#475569;border-bottom:2px solid #E2E8F0;background:#F8FAFC;white-space:nowrap}
-td{padding:8px 10px;border-bottom:1px solid #F1F5F9}
-tr:nth-child(even) td{background:#FAFAFA}
-.afuel{background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;border-radius:10px;padding:8px 12px;font-size:13px;margin-bottom:10px}
-.notif{position:fixed;bottom:80px;right:16px;background:#1E293B;color:white;padding:10px 16px;border-radius:10px;font-size:13px;z-index:500;opacity:0;transition:opacity .3s;pointer-events:none}
-.notif.show{opacity:1}
-.excel-fab{position:fixed;bottom:76px;left:16px;z-index:100;background:#217346;color:white;border:none;border-radius:50px;padding:10px 18px;font-family:'Cairo',sans-serif;font-weight:800;font-size:13px;box-shadow:0 4px 14px rgba(33,115,70,.4);cursor:pointer;display:flex;align-items:center;gap:6px}
-@media(min-width:641px){.excel-fab{bottom:20px;left:20px}}
-</style>
-</head>
-<body>
-<div id="app"><div class="splash"><div class="splash-icon">🎨</div><div style="font-size:18px;font-weight:800;color:#1D4ED8">جاري التحميل...</div></div></div>
-<div id="notif" class="notif"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#0F172A">
+<title>دهانات محمد خالد</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.23.5/babel.min.js"></script>
-<script type="text/babel">
-const{useState,useEffect,useMemo,useCallback,createContext,useContext}=React;
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0F172A; --navy2:#1E293B; --navy3:#334155;
+  --purple:#7C3AED; --purple2:#6D28D9; --purple-light:#EDE9FE;
+  --green:#059669; --green-light:#ECFDF5;
+  --red:#DC2626; --red-light:#FEF2F2;
+  --amber:#D97706; --amber-light:#FFFBEB;
+  --blue:#2563EB; --blue-light:#EFF6FF;
+  --text:#0F172A; --text2:#475569; --text3:#94A3B8;
+  --border:#E2E8F0; --bg:#F8FAFC; --white:#FFFFFF;
+  --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 15px rgba(0,0,0,.1),0 4px 6px rgba(0,0,0,.05);
+  --r:12px; --r-sm:8px; --r-lg:16px;
+}
+html,body,#app{height:100%;background:var(--bg);}
+body{font-family:'Cairo',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;}
 
-/* ══ CONFIG ══════════════════════════════════ */
+/* ── Layout ───────────────────────────────────────────────── */
+.layout{display:flex;height:100dvh;overflow:hidden;}
+.sidebar{width:240px;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
+.sidebar-logo{padding:20px 16px 8px;border-bottom:1px solid rgba(255,255,255,.08);}
+.logo-box{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.logo-img{width:40px;height:40px;border-radius:10px;object-fit:cover;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.logo-text{color:white;font-weight:800;font-size:15px;line-height:1.2;}
+.logo-sub{color:rgba(255,255,255,.45);font-size:11px;}
+.sidebar-nav{padding:12px 8px;flex:1;}
+.nav-section{margin-bottom:4px;}
+.nav-label{color:rgba(255,255,255,.3);font-size:10px;font-weight:700;letter-spacing:.08em;padding:8px 12px 4px;text-transform:uppercase;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r-sm);color:rgba(255,255,255,.65);font-size:13.5px;font-weight:500;cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:right;margin-bottom:2px;}
+.nav-item:hover{background:rgba(255,255,255,.08);color:white;}
+.nav-item.active{background:var(--purple);color:white;font-weight:700;box-shadow:0 2px 8px rgba(124,58,237,.4);}
+.nav-item .ico{font-size:17px;flex-shrink:0;width:22px;text-align:center;}
+.nav-item .badge{margin-right:auto;background:rgba(255,255,255,.2);color:white;font-size:10px;padding:1px 6px;border-radius:10px;}
+.sidebar-user{padding:12px 8px;border-top:1px solid rgba(255,255,255,.08);}
+.user-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r-sm);background:rgba(255,255,255,.06);}
+.user-avatar{width:32px;height:32px;border-radius:8px;background:var(--purple);display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:800;flex-shrink:0;}
+.user-info{flex:1;min-width:0;}
+.user-name{color:white;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-role{color:rgba(255,255,255,.4);font-size:11px;}
+.logout-btn{background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:16px;padding:4px;border-radius:4px;}
+.logout-btn:hover{color:white;}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:var(--shadow);}
+.topbar-title{font-size:17px;font-weight:800;color:var(--text);flex:1;}
+.topbar-date{font-size:12px;color:var(--text3);background:var(--bg);padding:4px 10px;border-radius:6px;border:1px solid var(--border);}
+.sync-badge{display:flex;align-items:center;gap:5px;font-size:12px;padding:4px 10px;border-radius:6px;}
+.sync-badge.ok{background:var(--green-light);color:var(--green);}
+.sync-badge.busy{background:var(--amber-light);color:var(--amber);}
+.sync-badge.err{background:var(--red-light);color:var(--red);}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.content{flex:1;overflow-y:auto;padding:20px;}
+
+/* ── Bottom nav (mobile) ──────────────────────────────────── */
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);padding:4px 0;z-index:100;box-shadow:0 -2px 10px rgba(0,0,0,.06);}
+.bnav-inner{display:flex;justify-content:space-around;align-items:center;}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;border-radius:var(--r-sm);cursor:pointer;color:var(--text3);font-size:10px;font-weight:600;border:none;background:none;flex:1;transition:color .15s;}
+.bnav-item.active{color:var(--purple);}
+.bnav-item .ico{font-size:20px;}
+.mob-topbar{display:none;background:var(--navy);padding:12px 16px;color:white;display:none;align-items:center;gap:10px;flex-shrink:0;}
+.mob-logo{font-size:18px;font-weight:900;flex:1;}
+.mob-sync{font-size:11px;padding:3px 8px;border-radius:6px;}
+
+/* ── Cards & common ────────────────────────────────────────── */
+.card{background:var(--white);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.card-title{font-size:14px;font-weight:800;color:var(--text);}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
+.kpi{background:var(--white);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden;}
+.kpi-label{font-size:12px;color:var(--text3);font-weight:600;margin-bottom:6px;}
+.kpi-value{font-size:22px;font-weight:900;line-height:1;}
+.kpi-sub{font-size:11px;color:var(--text3);margin-top:4px;}
+.kpi-icon{position:absolute;top:12px;left:14px;font-size:24px;opacity:.15;}
+.kpi.green{border-right:3px solid var(--green);}
+.kpi.red{border-right:3px solid var(--red);}
+.kpi.purple{border-right:3px solid var(--purple);}
+.kpi.blue{border-right:3px solid var(--blue);}
+.kpi.amber{border-right:3px solid var(--amber);}
+
+/* ── Table ─────────────────────────────────────────────────── */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{background:var(--navy);color:rgba(255,255,255,.85);font-weight:700;padding:10px 12px;text-align:right;font-size:12px;white-space:nowrap;}
+.tbl th:first-child{border-radius:0 var(--r-sm) var(--r-sm) 0;}
+.tbl th:last-child{border-radius:var(--r-sm) 0 0 var(--r-sm);}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:#F8FAFC;}
+.tbl .num{font-weight:700;font-family:system-ui;}
+.tbl .pos{color:var(--green);}
+.tbl .neg{color:var(--red);}
+
+/* ── Form elements ─────────────────────────────────────────── */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:14px;}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fg label{font-size:12px;font-weight:700;color:var(--text2);}
+.fi{border:1.5px solid var(--border);border-radius:var(--r-sm);padding:9px 12px;font-size:13.5px;font-family:'Cairo',sans-serif;width:100%;color:var(--text);background:var(--white);transition:border-color .15s;}
+.fi:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.1);}
+.fi:disabled{background:var(--bg);color:var(--text3);}
+select.fi{cursor:pointer;}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:var(--r-sm);padding:9px 16px;font-size:13.5px;font-weight:700;font-family:'Cairo',sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:var(--purple);color:white;box-shadow:0 2px 8px rgba(124,58,237,.3);}
+.btn-primary:hover{background:var(--purple2);}
+.btn-success{background:var(--green);color:white;}
+.btn-success:hover{background:#047857;}
+.btn-danger{background:var(--red);color:white;}
+.btn-danger:hover{background:#B91C1C;}
+.btn-outline{background:white;color:var(--text);border:1.5px solid var(--border);}
+.btn-outline:hover{border-color:var(--purple);color:var(--purple);}
+.btn-ghost{background:transparent;color:var(--text2);padding:6px 10px;}
+.btn-ghost:hover{background:var(--bg);}
+.btn-sm{padding:5px 10px;font-size:12px;}
+.btn-lg{padding:12px 24px;font-size:15px;}
+.btn-icon{padding:8px;border-radius:8px;}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+
+/* ── Badges ────────────────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;}
+.badge-green{background:var(--green-light);color:var(--green);}
+.badge-red{background:var(--red-light);color:var(--red);}
+.badge-purple{background:var(--purple-light);color:var(--purple);}
+.badge-blue{background:var(--blue-light);color:var(--blue);}
+.badge-amber{background:var(--amber-light);color:var(--amber);}
+.badge-gray{background:#F1F5F9;color:var(--text2);}
+
+/* ── Section header ────────────────────────────────────────── */
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+.page-title{font-size:20px;font-weight:900;color:var(--text);}
+.page-sub{font-size:13px;color:var(--text3);margin-top:3px;}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+
+/* ── Login / Setup ─────────────────────────────────────────── */
+.auth-page{min-height:100dvh;background:var(--navy);display:flex;align-items:center;justify-content:center;padding:20px;}
+.auth-card{background:white;border-radius:20px;padding:36px;width:100%;max-width:380px;box-shadow:var(--shadow-lg);}
+.auth-logo{text-align:center;margin-bottom:28px;}
+.auth-logo .icon{font-size:52px;margin-bottom:10px;}
+.auth-logo .name{font-size:22px;font-weight:900;color:var(--navy);}
+.auth-logo .sub{font-size:13px;color:var(--text3);margin-top:3px;}
+.auth-title{font-size:16px;font-weight:800;margin-bottom:18px;color:var(--text);}
+
+/* ── Notification ──────────────────────────────────────────── */
+.notif{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:white;padding:12px 20px;border-radius:var(--r);font-size:13.5px;font-weight:600;z-index:9999;box-shadow:var(--shadow-lg);pointer-events:none;white-space:nowrap;transition:opacity .3s;}
+.notif.hide{opacity:0;}
+
+/* ── Expense type colors ────────────────────────────────────── */
+.exp-type{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;}
+.exp-general{background:#F1F5F9;color:var(--text2);}
+.exp-fuel{background:#FEF3C7;color:#92400E;}
+.exp-car{background:#E0E7FF;color:#3730A3;}
+.exp-salary{background:#FCE7F3;color:#9D174D;}
+.exp-other{background:#F0FDF4;color:#166534;}
+
+/* ── Invoice panel ─────────────────────────────────────────── */
+.invoice-panel{background:white;border-radius:var(--r-lg);box-shadow:var(--shadow-lg);border:2px solid var(--purple-light);padding:20px;margin-bottom:16px;}
+.invoice-header{background:linear-gradient(135deg,var(--navy) 0%,var(--purple2) 100%);color:white;border-radius:var(--r);padding:16px 20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;}
+.items-row{display:grid;grid-template-columns:2fr 70px 110px 90px auto;gap:8px;align-items:end;margin-bottom:8px;}
+
+/* ── Stats row ─────────────────────────────────────────────── */
+.stats-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.stat-chip{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;}
+
+/* ── Fund cards ────────────────────────────────────────────── */
+.funds-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
+.fund-card{background:white;border-radius:var(--r);padding:18px;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden;}
+.fund-card::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;background:var(--c,var(--purple));}
+.fund-card.muh{--c:var(--blue);}
+.fund-card.ali{--c:var(--green);}
+.fund-card.car{--c:var(--amber);}
+.fund-name{font-size:12px;font-weight:700;color:var(--text3);margin-bottom:8px;}
+.fund-amount{font-size:26px;font-weight:900;line-height:1;}
+.fund-detail{font-size:11px;color:var(--text3);margin-top:6px;line-height:1.7;}
+
+/* ── Alert box ─────────────────────────────────────────────── */
+.alert{border-radius:var(--r-sm);padding:12px 14px;font-size:13px;margin-bottom:12px;display:flex;gap:10px;align-items:flex-start;}
+.alert.info{background:var(--blue-light);border:1px solid #BFDBFE;color:#1E40AF;}
+.alert.warn{background:var(--amber-light);border:1px solid #FDE68A;color:#92400E;}
+.alert.danger{background:var(--red-light);border:1px solid #FCA5A5;color:#991B1B;}
+.alert.success{background:var(--green-light);border:1px solid #A7F3D0;color:#065F46;}
+.alert-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+
+/* ── Cash reconciliation ────────────────────────────────────── */
+.recon-diff{font-size:28px;font-weight:900;text-align:center;padding:20px;}
+.recon-pos{color:var(--green);}
+.recon-neg{color:var(--red);}
+.recon-zero{color:var(--text3);}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .bnav{display:block;}
+  .mob-topbar{display:flex;}
+  .content{padding:14px;padding-bottom:72px;}
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .items-row{grid-template-columns:1fr 60px;gap:6px;}
+  .items-row .price-col,.items-row .total-col{display:none;}
+  .main{padding-top:0;}
+}
+@media(min-width:769px){
+  .mob-topbar{display:none!important;}
+  .bnav{display:none!important;}
+}
+
+/* ── Loading / splash ──────────────────────────────────────── */
+.splash{height:100dvh;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+.splash-icon{font-size:64px;}
+.splash-text{color:rgba(255,255,255,.7);font-size:15px;}
+.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.2);border-top-color:white;border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel">
+const{useState,useEffect,useMemo,useCallback,useContext,createContext,useRef}=React;
+
+// ── Config ──────────────────────────────────────────────────
 const GH_OWNER="ahmedalshaghdari-hub";
 const GH_REPO="dahhanat-db";
 const TOKEN_KEY="pnt_ghtoken_v1";
-let _sha=null,_cache=null,_writing=false,_queue=[];
-function getToken(){return localStorage.getItem(TOKEN_KEY)||'';}
-function setToken(t){localStorage.setItem(TOKEN_KEY,t);}
+const APP_VER="2.0.0";
 
-/* ══ GITHUB SYNC ══════════════════════════════ */
+// ── Accounts ─────────────────────────────────────────────────
+const ACCOUNTS=[
+  {id:'muh',name:'محمد خالد',pct:0.40,color:'blue',emoji:'👤'},
+  {id:'ali',name:'علي سعيد',pct:0.40,color:'green',emoji:'👤'},
+  {id:'car',name:'السيارة',pct:0.20,color:'amber',emoji:'🚗'},
+];
+
+// ── Expense types ─────────────────────────────────────────────
+const EXP_TYPES=[
+  {id:'general',label:'مصاريف عامة',cls:'exp-general',icon:'📝',deduct:'all'},
+  {id:'fuel',label:'وقود/ديزل',cls:'exp-fuel',icon:'⛽',deduct:'all'},
+  {id:'car',label:'صيانة السيارة',cls:'exp-car',icon:'🔧',deduct:'car'},
+  {id:'salary',label:'رواتب',cls:'exp-salary',icon:'💵',deduct:'all'},
+  {id:'other',label:'أخرى',cls:'exp-other',icon:'📦',deduct:'all'},
+];
+const CAR_TYPES=['car']; // expense types that deduct ONLY from car fund
+
+// ── Product categories ────────────────────────────────────────
+const CATS=['دهانات','أدوات','كيماويات','مواد بناء','أخرى'];
+
+// ── Auth context ─────────────────────────────────────────────
+const AuthCtx=createContext(null);
+
+// ── Helpers ───────────────────────────────────────────────────
+const uid=()=>Math.random().toString(36).slice(2,10);
+const today=()=>new Date().toISOString().slice(0,10);
+const mk=d=>d?d.slice(0,7):'';
+const fmt=n=>(Number(n)||0).toLocaleString('ar-SA',{minimumFractionDigits:0,maximumFractionDigits:2});
+const fmtDate=d=>{if(!d)return'';const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;};
+const getToken=()=>localStorage.getItem(TOKEN_KEY)||'';
+const setToken=t=>localStorage.setItem(TOKEN_KEY,t);
+
+// ── GitHub API ────────────────────────────────────────────────
+let _sha=null,_cache=null,_writing=false,_queue=[];
+
 async function ghRead(){
   const t=getToken();if(!t)throw new Error('no token');
   const _p=fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/data.json`,
@@ -100,954 +281,995 @@ async function ghRead(){
   const f=await r.json();
   _sha=f.sha;
   _cache=JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\s/g,'')))));
-  if(!_cache.capital)_cache.capital={};if(!_cache.returns)_cache.returns={};
+  ['products','sales','expenses','withdrawals','capital','returns','cashRecon'].forEach(k=>{if(!_cache[k])_cache[k]={};});
   return _cache;
 }
-async function ghWrite(updater){
-  return new Promise((res,rej)=>{_queue.push({updater,res,rej});processQ();});
-}
+
 async function processQ(){
   if(_writing||!_queue.length)return;
   _writing=true;
   const{updater,res,rej}=_queue.shift();
   try{
     const data=_cache?JSON.parse(JSON.stringify(_cache)):await ghRead();
-    if(!data.capital)data.capital={};if(!data.returns)data.returns={};
-    updater(data);data.ts=Date.now();
+    ['products','sales','expenses','withdrawals','capital','returns','cashRecon'].forEach(k=>{if(!data[k])data[k]={};});
+    updater(data);
+    data.ts=Date.now();
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-    const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/data.json`,{
-      method:'PUT',
-      headers:{Authorization:`Bearer ${getToken()}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify({message:'sync',content,sha:_sha})
-    });
-    if(r.status===409){await ghRead();_writing=false;_queue.unshift({updater,res,rej});return processQ();}
+    const t=getToken();
+    const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/data.json`,
+      {method:'PUT',headers:{Authorization:`Bearer ${t}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+       body:JSON.stringify({message:'update',content,sha:_sha})});
     if(!r.ok)throw new Error('write '+r.status);
-    const result=await r.json();
-    _sha=result.content.sha;_cache=data;res(data);
-  }catch(e){rej(e);}finally{_writing=false;processQ();}
+    const j=await r.json();_sha=j.content.sha;_cache=data;res(data);
+  }catch(e){rej(e);}
+  finally{_writing=false;processQ();}
 }
 
-/* ══ CONSTANTS ════════════════════════════════ */
-const PARTNERS=[
-  {id:'mk',name:'محمد خالد',pct:.40,color:'#1D4ED8',bg:'#EFF6FF',border:'#BFDBFE'},
-  {id:'as',name:'علي سعيد', pct:.40,color:'#047857',bg:'#ECFDF5',border:'#A7F3D0'},
-  {id:'car',name:'السيارة',  pct:.20,color:'#92400E',bg:'#FFFBEB',border:'#FCD34D'},
-];
-const ADMIN_TABS=[
-  {id:0,ico:'🏠',lbl:'الرئيسية'},{id:1,ico:'📦',lbl:'المنتجات'},
-  {id:2,ico:'💰',lbl:'المبيعات'},{id:3,ico:'📊',lbl:'المصاريف'},
-  {id:4,ico:'🏦',lbl:'الصناديق'},{id:8,ico:'💼',lbl:'رأس المال'},
-  {id:5,ico:'📅',lbl:'التقارير'},{id:9,ico:'↩️',lbl:'المرتجعات'},{id:6,ico:'📈',lbl:'الأرباح'},
-  {id:7,ico:'⚙️',lbl:'الإعدادات'},
-];
-const SALES_TABS=[
-  {id:1,ico:'📦',lbl:'المنتجات'},{id:2,ico:'💰',lbl:'المبيعات'},
-  {id:3,ico:'📊',lbl:'المصاريف'},{id:4,ico:'🏦',lbl:'الصناديق'},
-  {id:9,ico:'↩️',lbl:'المرتجعات'},
-];
-const CATS=['دهانات','أدوات','كيماويات','مواد بناء','أخرى'];
-const MN=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-const AuthCtx=createContext(null);
+function ghWrite(updater){
+  return new Promise((res,rej)=>{_queue.push({updater,res,rej});processQ();});
+}
 
-/* ══ HELPERS ══════════════════════════════════ */
-const fmt=n=>(+(n)||0).toLocaleString('ar-EG',{minimumFractionDigits:2,maximumFractionDigits:2});
-const today=()=>new Date().toISOString().split('T')[0];
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-const mk=d=>(d||'').slice(0,7);
-const mName=k=>{if(!k)return'';const[y,m]=k.split('-');return`${MN[+m-1]} ${y}`;};
-function notify(msg){const el=document.getElementById('notif');if(!el)return;el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
+// ── Notification ──────────────────────────────────────────────
+let _notifTimer=null;
+function notify(msg){
+  let el=document.getElementById('notif');
+  if(!el){el=document.createElement('div');el.id='notif';el.className='notif';document.body.appendChild(el);}
+  el.textContent=msg;el.className='notif';
+  clearTimeout(_notifTimer);
+  _notifTimer=setTimeout(()=>{el.className='notif hide';},3000);
+}
 
-const calcFin=(sales,expenses,withdrawals,returns=[],mFilter=null)=>{
+// ── Finance calculator ────────────────────────────────────────
+function calcFin(sales=[],expenses=[],withdrawals=[],returns=[],mFilter=null){
   const f=mFilter?x=>mk(x.date)===mFilter:()=>true;
-  const s=sales.filter(f),e=expenses.filter(f),w=withdrawals.filter(f),rt=returns.filter(f);
-  const retRev=rt.reduce((a,x)=>a+(x.totalRefund||0),0);const retCost=rt.reduce((a,x)=>a+(x.totalCost||0),0);
-  const totalSales=Math.max(0,s.reduce((a,x)=>a+(x.total||0),0)-retRev);
-  const totalCost=Math.max(0,s.reduce((a,x)=>a+(x.cost||0),0)-retCost);
-  const gross=totalSales-totalCost;
-  const fuel=e.filter(x=>x.type==='fuel').reduce((a,x)=>a+(x.amount||0),0);
-  const other=e.filter(x=>x.type!=='fuel').reduce((a,x)=>a+(x.amount||0),0);
-  const net=gross-fuel-other;
-  const partners=PARTNERS.map(p=>{
-    const share=net*p.pct;
-    const drawn=w.filter(x=>x.pid===p.id).reduce((a,x)=>a+(x.amount||0),0);
-    return{...p,share,drawn,balance:share-drawn};
+  const s=sales.filter(f),e=expenses.filter(f),w=withdrawals.filter(f);
+  // Returns: restore stock only — NO P&L impact (removes confusion)
+  const totalRev=s.reduce((a,x)=>a+(x.total||0),0);
+  const totalCost=s.reduce((a,x)=>a+(x.cost||0),0);
+  const grossProfit=totalRev-totalCost;
+  // General expenses (deduct from all partners proportionally)
+  const generalExp=e.filter(x=>!CAR_TYPES.includes(x.type)).reduce((a,x)=>a+(x.amount||0),0);
+  // Car expenses (deduct ONLY from car fund — not from profit shared by all)
+  const carExp=e.filter(x=>CAR_TYPES.includes(x.type)).reduce((a,x)=>a+(x.amount||0),0);
+  const netProfit=grossProfit-generalExp;
+  // Partner shares from net profit
+  const accs=ACCOUNTS.map(ac=>{
+    const share=netProfit*(ac.id==='car'?0.20:ac.pct);
+    const drawn=w.filter(x=>x.pid===ac.id).reduce((a,x)=>a+(x.amount||0),0);
+    const carDeduct=ac.id==='car'?carExp:0;
+    return{...ac,share,drawn,carDeduct,net:share-drawn-carDeduct};
   });
-  return{totalSales,totalCost,gross,fuel,other,net,partners,count:s.length};
-};
-
-/* ══ EXCEL EXPORT ══════════════════════════════ */
-const exportExcel=(products,sales,expenses,withdrawals,capital,returns=[])=>{
-  const wb=XLSX.utils.book_new();
-  const add=(name,rows)=>{if(rows.length){const ws=XLSX.utils.json_to_sheet(rows);XLSX.utils.book_append_sheet(wb,ws,name);}};
-
-  // Sheet 1: Products
-  add('المنتجات',products.map(p=>({'الاسم':p.name,'الفئة':p.cat,'الوحدة':p.unit,'سعر الشراء':+p.buyP||0,'سعر البيع':+p.sellP||0,'المخزون':+p.stock||0,'هامش الربح %':p.buyP>0?+((p.sellP-p.buyP)/p.buyP*100).toFixed(1):0})));
-
-  // Sheet 2: Sales summary
-  const ss=[...sales].sort((a,b)=>a.date.localeCompare(b.date));
-  add('المبيعات',ss.map(s=>({'التاريخ':s.date,'ملاحظة':s.note||'','الإجمالي':+s.total||0,'التكلفة':+s.cost||0,'الربح':+s.profit||0})));
-
-  // Sheet 3: Sale items detail
-  const det=[];
-  ss.forEach(s=>(s.items||[]).forEach(it=>det.push({'التاريخ':s.date,'المنتج':it.pname||'','الكمية':+it.qty,'سعر البيع':+it.sellP,'الإجمالي':(+it.qty)*(+it.sellP),'الربح':(+it.qty)*((+it.sellP)-(+it.buyP))})));
-  add('تفاصيل المبيعات',det);
-
-  // Sheet 4: Expenses
-  add('المصاريف',[...expenses].sort((a,b)=>a.date.localeCompare(b.date)).map(e=>({'التاريخ':e.date,'النوع':e.type==='fuel'?'وقود':'عام','الوصف':e.desc,'المبلغ':+e.amount||0})));
-
-  // Sheet 5: Withdrawals
-  add('السحوبات',[...withdrawals].sort((a,b)=>a.date.localeCompare(b.date)).map(w=>{const p=PARTNERS.find(x=>x.id===w.pid);return{'التاريخ':w.date,'الشريك':p?.name||w.pid,'المبلغ':+w.amount||0,'ملاحظة':w.note||''};}));
-
-  // Sheet 6: Capital
-  add('رأس المال',[...capital].sort((a,b)=>a.date.localeCompare(b.date)).map(c=>{const p=PARTNERS.find(x=>x.id===c.pid);return{'التاريخ':c.date,'الشريك':p?.name||c.pid,'المبلغ':+c.amount||0,'الوصف':c.note||''};}));
-
-  // Sheet 7: Partner Summary
-  const fin=calcFin(sales,expenses,withdrawals,returns);
-  add('ملخص الصناديق',fin.partners.map(p=>{
-    const cap=capital.filter(c=>c.pid===p.id).reduce((a,x)=>a+(x.amount||0),0);
-    return{'الشريك':p.name,'النسبة':`${(p.pct*100).toFixed(0)}%`,'رأس المال':+cap.toFixed(2),'حصة من الأرباح':+p.share.toFixed(2),'إجمالي السحوبات':+p.drawn.toFixed(2),'الرصيد الإجمالي':+(cap+p.share-p.drawn).toFixed(2)};
-  }));
-
-  // Sheet 7b: Returns
-  add('المرتجعات',[...returns].sort((a,b)=>a.date.localeCompare(b.date)).map(r=>({'التاريخ':r.date,'السبب':r.reason||'','ملاحظة':r.note||'','إجمالي المسترد':+r.totalRefund||0,'التكلفة المُعادة':+r.totalCost||0,'الأصناف':(r.items||[]).map(it=>it.pname+' ×'+it.qty).join(' · ')})));
-
-  // Sheet 8: Monthly P&L
-  const allYrs=[...new Set([...sales,...expenses].map(x=>(x.date||'').slice(0,4)).filter(Boolean))];
-  if(!allYrs.length)allYrs.push(String(new Date().getFullYear()));
-  const monthly=[];
-  allYrs.sort().forEach(yr=>{
-    for(let m=1;m<=12;m++){
-      const mKey=`${yr}-${String(m).padStart(2,'0')}`;
-      const mf=calcFin(sales,expenses,withdrawals,returns,mKey);
-      if(mf.totalSales>0||mf.fuel+mf.other>0)
-        monthly.push({'السنة':yr,'الشهر':MN[m-1],'المبيعات':+mf.totalSales.toFixed(2),'تكلفة البضاعة':+mf.totalCost.toFixed(2),'إجمالي الربح':+mf.gross.toFixed(2),'مصاريف الوقود':+mf.fuel.toFixed(2),'مصاريف أخرى':+mf.other.toFixed(2),'صافي الربح':+mf.net.toFixed(2),'م.خالد 40%':+(mf.net*.4).toFixed(2),'ع.سعيد 40%':+(mf.net*.4).toFixed(2),'السيارة 20%':+(mf.net*.2).toFixed(2)});
-    }
-  });
-  add('الأرباح الشهرية',monthly);
-
-  XLSX.writeFile(wb,`تقرير_دهانات_${today()}.xlsx`);
-  notify('✅ تم تصدير Excel بنجاح!');
-};
-
-/* ══ UI HELPERS ════════════════════════════════ */
-const Inp=({label,req,...p})=><div className="fg">{label&&<label>{label}{req&&<span style={{color:'#EF4444'}}> *</span>}</label>}<input className="fc" {...p}/></div>;
-const Sel=({label,children,...p})=><div className="fg">{label&&<label>{label}</label>}<select className="fc" {...p}>{children}</select></div>;
-const Btn=({children,v='p',style={},...p})=>{const c={p:'bp',s:'bs',d:'bd',g:'bg2',w:'bw',xl:'bxl'};return<button className={`btn ${c[v]||'bp'}`} style={style} {...p}>{children}</button>;};
-const Badge=({children,color='#1D4ED8',bg='#EFF6FF'})=><span className="badge" style={{color,background:bg}}>{children}</span>;
-const KPI=({ico,lbl,val,sub,color='#1D4ED8',bg='#EFF6FF'})=>(
-  <div className="kcard"><div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-    <div><div style={{fontSize:12,color:'#64748B',fontWeight:600,marginBottom:5}}>{lbl}</div>
-      <div style={{fontSize:17,fontWeight:800,color,lineHeight:1.3}}>{val}</div>
-      {sub&&<div style={{fontSize:11,color:'#94A3B8',marginTop:3}}>{sub}</div>}
-    </div>
-    <div style={{fontSize:20,background:bg,borderRadius:9,padding:'5px 7px',flexShrink:0,marginRight:6}}>{ico}</div>
-  </div></div>
-);
-
-/* ══ SETUP SCREEN ══════════════════════════════ */
-function SetupScreen({onDone}){
-  const[tok,setTok]=useState('');const[err,setErr]=useState('');const[loading,setLoading]=useState(false);
-  const doSetup=async()=>{
-    if(!tok.trim()){setErr('أدخل الرمز أولاً');return;}
-    setLoading(true);setErr('');
-    setToken(tok.trim());
-    try{await ghRead();onDone();}
-    catch(e){setErr('الرمز غير صحيح أو انتهت صلاحيته.');localStorage.removeItem(TOKEN_KEY);}
-    finally{setLoading(false);}
-  };
-  return(<div className="setup-bg"><div className="setup-card">
-    <div style={{textAlign:'center',marginBottom:20}}>
-      <div style={{fontSize:44}}>🎨</div>
-      <h2 style={{fontSize:18,fontWeight:900,color:'#1E293B',margin:'6px 0 4px'}}>دهانات ومستلزمات البناء</h2>
-      <p style={{fontSize:12,color:'#94A3B8'}}>أدخل رمز الاتصال لتفعيل المزامنة السحابية</p>
-    </div>
-    <div style={{background:'#F0FDF4',borderRadius:12,padding:'14px 16px',marginBottom:16,border:'1px solid #A7F3D0'}}>
-      <div style={{fontWeight:700,color:'#047857',fontSize:13,marginBottom:6}}>📌 الإعداد الأول فقط:</div>
-      <div style={{fontSize:13,color:'#065F46',lineHeight:1.8}}>١. اطلب رمز الاتصال من محمد خالد<br/>٢. الصقه في الحقل أدناه<br/>٣. يُحفظ تلقائياً على هذا الجهاز</div>
-    </div>
-    <div className="fg" style={{marginBottom:12}}>
-      <label>رمز الاتصال (يبدأ بـ ghp_)</label>
-      <input className="fc" type="password" value={tok} onChange={e=>{setTok(e.target.value);setErr('');}} placeholder="ghp_..." onKeyDown={e=>e.key==='Enter'&&doSetup()} style={{direction:'ltr',textAlign:'left'}}/>
-    </div>
-    {err&&<div style={{background:'#FEF2F2',border:'1px solid #FECACA',color:'#DC2626',borderRadius:9,padding:'8px 12px',fontSize:13,marginBottom:10}}>{err}</div>}
-    <button className="btn bp blg" onClick={doSetup} disabled={loading} style={{opacity:loading?.6:1}}>{loading?'⏳ جاري التحقق...':'✅ اتصل وابدأ'}</button>
-  </div></div>);
+  return{totalRev,totalCost,grossProfit,generalExp,carExp,netProfit,accs,
+    totalExp:generalExp+carExp,salesCount:s.length,expCount:e.length};
 }
 
-/* ══ LOGIN ══════════════════════════════════════ */
-function LoginScreen({onLogin,cfgPwds}){
-  const[sel,setSel]=useState(null);const[pwd,setPwd]=useState('');const[err,setErr]=useState('');
-  const defs={mk:{name:'محمد خالد',color:'#1D4ED8',bg:'#EFF6FF',ico:'👨‍💼',role:'مدير — صلاحيات كاملة'},as:{name:'علي سعيد',color:'#047857',bg:'#ECFDF5',ico:'👷',role:'موظف مبيعات'}};
-  const doLogin=()=>{
-    if(!sel){setErr('اختر حسابك أولاً');return;}
-    const expected=cfgPwds[sel]||{mk:'1234',as:'5678'}[sel];
-    if(pwd===expected)onLogin({id:sel,...defs[sel],role:sel==='mk'?'admin':'sales'});
-    else{setErr('كلمة المرور غير صحيحة');setPwd('');}
-  };
-  return(<div className="login-bg"><div className="login-card">
-    <div style={{textAlign:'center',marginBottom:22}}>
-      <div style={{fontSize:48,marginBottom:6}}>🎨</div>
-      <h1 style={{fontSize:19,fontWeight:900,color:'#1E293B'}}>دهانات ومستلزمات البناء</h1>
-      <p style={{fontSize:12,color:'#94A3B8',marginTop:4}}>نظام المحاسبة مع المزامنة السحابية ☁️</p>
-    </div>
-    <p style={{fontSize:13,fontWeight:700,color:'#475569',marginBottom:10}}>اختر حسابك:</p>
-    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:16}}>
-      {Object.entries(defs).map(([id,u])=>(<button key={id} className={`upick sel-${sel===id?id:''}`} onClick={()=>{setSel(id);setErr('');}}>
-        <div style={{fontSize:26,marginBottom:5}}>{u.ico}</div>
-        <div style={{fontSize:14,fontWeight:800,color:sel===id?u.color:'#1E293B'}}>{u.name}</div>
-        <div style={{fontSize:11,color:sel===id?u.color:'#94A3B8',marginTop:2}}>{u.role}</div>
-      </button>))}
-    </div>
-    <Inp label="كلمة المرور" type="password" value={pwd} onChange={e=>{setPwd(e.target.value);setErr('');}} onKeyDown={e=>e.key==='Enter'&&doLogin()} placeholder="أدخل كلمة المرور"/>
-    {err&&<div style={{color:'#DC2626',fontSize:13,textAlign:'center',marginTop:8}}>{err}</div>}
-    <button className="btn bp blg" onClick={doLogin} style={{marginTop:14}}>تسجيل الدخول ←</button>
-    <div style={{marginTop:12,padding:'8px 12px',background:'#F8FAFC',borderRadius:9,fontSize:12,color:'#64748B',textAlign:'center'}}>📌 م.خالد: <strong>1234</strong> · ع.سعيد: <strong>5678</strong></div>
-  </div></div>);
+// ── UI Atoms ──────────────────────────────────────────────────
+function Inp({label,req,...p}){return(<div className="fg">
+  {label&&<label>{label}{req&&<span style={{color:'var(--red)',marginRight:2}}>*</span>}</label>}
+  <input className="fi" {...p}/>
+</div>);}
+function Sel({label,children,...p}){return(<div className="fg">
+  {label&&<label>{label}</label>}
+  <select className="fi" {...p}>{children}</select>
+</div>);}
+function Btn({variant='primary',size='',className='',children,...p}){
+  return<button className={`btn btn-${variant} ${size?'btn-'+size:''} ${className}`} {...p}>{children}</button>;
 }
+function Card({title,action,children,style}){return(
+  <div className="card" style={style}>
+    {title&&<div className="card-header"><span className="card-title">{title}</span>{action}</div>}
+    {children}
+  </div>
+);}
 
-/* ══ DASHBOARD ══════════════════════════════════ */
-function Dashboard({sales,expenses,withdrawals,capital,returns=[],partnerBal,onExcel}){
+// ══════════════════════════════════════════════════════════════
+// COMPONENTS
+// ══════════════════════════════════════════════════════════════
+
+/* ── DASHBOARD ──────────────────────────────────────────────── */
+function Dashboard({sales,expenses,withdrawals,capital,returns,products}){
   const cm=today().slice(0,7);
-  const ms=useMemo(()=>calcFin(sales,expenses,withdrawals,returns,cm),[sales,expenses,withdrawals,returns,cm]);
-  const totalCap=PARTNERS.reduce((a,p)=>{const c=capital.filter(x=>x.pid===p.id).reduce((s,x)=>s+(x.amount||0),0);return a+c;},0);
-  const rec=useMemo(()=>({s:[...sales].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5),e:[...expenses].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5)}),[sales,expenses]);
-  const fin=useMemo(()=>calcFin(sales,expenses,withdrawals,returns),[sales,expenses,withdrawals,returns]);
+  const fin=useMemo(()=>calcFin(sales,expenses,withdrawals,returns,cm),[sales,expenses,withdrawals,cm]);
+  const totCap=capital.reduce((a,c)=>a+(c.amount||0),0);
+  const lowStock=products.filter(p=>(+p.stock||0)<5).sort((a,b)=>(+a.stock||0)-(+b.stock||0));
+  const todaySales=sales.filter(s=>s.date===today());
+  const todayRev=todaySales.reduce((a,s)=>a+(s.total||0),0);
+
   return(<div>
-    <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:4,gap:8,flexWrap:'wrap'}}>
-      <div><h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>📊 لوحة التحكم</h2><p style={{fontSize:13,color:'#94A3B8'}}>هذا الشهر: {mName(cm)}</p></div>
-      <button className="btn bxl" onClick={onExcel} style={{fontSize:13,padding:'8px 14px',display:'flex',alignItems:'center',gap:6}}>📊 تصدير Excel</button>
-    </div>
-    <div className="kgrid">
-      <KPI ico="🧾" lbl="مبيعات الشهر" val={`${fmt(ms.totalSales)} ر.س`} color="#047857" bg="#ECFDF5" sub={`${ms.count} فاتورة`}/>
-      <KPI ico="💹" lbl="إجمالي ربح الشهر" val={`${fmt(ms.gross)} ر.س`} color="#1D4ED8" bg="#EFF6FF"/>
-      <KPI ico="💸" lbl="مصاريف الشهر" val={`${fmt(ms.fuel+ms.other)} ر.س`} color="#DC2626" bg="#FEF2F2" sub={`وقود: ${fmt(ms.fuel)}`}/>
-      <KPI ico="✅" lbl="صافي ربح الشهر" val={`${fmt(ms.net)} ر.س`} color={ms.net>=0?'#047857':'#DC2626'} bg={ms.net>=0?'#ECFDF5':'#FEF2F2'}/>
-      <KPI ico="💼" lbl="إجمالي رأس المال" val={`${fmt(totalCap)} ر.س`} color="#7C3AED" bg="#F5F3FF"/>
-      <KPI ico="📈" lbl="صافي الربح الكلي" val={`${fmt(fin.net)} ر.س`} color={fin.net>=0?'#047857':'#DC2626'} bg={fin.net>=0?'#ECFDF5':'#FEF2F2'} sub="منذ البداية"/>
-    </div>
-    <div className="card">
-      <div style={{fontWeight:800,fontSize:14,marginBottom:12}}>💼 الصناديق الإجمالية (رأس المال + الأرباح)</div>
-      <div className="pcgrid">
-        {partnerBal.map(p=>(
-          <div key={p.id} className="pc" style={{background:p.bg,border:`1.5px solid ${p.border}`}}>
-            <div style={{fontSize:13,color:p.color,fontWeight:800,marginBottom:2}}>{p.name} <span style={{fontWeight:500}}>({(p.pct*100).toFixed(0)}%)</span></div>
-            <div style={{fontSize:22,fontWeight:900,color:p.netBalance>=0?p.color:'#DC2626',margin:'4px 0'}}>{fmt(p.netBalance)}<span style={{fontSize:12}}> ر.س</span></div>
-            <div style={{fontSize:11,color:'#64748B',display:'flex',flexDirection:'column',gap:2,marginTop:4}}>
-              <span>💼 رأس المال: <strong>{fmt(p.capTotal)}</strong></span>
-              <span>📈 حصة الأرباح: <strong>{fmt(p.share)}</strong></span>
-              <span>💸 المسحوب: <strong style={{color:'#DC2626'}}>{fmt(p.drawn)}</strong></span>
-            </div>
-          </div>
-        ))}
+    <div className="page-header">
+      <div><div className="page-title">لوحة التحكم</div>
+        <div className="page-sub">{new Date().toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div>
       </div>
     </div>
-    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:12}}>
-      {[{t:'🧾 آخر المبيعات',items:rec.s,r:s=><><div style={{fontSize:13,fontWeight:600}}>{s.note||'مبيعات'}</div><div style={{fontSize:11,color:'#94A3B8'}}>{s.date}</div></>,v:s=><span style={{fontWeight:800,color:'#047857'}}>{fmt(s.total)} ر.س</span>},
-        {t:'💸 آخر المصاريف',items:rec.e,r:e=><><div style={{fontSize:13,fontWeight:600}}>{e.type==='fuel'?'⛽':'📝'} {e.desc}</div><div style={{fontSize:11,color:'#94A3B8'}}>{e.date}</div></>,v:e=><span style={{fontWeight:800,color:'#DC2626'}}>{fmt(e.amount)} ر.س</span>}
-      ].map(({t,items,r,v})=>(<div key={t} className="card" style={{margin:0}}><div style={{fontWeight:800,fontSize:14,marginBottom:10}}>{t}</div>
-        {items.length===0?<div style={{textAlign:'center',padding:'16px 0',color:'#94A3B8',fontSize:13}}>لا توجد بيانات</div>
-        :items.map((it,i)=><div key={i} style={{padding:'7px 0',borderBottom:'1px solid #F1F5F9',display:'flex',justifyContent:'space-between',alignItems:'center'}}><div>{r(it)}</div><div>{v(it)}</div></div>)}
-      </div>))}
+
+    {/* Today */}
+    <div className="alert info" style={{marginBottom:16}}>
+      <span className="alert-icon">📅</span>
+      <div>اليوم: <strong>{fmtDate(today())}</strong> — مبيعات اليوم: <strong style={{color:'var(--green)'}}>{fmt(todayRev)} ر.س</strong> ({todaySales.length} فاتورة)</div>
     </div>
+
+    {/* KPIs */}
+    <div className="kpi-grid">
+      <div className="kpi green"><div className="kpi-label">مبيعات الشهر</div><div className="kpi-value" style={{color:'var(--green)'}}>{fmt(fin.totalRev)}</div><div className="kpi-sub">ر.س</div><div className="kpi-icon">💰</div></div>
+      <div className="kpi red"><div className="kpi-label">المصاريف الإجمالية</div><div className="kpi-value" style={{color:'var(--red)'}}>{fmt(fin.totalExp)}</div><div className="kpi-sub">ر.س</div><div className="kpi-icon">📉</div></div>
+      <div className="kpi purple"><div className="kpi-label">صافي الربح</div><div className="kpi-value" style={{color:fin.netProfit>=0?'var(--green)':'var(--red)'}}>{fmt(fin.netProfit)}</div><div className="kpi-sub">ر.س</div><div className="kpi-icon">📊</div></div>
+      <div className="kpi blue"><div className="kpi-label">رأس المال</div><div className="kpi-value" style={{color:'var(--blue)'}}>{fmt(totCap)}</div><div className="kpi-sub">ر.س</div><div className="kpi-icon">🏦</div></div>
+    </div>
+
+    {/* Partner balances */}
+    <div className="funds-grid" style={{marginBottom:20}}>
+      {fin.accs.map(ac=><div key={ac.id} className={`fund-card ${ac.id}`}>
+        <div className="fund-name">{ac.emoji} {ac.name}</div>
+        <div className="fund-amount" style={{color:ac.net>=0?'var(--green)':'var(--red)'}}>{fmt(ac.net)}</div>
+        <div className="fund-detail">
+          حصة الربح: {fmt(ac.share)}<br/>
+          السحوبات: {fmt(ac.drawn)}<br/>
+          {ac.id==='car'&&ac.carDeduct>0&&<>صيانة: {fmt(ac.carDeduct)}<br/></>}
+          النسبة: {(ac.pct*100).toFixed(0)}%
+        </div>
+      </div>)}
+    </div>
+
+    {/* Low stock alert */}
+    {lowStock.length>0&&<div className="alert warn" style={{marginBottom:16}}>
+      <span className="alert-icon">⚠️</span>
+      <div><strong>تنبيه مخزون منخفض:</strong> {lowStock.map(p=>`${p.name} (${p.stock||0})`).join(' · ')}</div>
+    </div>}
+
+    {/* Recent sales */}
+    <Card title={`آخر المبيعات (${sales.slice(-5).length})`}>
+      {sales.length===0?<div style={{textAlign:'center',padding:24,color:'var(--text3)'}}>لا توجد مبيعات بعد</div>
+      :<div className="tbl-wrap"><table className="tbl">
+        <thead><tr><th>التاريخ</th><th>العميل</th><th>الإجمالي</th><th>الحالة</th></tr></thead>
+        <tbody>{[...sales].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6).map(s=>(
+          <tr key={s.id}>
+            <td>{fmtDate(s.date)}</td><td>{s.note||'—'}</td>
+            <td className="num pos">{fmt(s.total)}</td>
+            <td><span className="badge badge-green">✓ مكتمل</span></td>
+          </tr>
+        ))}</tbody>
+      </table></div>}
+    </Card>
   </div>);
 }
 
-/* ══ PRODUCTS ════════════════════════════════════ */
+/* ── PRODUCTS ────────────────────────────────────────────────── */
 function Products({products,onWrite}){
-  const{user}=useContext(AuthCtx);const isAdmin=user.role==='admin';
-  const empty={name:'',cat:CATS[0],unit:'قطعة',buyP:'',sellP:'',stock:'',barcode:'',image:''};
-  const[form,setForm]=useState(empty);const[editId,setEditId]=useState(null);const[q,setQ]=useState('');
-  const s=k=>e=>setForm(p=>({...p,[k]:e.target.value}));
-  const submit=()=>{if(!form.name||!form.sellP)return;const id=editId||uid();onWrite(data=>data.products[id]={...form,buyP:+form.buyP||0,sellP:+form.sellP||0,stock:+form.stock||0,id});setForm(empty);setEditId(null);notify('✅ تمت الإضافة — ستظهر في القائمة خلال ثوانٍ');};
-  const filtered=products.filter(p=>!q||p.name.includes(q)||p.cat.includes(q));
-  return(<div>
-    <h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>📦 المنتجات</h2><p style={{fontSize:13,color:'#94A3B8',marginBottom:14}}>{products.length} منتج</p>
-    <div className="card" style={{border:editId?'2px solid #93C5FD':'1px solid #E8EEF4'}}>
-      <div style={{fontWeight:800,fontSize:14,marginBottom:12}}>{editId?'✏️ تعديل':'➕ إضافة منتج'}</div>
-      <div className="fgrid">
-        <Inp label="الاسم" req value={form.name} onChange={s('name')} placeholder="اسم المنتج"/>
-        <Sel label="الفئة" value={form.cat} onChange={s('cat')}>{CATS.map(c=><option key={c}>{c}</option>)}</Sel>
-        <Inp label="الوحدة" value={form.unit} onChange={s('unit')} placeholder="قطعة/لتر/كيلو"/>
-        <div className="fg">
-          <label>الباركود</label>
-          <div style={{display:'flex',gap:6}}>
-            <input className="fc" style={{flex:1,direction:'ltr'}} value={form.barcode} onChange={s('barcode')} placeholder="ادخل الباركود أو امسح"/>
-            <button type="button" className="btn bg2" style={{padding:'8px 10px',flexShrink:0}} title="مسح الباركود" onClick={()=>{
-              if(!('BarcodeDetector' in window)){alert('المتصفح لا يدعم المسح التلقائي، أدخله يدوياً');return;}
-              const vid=document.createElement('video');const cnv=document.createElement('canvas');
-              navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(stream=>{
-                vid.srcObject=stream;vid.play();
-                const bd=new BarcodeDetector();
-                const scan=()=>requestAnimationFrame(async()=>{
-                  if(vid.readyState===4){
-                    cnv.width=vid.videoWidth;cnv.height=vid.videoHeight;
-                    cnv.getContext('2d').drawImage(vid,0,0);
-                    try{const r=await bd.detect(cnv);if(r.length>0){setForm(p=>({...p,barcode:r[0].rawValue}));stream.getTracks().forEach(t=>t.stop());notify('✅ تم مسح الباركود: '+r[0].rawValue);return;}}
-                    catch(e){}
-                  }scan();
-                });scan();
-              }).catch(()=>notify('❌ تعذر فتح الكاميرا'));
-            }}>📷</button>
-          </div>
-        </div>
-        <div className="fg">
-          <label>صورة المنتج</label>
-          <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
-            {form.image&&<img src={form.image} style={{width:52,height:52,borderRadius:8,objectFit:'cover',border:'2px solid #E2E8F0'}}/>}
-            <label style={{flex:1,cursor:'pointer',background:'#F8FAFC',border:'1.5px dashed #CBD5E1',borderRadius:10,padding:'8px 12px',textAlign:'center',fontSize:13,color:'#64748B'}}>
-              📷 اختر صورة
-              <input type="file" accept="image/*" style={{display:'none'}} onChange={e=>{
-                const file=e.target.files[0];if(!file)return;
-                const reader=new FileReader();
-                reader.onload=ev=>{
-                  const img=new Image();img.onload=()=>{
-                    const MAX=220;let w=img.width,h=img.height;
-                    if(w>h&&w>MAX){h=h*MAX/w;w=MAX;}else if(h>w&&h>MAX){w=w*MAX/h;h=MAX;}else if(w>MAX){w=h=MAX;}
-                    const cnv=document.createElement('canvas');cnv.width=w;cnv.height=h;
-                    cnv.getContext('2d').drawImage(img,0,0,w,h);
-                    setForm(p=>({...p,image:cnv.toDataURL('image/jpeg',0.65)}));
-                  };img.src=ev.target.result;
-                };reader.readAsDataURL(file);
-              }}/>
-            </label>
-            {form.image&&<button type="button" className="btn bd" style={{padding:'6px 10px',fontSize:12}} onClick={()=>setForm(p=>({...p,image:''}))}>✕</button>}
-          </div>
-        </div>
-        <Inp label="سعر الشراء" type="number" value={form.buyP} onChange={s('buyP')} placeholder="0.00"/>
-        <Inp label="سعر البيع ✶" req type="number" value={form.sellP} onChange={s('sellP')} placeholder="0.00"/>
-        <Inp label="المخزون" type="number" value={form.stock} onChange={s('stock')} placeholder="0"/>
-      </div>
-      <div style={{display:'flex',gap:8}}><Btn onClick={submit}>{editId?'💾 حفظ':'➕ إضافة'}</Btn>{editId&&<Btn v="g" onClick={()=>{setForm(empty);setEditId(null);}}>إلغاء</Btn>}</div>
-    </div>
-    <div style={{marginBottom:12}}><Inp value={q} onChange={e=>setQ(e.target.value)} placeholder="🔍 بحث..." style={{maxWidth:260}}/></div>
-    <div className="card"><div className="twrap"><table>
-      <thead><tr><th></th><th>المنتج</th><th>الفئة</th><th>الوحدة</th><th>الباركود</th><th>سعر الشراء</th><th>سعر البيع</th><th>المخزون</th>{isAdmin&&<th>هامش</th>}<th></th></tr></thead>
-      <tbody>{filtered.length===0?<tr><td colSpan={8} style={{textAlign:'center',padding:28,color:'#94A3B8'}}>لا توجد منتجات</td></tr>
-      :filtered.map(p=>{const m=p.buyP>0?((p.sellP-p.buyP)/p.buyP*100).toFixed(1)+'%':'—';return(<tr key={p.id}>
-        <td style={{width:44}}>{p.image?<img src={p.image} style={{width:36,height:36,borderRadius:6,objectFit:'cover'}}/>:<span style={{fontSize:20}}>📦</span>}</td>
-        <td style={{fontWeight:700}}>{p.name}</td><td><Badge>{p.cat}</Badge></td><td style={{color:'#64748B'}}>{p.unit}</td>
-        <td style={{color:'#64748B',fontSize:12}}>{p.barcode||'—'}</td>
-        <td style={{color:'#DC2626'}}>{fmt(p.buyP)}</td>
-        <td style={{color:'#047857',fontWeight:700}}>{fmt(p.sellP)}</td><td>{p.stock}</td>{isAdmin&&<td style={{color:'#92400E'}}>{m}</td>}
-        <td><div style={{display:'flex',gap:4}}>
-          <Btn v="g" style={{padding:'4px 8px',fontSize:12}} onClick={()=>{setForm({name:p.name,cat:p.cat,unit:p.unit,buyP:p.buyP,sellP:p.sellP,stock:p.stock,barcode:p.barcode||'',image:p.image||''});setEditId(p.id);window.scrollTo({top:0,behavior:'smooth'});}}>✏️ تعديل</Btn>
-          {isAdmin&&<Btn v="d" style={{padding:'4px 8px',fontSize:12}} onClick={()=>{if(window.confirm('حذف؟')){onWrite(d=>delete d.products[p.id]);notify('🗑️ تم الحذف');}}}>🗑️</Btn>}
-        </div></td>
-      </tr>);})}</tbody>
-    </table></div></div>
-  </div>);
-}
-
-/* ══ SALES ════════════════════════════════════════ */
-function Sales({sales,products,onWrite}){
-  const{user}=useContext(AuthCtx);const isAdmin=user.role==='admin';
-  const ei={pid:'',pname:'',qty:1,sellP:0,buyP:0,unit:''};
-  const[date,setDate]=useState(today());const[note,setNote]=useState('');const[items,setItems]=useState([{...ei}]);const[filter,setFilter]=useState('');const[open,setOpen]=useState(false);const[editId,setEditId]=useState(null);
-  const startEdit=s=>{setDate(s.date);setNote(s.note||'');setItems(s.items&&s.items.length?s.items:[{...ei}]);setEditId(s.id);setOpen(true);window.scrollTo({top:0,behavior:'smooth'});};
-  const upd=(i,k,v)=>{const n=[...items];n[i]={...n[i],[k]:v};if(k==='pid'){const pr=products.find(p=>p.id===v);if(pr)n[i]={...n[i],pname:pr.name,sellP:pr.sellP,buyP:pr.buyP,unit:pr.unit};}setItems(n);};
-  const totals=useMemo(()=>{const total=items.reduce((s,it)=>s+(+it.qty*(+it.sellP)||0),0);const cost=items.reduce((s,it)=>s+(+it.qty*(+it.buyP)||0),0);return{total,cost,profit:total-cost};},[items]);
-  const doSave=()=>{
-    if(!items.some(it=>it.pname||it.sellP>0))return;
+  const empty={name:'',cat:CATS[0],unit:'قطعة',buyP:'',sellP:'',stock:'',barcode:''};
+  const[form,setForm]=useState(empty);
+  const[editId,setEditId]=useState(null);
+  const[q,setQ]=useState('');
+  const[showForm,setShowForm]=useState(false);
+  const upd=k=>e=>setForm(p=>({...p,[k]:e.target.value}));
+  const submit=()=>{
+    if(!form.name||!form.sellP)return;
     const id=editId||uid();
-    onWrite(d=>{d.sales[id]={id,date,note,items,total:totals.total,cost:totals.cost,profit:totals.profit};});
-    setItems([{...ei}]);setNote('');setDate(today());setOpen(false);setEditId(null);
-    notify(editId?'✅ تم تعديل الفاتورة':'✅ تم حفظ الفاتورة');
+    onWrite(d=>d.products[id]={...form,buyP:+form.buyP||0,sellP:+form.sellP||0,stock:+form.stock||0,id});
+    setForm(empty);setEditId(null);setShowForm(false);
+    notify('✅ تم حفظ المنتج');
   };
-  const list=[...sales].filter(s=>!filter||s.date.startsWith(filter)).sort((a,b)=>b.date.localeCompare(a.date));
-  return(<div>
-    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4,gap:8,flexWrap:'wrap'}}>
-      <div><h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>💰 المبيعات</h2><p style={{fontSize:13,color:'#94A3B8',margin:0}}>{sales.length} فاتورة</p></div>
-      <Btn onClick={()=>{setOpen(!open);if(open){setEditId(null);setItems([{...ei}]);setNote('');setDate(today());}}}>{open?(editId?'✕ إلغاء التعديل':'✕ إغلاق'):'➕ فاتورة جديدة'}</Btn>
-    </div>
-    {open&&<div className="card" style={{marginTop:12,border:'2px solid #93C5FD'}}>
-      <div style={{fontWeight:800,fontSize:14,marginBottom:12}}>{editId?'✏️ تعديل الفاتورة':'🧾 فاتورة جديدة'}</div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 2fr',gap:10,marginBottom:12}}>
-        <Inp label="التاريخ" type="date" value={date} onChange={e=>setDate(e.target.value)}/>
-        <Inp label="ملاحظة/العميل" value={note} onChange={e=>setNote(e.target.value)} placeholder="اسم العميل"/>
-      </div>
-      {items.map((item,i)=>(<div key={i} style={{display:'grid',gridTemplateColumns:'2fr 70px 100px 70px auto',gap:8,marginBottom:8,alignItems:'end'}}>
-        <Sel value={item.pid} onChange={e=>upd(i,'pid',e.target.value)}><option value="">-- اختر منتج --</option>{products.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</Sel>
-        <Inp type="number" value={item.qty} onChange={e=>upd(i,'qty',+e.target.value)} placeholder="كمية"/>
-        <Inp type="number" value={item.sellP} onChange={e=>upd(i,'sellP',+e.target.value)} placeholder="سعر البيع"/>
-        <div style={{padding:'9px 8px',background:'#ECFDF5',borderRadius:10,border:'1.5px solid #A7F3D0',fontSize:12,fontWeight:700,color:'#047857',textAlign:'center'}}>{fmt(+item.qty*+item.sellP)}</div>
-        {items.length>1&&<Btn v="d" style={{padding:'8px 10px'}} onClick={()=>setItems(items.filter((_,idx)=>idx!==i))}>✕</Btn>}
-      </div>))}
-      <Btn v="g" style={{marginBottom:12,fontSize:13}} onClick={()=>setItems([...items,{...ei}])}>＋ صنف</Btn>
-      <div style={{background:'#F0FDF4',borderRadius:10,padding:'10px 14px',marginBottom:12,display:'flex',gap:20,flexWrap:'wrap',fontSize:13}}>
-        <span>المجموع: <strong style={{color:'#047857'}}>{fmt(totals.total)} ر.س</strong></span>
-        <span>التكلفة: <strong style={{color:'#DC2626'}}>{fmt(totals.cost)} ر.س</strong></span>
-        {isAdmin&&<span>الربح: <strong style={{color:'#1D4ED8'}}>{fmt(totals.profit)} ر.س</strong></span>}
-      </div>
-      <Btn v="s" onClick={doSave}>{editId?'💾 حفظ التعديل':'✅ حفظ الفاتورة'}</Btn>
-    </div>}
-    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',margin:'14px 0 10px',gap:8,flexWrap:'wrap'}}>
-      <span style={{fontWeight:700,fontSize:14}}>السجل ({list.length})</span>
-      <Inp type="month" value={filter} onChange={e=>setFilter(e.target.value)} style={{width:'auto'}}/>
-    </div>
-    <div className="card">{list.length===0?<div style={{textAlign:'center',padding:28,color:'#94A3B8'}}>لا توجد مبيعات</div>
-    :list.map(s=>(<div key={s.id} style={{borderBottom:'1px solid #F1F5F9',padding:'10px 0'}}>
-      <div style={{display:'flex',justifyContent:'space-between',gap:8,flexWrap:'wrap'}}>
-        <div><div style={{fontWeight:700,fontSize:14}}>🧾 {s.note||'مبيعات'}</div><div style={{fontSize:11,color:'#94A3B8',margin:'3px 0'}}>{s.date}</div>
-          {s.items?.length>0&&<div style={{fontSize:12,color:'#64748B'}}>{s.items.map(it=>`${it.pname||'منتج'} ×${it.qty}`).join(' · ')}</div>}
-        </div>
-        <div style={{textAlign:'left'}}>
-          <div style={{fontWeight:900,fontSize:17,color:'#047857'}}>{fmt(s.total)} ر.س</div>
-          {isAdmin&&<div style={{fontSize:11,color:'#64748B'}}>ربح: {fmt(s.profit)}</div>}
-          {isAdmin&&<Btn v="d" style={{padding:'3px 10px',fontSize:12,marginTop:6}} onClick={()=>{if(window.confirm('حذف؟')){onWrite(d=>delete d.sales[s.id]);notify('🗑️ تم الحذف');}}}>🗑️</Btn>}
-            <Btn v="g" style={{padding:'3px 10px',fontSize:12,marginTop:6}} onClick={()=>startEdit(s)}>✏️ تعديل</Btn>
-        </div>
-      </div>
-    </div>))}</div>
-  </div>);
-}
+  const startEdit=p=>{setForm({...p,buyP:String(p.buyP||''),sellP:String(p.sellP||''),stock:String(p.stock||'')});setEditId(p.id);setShowForm(true);window.scrollTo({top:0,behavior:'smooth'});};
+  const filtered=products.filter(p=>!q||p.name?.toLowerCase().includes(q.toLowerCase()));
+  const margin=p=>p.sellP>0&&p.buyP>0?((p.sellP-p.buyP)/p.sellP*100).toFixed(0)+'%':'—';
 
-/* ══ EXPENSES ════════════════════════════════════ */
-function Expenses({expenses,onWrite}){
-  const{user}=useContext(AuthCtx);const isAdmin=user.role==='admin';
-  const[form,setForm]=useState({date:today(),type:'other',desc:'',amount:''});const[filter,setFilter]=useState('');
-  const s=k=>e=>setForm(p=>({...p,[k]:e.target.value}));
-  const submit=()=>{if(!form.desc||!form.amount)return;const id=uid();onWrite(d=>d.expenses[id]={...form,id,amount:+form.amount});setForm({date:today(),type:'other',desc:'',amount:''});notify('✅ تم التسجيل');};
-  const list=[...expenses].filter(e=>!filter||e.date.startsWith(filter)).sort((a,b)=>b.date.localeCompare(a.date));
-  const tFuel=list.filter(e=>e.type==='fuel').reduce((s,e)=>s+e.amount,0);
-  const tOther=list.filter(e=>e.type!=='fuel').reduce((s,e)=>s+e.amount,0);
   return(<div>
-    <h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>📊 المصاريف</h2><p style={{fontSize:13,color:'#94A3B8',marginBottom:14}}>{expenses.length} مصروف</p>
-    <div className="card">
-      <div style={{fontWeight:800,fontSize:14,marginBottom:12}}>➕ إضافة مصروف</div>
-      <div className="fgrid">
-        <Inp label="التاريخ" type="date" value={form.date} onChange={s('date')}/>
-        <Sel label="النوع" value={form.type} onChange={s('type')}><option value="other">📝 مصروف عام</option><option value="fuel">⛽ وقود</option></Sel>
-        <Inp label="الوصف ✶" req value={form.desc} onChange={s('desc')} placeholder="وصف المصروف"/>
-        <Inp label="المبلغ ✶" req type="number" value={form.amount} onChange={s('amount')} placeholder="0.00"/>
-      </div>
-      {form.type==='fuel'&&+form.amount>0&&<div className="afuel">⛽ التوزيع: م.خالد {fmt(+form.amount*.4)} · ع.سعيد {fmt(+form.amount*.4)} · السيارة {fmt(+form.amount*.2)} ر.س</div>}
-      <Btn v="d" onClick={submit}>💾 إضافة المصروف</Btn>
+    <div className="page-header">
+      <div><div className="page-title">📦 المنتجات</div><div className="page-sub">{products.length} منتج</div></div>
+      <Btn onClick={()=>{setShowForm(!showForm);if(showForm){setEditId(null);setForm(empty);}}}>{showForm?'✕ إغلاق':(editId?'✏️ تعديل':'➕ منتج جديد')}</Btn>
     </div>
-    <div style={{display:'flex',justifyContent:'space-between',marginBottom:12,gap:8,flexWrap:'wrap',alignItems:'center'}}>
-      {isAdmin&&<div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-        <div style={{background:'#FEF2F2',padding:'5px 12px',borderRadius:8,fontSize:12}}>إجمالي: <strong style={{color:'#DC2626'}}>{fmt(tFuel+tOther)}</strong></div>
-        <div style={{background:'#FFFBEB',padding:'5px 12px',borderRadius:8,fontSize:12}}>⛽ {fmt(tFuel)}</div>
-        <div style={{background:'#F8FAFC',padding:'5px 12px',borderRadius:8,fontSize:12}}>📝 {fmt(tOther)}</div>
-      </div>}
-      <Inp type="month" value={filter} onChange={e=>setFilter(e.target.value)} style={{width:'auto'}}/>
-    </div>
-    {isAdmin&&tFuel>0&&<div className="card" style={{background:'#FFFBEB',border:'1px solid #FDE68A'}}>
-      <div style={{fontWeight:700,fontSize:13,color:'#92400E',marginBottom:10}}>⛽ توزيع الوقود</div>
-      <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>{PARTNERS.map(p=><div key={p.id} style={{flex:'1 1 100px',background:p.bg,borderRadius:8,padding:'8px 10px',border:`1px solid ${p.border}`}}><div style={{fontSize:11,color:p.color,fontWeight:700}}>{p.name}</div><div style={{fontSize:15,fontWeight:800,color:p.color,marginTop:2}}>{fmt(tFuel*p.pct)} ر.س</div></div>)}</div>
-    </div>}
-    <div className="card">{list.length===0?<div style={{textAlign:'center',padding:28,color:'#94A3B8'}}>لا توجد مصاريف</div>
-    :list.map(e=>(<div key={e.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'9px 0',borderBottom:'1px solid #F1F5F9',gap:8,flexWrap:'wrap'}}>
-      <div><div style={{fontWeight:600,fontSize:13}}>{e.type==='fuel'?'⛽':'📝'} {e.desc} {e.type==='fuel'&&<Badge color="#92400E" bg="#FEF9C3">وقود</Badge>}</div><div style={{fontSize:11,color:'#94A3B8',marginTop:2}}>{e.date}</div></div>
-      <div style={{display:'flex',alignItems:'center',gap:10}}>
-        <div style={{fontWeight:800,color:'#DC2626',fontSize:15}}>{fmt(e.amount)} ر.س</div>
-        {isAdmin&&<Btn v="d" style={{padding:'4px 9px',fontSize:12}} onClick={()=>{if(window.confirm('حذف؟')){onWrite(d=>delete d.expenses[e.id]);notify('🗑️ تم الحذف');}}}>🗑️</Btn>}
-      </div>
-    </div>))}</div>
-  </div>);
-}
 
-/* ══ SAFES ════════════════════════════════════════ */
-function Safes({withdrawals,partnerBal,onWrite}){
-  const{user}=useContext(AuthCtx);const isAdmin=user.role==='admin';
-  const[form,setForm]=useState({pid:user.id==='as'?'as':'mk',date:today(),amount:'',note:''});
-  const s=k=>e=>setForm(p=>({...p,[k]:e.target.value}));
-  const submit=()=>{if(!form.amount||+form.amount<=0)return;const id=uid();onWrite(d=>d.withdrawals[id]={...form,id,amount:+form.amount});setForm({pid:user.id==='as'?'as':'mk',date:today(),amount:'',note:''});notify('✅ تم تسجيل السحب');};
-  return(<div>
-    <h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>🏦 الصناديق والسحوبات</h2><p style={{fontSize:13,color:'#94A3B8',marginBottom:14}}>{isAdmin?'أرصدة وسحوبات الشركاء':'تسجيل سحب'}</p>
-    {isAdmin&&<div className="pcgrid">{partnerBal.map(p=>(<div key={p.id} className="card pc" style={{border:`2px solid ${p.border}`,margin:0}}>
-      <div style={{display:'flex',justifyContent:'space-between',marginBottom:6}}><div style={{fontWeight:800,color:p.color,fontSize:15}}>{p.name}</div><Badge color={p.color} bg={p.bg}>{(p.pct*100).toFixed(0)}%</Badge></div>
-      <div style={{fontSize:22,fontWeight:900,color:p.netBalance>=0?p.color:'#DC2626',marginBottom:8}}>{fmt(p.netBalance)}<span style={{fontSize:12}}> ر.س</span></div>
-      <div style={{fontSize:11,color:'#64748B',display:'flex',flexDirection:'column',gap:3}}>
-        <div style={{display:'flex',justifyContent:'space-between'}}><span>💼 رأس المال:</span><strong>{fmt(p.capTotal)}</strong></div>
-        <div style={{display:'flex',justifyContent:'space-between'}}><span>📈 حصة الأرباح:</span><strong style={{color:'#047857'}}>{fmt(p.share)}</strong></div>
-        <div style={{display:'flex',justifyContent:'space-between'}}><span>💸 المسحوب:</span><strong style={{color:'#DC2626'}}>{fmt(p.drawn)}</strong></div>
+    {showForm&&<Card style={{marginBottom:16,border:'2px solid var(--purple-light)'}}>
+      <div className="card-header"><span className="card-title">{editId?'✏️ تعديل منتج':'➕ إضافة منتج جديد'}</span></div>
+      <div className="form-grid">
+        <Inp label="اسم المنتج *" value={form.name} onChange={upd('name')} placeholder="مثال: دهان جوتن أبيض"/>
+        <Sel label="الفئة" value={form.cat} onChange={upd('cat')}>{CATS.map(c=><option key={c}>{c}</option>)}</Sel>
+        <Inp label="الوحدة" value={form.unit} onChange={upd('unit')} placeholder="قطعة / كيلو / لتر"/>
+        <Inp label="سعر الشراء" type="number" value={form.buyP} onChange={upd('buyP')} placeholder="0"/>
+        <Inp label="سعر البيع *" type="number" value={form.sellP} onChange={upd('sellP')} placeholder="0"/>
+        <Inp label="الكمية الحالية" type="number" value={form.stock} onChange={upd('stock')} placeholder="0"/>
+        <Inp label="الباركود" value={form.barcode} onChange={upd('barcode')} placeholder="اختياري"/>
       </div>
-    </div>))}</div>}
-    <div className="card" style={{border:'2px solid #FDE68A',background:'#FFFBEB'}}>
-      <div style={{fontWeight:800,fontSize:14,color:'#92400E',marginBottom:12}}>💸 تسجيل سحب جديد</div>
-      <div className="fgrid">
-        <Sel label="الشريك" value={form.pid} onChange={s('pid')}>{isAdmin?PARTNERS.map(p=><option key={p.id} value={p.id}>{p.name}</option>):<option value="as">علي سعيد</option>}</Sel>
-        <Inp label="التاريخ" type="date" value={form.date} onChange={s('date')}/>
-        <Inp label="المبلغ ✶" req type="number" value={form.amount} onChange={s('amount')} placeholder="0.00"/>
-        <Inp label="ملاحظة" value={form.note} onChange={s('note')} placeholder="اختياري"/>
+      <div className="btn-row">
+        <Btn onClick={submit}>{editId?'💾 حفظ التعديل':'✅ إضافة المنتج'}</Btn>
+        {editId&&<Btn variant="outline" onClick={()=>{setEditId(null);setForm(empty);}}>إلغاء التعديل</Btn>}
       </div>
-      {isAdmin&&+form.amount>0&&(()=>{const p=partnerBal.find(x=>x.id===form.pid);const rem=p?p.netBalance-+form.amount:0;return<div style={{background:'white',borderRadius:9,padding:'8px 12px',marginBottom:10,fontSize:13,color:'#92400E',display:'flex',gap:14,flexWrap:'wrap'}}><span>سيُخصم: <strong>{fmt(+form.amount)}</strong></span><span>الرصيد بعد السحب: <strong style={{color:rem>=0?'#047857':'#DC2626'}}>{fmt(rem)} ر.س</strong></span></div>})()}
-      <Btn v="w" onClick={submit}>💾 تسجيل السحب</Btn>
-    </div>
-    <div className="card"><div style={{fontWeight:800,fontSize:14,marginBottom:12}}>📋 سجل السحوبات ({withdrawals.length})</div>
-      {withdrawals.length===0?<div style={{textAlign:'center',padding:28,color:'#94A3B8'}}>لا توجد سحوبات</div>
-      :[...withdrawals].sort((a,b)=>b.date.localeCompare(a.date)).map(w=>{const p=PARTNERS.find(x=>x.id===w.pid);return(<div key={w.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'9px 0',borderBottom:'1px solid #F1F5F9',gap:8,flexWrap:'wrap'}}>
-        <div><div style={{fontWeight:600,fontSize:13}}><span style={{color:p?.color,fontWeight:800}}>{p?.name}</span>{w.note&&<span style={{color:'#94A3B8'}}> — {w.note}</span>}</div><div style={{fontSize:11,color:'#94A3B8',marginTop:2}}>{w.date}</div></div>
-        <div style={{display:'flex',alignItems:'center',gap:10}}>
-          <div style={{fontWeight:800,color:'#92400E',fontSize:15}}>{fmt(w.amount)} ر.س</div>
-          {isAdmin&&<Btn v="d" style={{padding:'4px 9px',fontSize:12}} onClick={()=>{if(window.confirm('حذف؟')){onWrite(d=>delete d.withdrawals[w.id]);notify('🗑️ تم الحذف');}}}>🗑️</Btn>}
-        </div>
-      </div>);})}
-    </div>
-  </div>);
-}
+    </Card>}
 
-/* ══ CAPITAL ══════════════════════════════════════ */
-function Capital({capital,partnerBal,onWrite}){
-  const{user}=useContext(AuthCtx);const isAdmin=user.role==='admin';
-  const[form,setForm]=useState({pid:'mk',date:today(),amount:'',note:''});
-  const s=k=>e=>setForm(p=>({...p,[k]:e.target.value}));
-  const submit=()=>{if(!form.amount||+form.amount<=0)return;const id=uid();onWrite(d=>d.capital[id]={...form,id,amount:+form.amount});setForm({pid:'mk',date:today(),amount:'',note:''});notify('✅ تم تسجيل رأس المال');};
-  const totalCap=PARTNERS.reduce((a,p)=>{const c=capital.filter(x=>x.pid===p.id).reduce((s,x)=>s+(x.amount||0),0);return a+c;},0);
-  return(<div>
-    <h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>💼 رأس المال</h2>
-    <p style={{fontSize:13,color:'#94A3B8',marginBottom:14}}>استثمارات الشركاء في المشروع</p>
-    {isAdmin&&<div className="pcgrid">
-      {partnerBal.map(p=>(
-        <div key={p.id} className="pc" style={{background:p.bg,border:`2px solid ${p.border}`}}>
-          <div style={{fontWeight:800,color:p.color,fontSize:15,marginBottom:6}}>{p.name}</div>
-          <div style={{fontSize:22,fontWeight:900,color:p.color,marginBottom:8}}>{fmt(p.capTotal)}<span style={{fontSize:12}}> ر.س</span></div>
-          <div style={{fontSize:12,color:'#64748B',display:'flex',flexDirection:'column',gap:3}}>
-            <div style={{display:'flex',justifyContent:'space-between'}}><span>📈 حصة الأرباح:</span><strong style={{color:'#047857'}}>{fmt(p.share)}</strong></div>
-            <div style={{display:'flex',justifyContent:'space-between'}}><span>💸 المسحوب:</span><strong style={{color:'#DC2626'}}>{fmt(p.drawn)}</strong></div>
-            <div style={{display:'flex',justifyContent:'space-between',borderTop:'1px solid rgba(0,0,0,.08)',paddingTop:4,marginTop:2}}><span style={{fontWeight:700}}>الرصيد الكلي:</span><strong style={{color:p.netBalance>=0?p.color:'#DC2626'}}>{fmt(p.netBalance)}</strong></div>
-            {p.capTotal>0&&<div style={{display:'flex',justifyContent:'space-between'}}><span>العائد على رأس المال:</span><strong style={{color:'#7C3AED'}}>{(p.share/p.capTotal*100).toFixed(1)}%</strong></div>}
-          </div>
-        </div>
-      ))}
-    </div>}
-    <div className="card" style={{background:'#F5F3FF',border:'2px solid #DDD6FE'}}>
-      <div style={{fontWeight:800,fontSize:14,color:'#7C3AED',marginBottom:12}}>➕ إضافة رأس مال</div>
-      <div style={{background:'#EDE9FE',borderRadius:9,padding:'8px 12px',marginBottom:12,fontSize:13,color:'#6D28D9'}}>
-        💡 سجّل هنا كل مبلغ يضخّه الشركاء في المشروع (رأس مال ابتدائي أو إضافي)
+    <Card>
+      <div style={{marginBottom:12}}>
+        <input className="fi" value={q} onChange={e=>setQ(e.target.value)} placeholder="🔍 بحث عن منتج..."/>
       </div>
-      <div className="fgrid">
-        <Sel label="الشريك" value={form.pid} onChange={s('pid')}>{PARTNERS.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</Sel>
-        <Inp label="التاريخ" type="date" value={form.date} onChange={s('date')}/>
-        <Inp label="المبلغ ✶" req type="number" value={form.amount} onChange={s('amount')} placeholder="0.00"/>
-        <Inp label="الوصف" value={form.note} onChange={s('note')} placeholder="رأس مال ابتدائي / إضافة..."/>
-      </div>
-      <Btn style={{background:'#7C3AED',color:'white',padding:'10px 20px'}} onClick={submit}>💾 إضافة رأس المال</Btn>
-    </div>
-    {isAdmin&&<div className="card">
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-        <div style={{fontWeight:800,fontSize:14}}>📋 سجل رأس المال ({capital.length})</div>
-        <div style={{background:'#F5F3FF',padding:'5px 14px',borderRadius:8,fontSize:13,fontWeight:700,color:'#7C3AED'}}>الإجمالي: {fmt(totalCap)} ر.س</div>
-      </div>
-      {capital.length===0?<div style={{textAlign:'center',padding:28,color:'#94A3B8'}}>لم يُسجّل رأس مال بعد</div>
-      :[...capital].sort((a,b)=>b.date.localeCompare(a.date)).map(c=>{const p=PARTNERS.find(x=>x.id===c.pid);return(<div key={c.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'9px 0',borderBottom:'1px solid #F1F5F9',gap:8,flexWrap:'wrap'}}>
-        <div><div style={{fontWeight:600,fontSize:13}}>💼 <span style={{color:p?.color,fontWeight:800}}>{p?.name}</span>{c.note&&<span style={{color:'#94A3B8'}}> — {c.note}</span>}</div><div style={{fontSize:11,color:'#94A3B8',marginTop:2}}>{c.date}</div></div>
-        <div style={{display:'flex',alignItems:'center',gap:10}}>
-          <div style={{fontWeight:800,color:'#7C3AED',fontSize:15}}>{fmt(c.amount)} ر.س</div>
-          <Btn v="d" style={{padding:'4px 9px',fontSize:12}} onClick={()=>{if(window.confirm('حذف؟')){onWrite(d=>delete d.capital[c.id]);notify('🗑️ تم الحذف');}}}>🗑️</Btn>
-        </div>
-      </div>);})}
-    </div>}
-  </div>);
-}
-
-/* ══ MONTHLY REPORT ════════════════════════════════ */
-function MonthlyReport({sales,expenses,withdrawals,returns=[]}){
-  const[sel,setSel]=useState(today().slice(0,7));
-  const stats=useMemo(()=>calcFin(sales,expenses,withdrawals,returns,sel),[sales,expenses,withdrawals,sel]);
-  const mS=useMemo(()=>sales.filter(s=>mk(s.date)===sel).sort((a,b)=>b.date.localeCompare(a.date)),[sales,sel]);
-  const mE=useMemo(()=>expenses.filter(e=>mk(e.date)===sel).sort((a,b)=>b.date.localeCompare(a.date)),[expenses,sel]);
-  return(<div>
-    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14,gap:8,flexWrap:'wrap'}}>
-      <div><h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>📅 التقرير الشهري</h2><p style={{fontSize:13,color:'#94A3B8',margin:0}}>اختر شهر</p></div>
-      <Inp type="month" value={sel} onChange={e=>setSel(e.target.value)} style={{width:'auto'}}/>
-    </div>
-    <div style={{background:'linear-gradient(135deg,#1D4ED8,#1E40AF)',color:'white',borderRadius:14,padding:'14px 18px',marginBottom:14,textAlign:'center'}}><h3 style={{margin:0,fontSize:18,fontWeight:900}}>تقرير {mName(sel)}</h3></div>
-    <div className="kgrid">
-      <KPI ico="🧾" lbl="الفواتير" val={stats.count} color="#1D4ED8" bg="#EFF6FF"/>
-      <KPI ico="💰" lbl="المبيعات" val={`${fmt(stats.totalSales)} ر.س`} color="#047857" bg="#ECFDF5"/>
-      <KPI ico="📦" lbl="التكلفة" val={`${fmt(stats.totalCost)} ر.س`} color="#92400E" bg="#FFFBEB"/>
-      <KPI ico="💹" lbl="إجمالي الربح" val={`${fmt(stats.gross)} ر.س`} color="#1D4ED8" bg="#EFF6FF"/>
-      <KPI ico="💸" lbl="المصاريف" val={`${fmt(stats.fuel+stats.other)} ر.س`} color="#DC2626" bg="#FEF2F2" sub={`وقود: ${fmt(stats.fuel)}`}/>
-      <KPI ico="✅" lbl="صافي الربح" val={`${fmt(stats.net)} ر.س`} color={stats.net>=0?'#047857':'#DC2626'} bg={stats.net>=0?'#ECFDF5':'#FEF2F2'}/>
-    </div>
-    <div className="card"><div style={{fontWeight:800,fontSize:14,marginBottom:12}}>💼 توزيع أرباح الشهر</div>
-      <div className="pcgrid">{stats.partners.map(p=>(<div key={p.id} className="pc" style={{background:p.bg,border:`2px solid ${p.border}`}}>
-        <div style={{fontWeight:800,color:p.color,fontSize:14,marginBottom:6}}>{p.name} ({(p.pct*100).toFixed(0)}%)</div>
-        <div style={{fontSize:20,fontWeight:900,color:p.share>=0?p.color:'#DC2626'}}>{fmt(p.share)}<span style={{fontSize:12}}> ر.س</span></div>
-        <div style={{fontSize:11,color:'#64748B',marginTop:6}}><div>سحوبات: {fmt(p.drawn)} ر.س</div><div style={{fontWeight:700,color:p.balance>=0?p.color:'#DC2626'}}>رصيد: {fmt(p.balance)} ر.س</div></div>
-      </div>))}</div>
-    </div>
-    {mS.length>0&&<div className="card"><div style={{fontWeight:800,fontSize:14,marginBottom:10}}>🧾 فواتير الشهر ({mS.length})</div>
-      <div className="twrap"><table><thead><tr>{['التاريخ','ملاحظة','الإجمالي','التكلفة','الربح'].map(h=><th key={h}>{h}</th>)}</tr></thead>
-      <tbody>{mS.map(s=><tr key={s.id}><td style={{color:'#64748B'}}>{s.date}</td><td>{s.note||'—'}</td><td style={{fontWeight:700,color:'#047857'}}>{fmt(s.total)}</td><td style={{color:'#DC2626'}}>{fmt(s.cost)}</td><td style={{fontWeight:700,color:'#1D4ED8'}}>{fmt(s.profit)}</td></tr>)}</tbody>
+      <div className="tbl-wrap"><table className="tbl">
+        <thead><tr><th>المنتج</th><th>الفئة</th><th>سعر الشراء</th><th>سعر البيع</th><th>الهامش</th><th>المخزون</th><th></th></tr></thead>
+        <tbody>{filtered.length===0?<tr><td colSpan="7" style={{textAlign:'center',padding:24,color:'var(--text3)'}}>لا توجد منتجات</td></tr>
+        :filtered.map(p=>(
+          <tr key={p.id}>
+            <td><div style={{fontWeight:700}}>{p.name}</div><div style={{fontSize:11,color:'var(--text3)'}}>{p.barcode}</div></td>
+            <td><span className="badge badge-purple">{p.cat}</span></td>
+            <td className="num">{fmt(p.buyP)}</td>
+            <td className="num pos">{fmt(p.sellP)}</td>
+            <td><span className={`badge ${+p.sellP>0&&(p.sellP-p.buyP)/p.sellP>=.3?'badge-green':'badge-amber'}`}>{margin(p)}</span></td>
+            <td><span className={`badge ${(+p.stock||0)<5?'badge-red':'badge-green'}`}>{p.stock||0} {p.unit||'قطعة'}</span></td>
+            <td><div className="btn-row">
+              <Btn variant="outline" size="sm" onClick={()=>startEdit(p)}>✏️</Btn>
+              <Btn variant="danger" size="sm" onClick={()=>{if(window.confirm('حذف المنتج؟')){onWrite(d=>delete d.products[p.id]);notify('🗑️ تم الحذف');}}}>🗑️</Btn>
+            </div></td>
+          </tr>
+        ))}</tbody>
       </table></div>
-    </div>}
-    {mE.length>0&&<div className="card"><div style={{fontWeight:800,fontSize:14,marginBottom:10}}>💸 مصاريف الشهر ({mE.length})</div>
-      <div className="twrap"><table><thead><tr>{['التاريخ','النوع','الوصف','المبلغ'].map(h=><th key={h}>{h}</th>)}</tr></thead>
-      <tbody>{mE.map(e=><tr key={e.id}><td style={{color:'#64748B'}}>{e.date}</td><td><Badge color={e.type==='fuel'?'#92400E':'#475569'} bg={e.type==='fuel'?'#FEF9C3':'#F1F5F9'}>{e.type==='fuel'?'⛽ وقود':'📝 عام'}</Badge></td><td>{e.desc}</td><td style={{fontWeight:700,color:'#DC2626'}}>{fmt(e.amount)}</td></tr>)}</tbody>
-      </table></div>
-    </div>}
+    </Card>
   </div>);
 }
 
-/* ══ P&L ════════════════════════════════════════ */
-function PL({sales,expenses,withdrawals,capital,returns=[]}){
-  const cy=String(new Date().getFullYear());const[year,setYear]=useState(cy);
-  const months=Array.from({length:12},(_,i)=>`${year}-${String(i+1).padStart(2,'0')}`);
-  const mData=useMemo(()=>months.map(m=>({key:m,...calcFin(sales,expenses,withdrawals,returns,m)})),[sales,expenses,withdrawals,returns,year]);
-  const tot=useMemo(()=>({totalSales:mData.reduce((s,m)=>s+m.totalSales,0),totalCost:mData.reduce((s,m)=>s+m.totalCost,0),gross:mData.reduce((s,m)=>s+m.gross,0),fuel:mData.reduce((s,m)=>s+m.fuel,0),other:mData.reduce((s,m)=>s+m.other,0),net:mData.reduce((s,m)=>s+m.net,0)}),[mData]);
-  const aP=useMemo(()=>PARTNERS.map(p=>{
-    const share=tot.net*p.pct;
-    const drawn=withdrawals.filter(w=>w.pid===p.id&&(w.date||'').startsWith(year)).reduce((s,w)=>s+w.amount,0);
-    const cap=capital.filter(c=>c.pid===p.id&&(c.date||'').startsWith(year)).reduce((s,c)=>s+c.amount,0);
-    return{...p,share,drawn,cap,roi:cap>0?(share/cap*100).toFixed(1):null};
-  }),[tot.net,withdrawals,capital,year]);
-  const years=useMemo(()=>{const all=[...sales,...expenses].map(x=>(x.date||'').slice(0,4)).filter(Boolean);return[...new Set(['2024','2025','2026',...all])].sort();},[sales,expenses]);
-  return(<div>
-    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14,gap:8,flexWrap:'wrap'}}>
-      <div><h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>📈 الأرباح والخسائر</h2><p style={{fontSize:13,color:'#94A3B8',margin:0}}>ملخص سنوي</p></div>
-      <Sel value={year} onChange={e=>setYear(e.target.value)} style={{width:'auto'}}>{years.map(y=><option key={y}>{y}</option>)}</Sel>
-    </div>
-    <div className="kgrid">
-      <KPI ico="💰" lbl="مبيعات السنة" val={`${fmt(tot.totalSales)} ر.س`} color="#047857" bg="#ECFDF5"/>
-      <KPI ico="💹" lbl="إجمالي الربح" val={`${fmt(tot.gross)} ر.س`} color="#1D4ED8" bg="#EFF6FF"/>
-      <KPI ico="💸" lbl="إجمالي المصاريف" val={`${fmt(tot.fuel+tot.other)} ر.س`} color="#DC2626" bg="#FEF2F2"/>
-      <KPI ico="✅" lbl="صافي الربح" val={`${fmt(tot.net)} ر.س`} color={tot.net>=0?'#047857':'#DC2626'} bg={tot.net>=0?'#ECFDF5':'#FEF2F2'}/>
-    </div>
-    <div className="card"><div style={{fontWeight:800,fontSize:14,marginBottom:12}}>💼 توزيع أرباح + رأس المال — سنة {year}</div>
-      <div className="pcgrid">{aP.map(p=><div key={p.id} className="pc" style={{background:p.bg,border:`2px solid ${p.border}`}}>
-        <div style={{fontWeight:800,color:p.color,fontSize:15,marginBottom:5}}>{p.name}</div>
-        <div style={{fontSize:20,fontWeight:900,color:p.share>=0?p.color:'#DC2626',margin:'4px 0'}}>{fmt(p.share)}<span style={{fontSize:12}}> ر.س</span></div>
-        <div style={{fontSize:11,color:'#64748B',display:'flex',flexDirection:'column',gap:3}}>
-          <div style={{display:'flex',justifyContent:'space-between'}}><span>💼 رأس المال:</span><strong style={{color:'#7C3AED'}}>{fmt(p.cap)}</strong></div>
-          <div style={{display:'flex',justifyContent:'space-between'}}><span>💸 سحوبات:</span><strong style={{color:'#DC2626'}}>{fmt(p.drawn)}</strong></div>
-          {p.roi&&<div style={{display:'flex',justifyContent:'space-between'}}><span>📊 العائد:</span><strong style={{color:'#7C3AED'}}>{p.roi}%</strong></div>}
-        </div>
-      </div>)}</div>
-    </div>
-    <div className="card"><div style={{fontWeight:800,fontSize:14,marginBottom:12}}>📊 التفصيل الشهري</div>
-      <div className="twrap"><table style={{minWidth:700}}>
-        <thead><tr style={{background:'#1D4ED8',color:'white'}}>{['الشهر','المبيعات','التكلفة','إجمالي الربح','الوقود','أخرى','صافي الربح','م.خالد 40%','ع.سعيد 40%','السيارة 20%'].map(h=><th key={h} style={{background:'#1D4ED8',color:'white',padding:'9px 8px',borderBottom:'none',whiteSpace:'nowrap'}}>{h}</th>)}</tr></thead>
-        <tbody>{mData.map((m,i)=>{const has=m.totalSales>0||m.fuel+m.other>0;return(<tr key={m.key} style={{opacity:has?1:.4}}>
-          <td style={{fontWeight:700}}>{MN[i]}</td>
-          <td style={{color:'#047857',fontWeight:has?600:400}}>{fmt(m.totalSales)}</td>
-          <td style={{color:'#DC2626'}}>{fmt(m.totalCost)}</td>
-          <td style={{color:'#1D4ED8',fontWeight:700}}>{fmt(m.gross)}</td>
-          <td style={{color:'#92400E'}}>{fmt(m.fuel)}</td>
-          <td style={{color:'#DC2626'}}>{fmt(m.other)}</td>
-          <td style={{fontWeight:800,color:m.net>=0?'#047857':'#DC2626'}}>{fmt(m.net)}</td>
-          {m.partners.map(p=><td key={p.id} style={{color:p.share>=0?p.color:'#DC2626',fontWeight:600}}>{fmt(p.share)}</td>)}
-        </tr>);})}</tbody>
-        <tfoot><tr style={{background:'#1E293B',color:'white',fontWeight:800}}>
-          <td>الإجمالي</td><td style={{color:'#4ADE80'}}>{fmt(tot.totalSales)}</td><td style={{color:'#FCA5A5'}}>{fmt(tot.totalCost)}</td>
-          <td style={{color:'#93C5FD'}}>{fmt(tot.gross)}</td><td style={{color:'#FDE68A'}}>{fmt(tot.fuel)}</td>
-          <td style={{color:'#FCA5A5'}}>{fmt(tot.other)}</td>
-          <td style={{color:tot.net>=0?'#4ADE80':'#FCA5A5',fontSize:14}}>{fmt(tot.net)}</td>
-          {aP.map(p=><td key={p.id} style={{color:p.share>=0?'#86EFAC':'#FCA5A5'}}>{fmt(p.share)}</td>)}
-        </tr></tfoot>
-      </table></div>
-    </div>
-  </div>);
-}
-
-/* ══ SETTINGS ════════════════════════════════════ */
-/* ═══ RETURNS (مرتجعات) ══════════════════════ */
-let _dRBuf = [];  // module-level buffer for Dahhanat returns
-
-function Returns({returns,products,sales,onWrite}){
-  const{user}=useContext(AuthCtx);const isAdmin=user.role==='admin';
+/* ── SALES ───────────────────────────────────────────────────── */
+let _saleBuf=[];
+function Sales({sales,products,onWrite}){
+  const ei={pid:'',pname:'',qty:1,sellP:0,buyP:0};
   const[date,setDate]=useState(today());
   const[note,setNote]=useState('');
-  const[reason,setReason]=useState('تالف أو معيب');
-  const[items,setItems]=useState([]);
-  const[selPid,setSelPid]=useState('');
-  const[selQty,setSelQty]=useState(1);
-  const[selPrice,setSelPrice]=useState('');
+  const[items,setItems]=useState([{...ei}]);
+  const[discount,setDiscount]=useState('');
   const[open,setOpen]=useState(false);
-  const REASONS=['تالف أو معيب','خطأ في الطلب','لم يعجب العميل','مشكلة في الجودة','أخرى'];
+  const[filter,setFilter]=useState('');
+  const[editId,setEditId]=useState(null);
 
-  const addItem=()=>{
-    if(!selPid||!selQty)return;
-    const pr=products.find(p=>p.id===selPid);if(!pr)return;
-    const p2=+selPrice||pr.sellP||0;
-    _dRBuf=[..._dRBuf,{pid:pr.id,pname:pr.name,qty:+selQty||1,sellP:p2,cost:+pr.buyP||0}];
-    setItems([..._dRBuf]);
-    setSelPid('');setSelQty(1);setSelPrice('');
+  const upd=(i,k,v)=>{const n=[...items];n[i]={...n[i],[k]:v};
+    if(k==='pid'){const p=products.find(x=>x.id===v);if(p)n[i]={...n[i],pname:p.name,sellP:p.sellP,buyP:+p.buyP||0};}
+    setItems(n);};
+  const totals=useMemo(()=>{
+    const sub=items.reduce((s,it)=>s+(+it.qty*(+it.sellP)||0),0);
+    const cost=items.reduce((s,it)=>s+(+it.qty*(+it.buyP)||0),0);
+    const rev=Math.max(0,sub-(+discount||0));
+    return{sub,cost,rev,profit:rev-cost};
+  },[items,discount]);
+
+  const startEdit=s=>{
+    setDate(s.date||today());setNote(s.note||'');
+    setItems(s.items?.length?s.items:[{...ei}]);
+    setDiscount(s.discount?String(s.discount):'');
+    setEditId(s.id);setOpen(true);
+    window.scrollTo({top:0,behavior:'smooth'});
   };
-  const removeItem=i=>{_dRBuf=_dRBuf.filter((_,j)=>j!==i);setItems([..._dRBuf]);};
-
-  const totalRefund=items.reduce((s,it)=>s+(it.qty*(it.sellP||0)),0);
-  const totalCost=items.reduce((s,it)=>s+(it.qty*(it.cost||0)),0);
 
   const doSave=()=>{
-    if(!items.length)return;
-    const _id=uid();
-    const _date=date,_note=note,_reason=reason;
-    const _items=[..._dRBuf];
-    const _ref=totalRefund,_cst=totalCost;
+    if(!items.some(it=>it.pname))return;
+    const _id=editId||uid(),_eid=editId,_date=date,_note=note;
+    const _items=[...items],_disc=+discount||0;
+    const _rev=totals.rev,_cost=totals.cost,_pft=totals.profit;
     onWrite(d=>{
-      // ✅ حفظ المرتجع
-      d.returns[_id]={id:_id,date:_date,note:_note,reason:_reason,items:_items,totalRefund:_ref,totalCost:_cst};
-      // 📦 إعادة المخزون
-      _items.forEach(it=>{if(it.pid&&d.products[it.pid])d.products[it.pid].stock=(Number(d.products[it.pid].stock)||0)+Number(it.qty||0);});
+      if(_eid&&d.sales[_eid]){
+        (d.sales[_eid].items||[]).forEach(it=>{if(it.pid&&d.products[it.pid])d.products[it.pid].stock=(+d.products[it.pid].stock||0)+(+it.qty||0);});
+      }
+      d.sales[_id]={id:_id,date:_date,note:_note,items:_items,discount:_disc,total:_rev,cost:_cost,profit:_pft};
+      _items.forEach(it=>{if(it.pid&&d.products[it.pid])d.products[it.pid].stock=Math.max(0,(+d.products[it.pid].stock||0)-(+it.qty||0));});
     });
-    // reset
-    _dRBuf=[];setItems([]);setNote('');setDate(today());setReason('تالف أو معيب');setOpen(false);
-    notify('✅ تم تسجيل المرتجع وإعادة '+_items.length+' صنف للمخزون');
+    setItems([{...ei}]);setNote('');setDate(today());setDiscount('');setOpen(false);setEditId(null);
+    notify(_eid?'✅ تم تعديل الفاتورة':'✅ تم حفظ الفاتورة');
   };
 
-  const delReturn=r=>{
-    if(!window.confirm('حذف المرتجع؟ سيُخصم المخزون مجدداً'))return;
+  const delSale=s=>{
+    if(!window.confirm('حذف الفاتورة وإعادة المخزون؟'))return;
     onWrite(d=>{
-      const ret=d.returns[r.id];
-      if(ret)(ret.items||[]).forEach(it=>{if(it.pid&&d.products[it.pid])d.products[it.pid].stock=Math.max(0,(Number(d.products[it.pid].stock)||0)-Number(it.qty||0));});
-      delete d.returns[r.id];
+      (d.sales[s.id]?.items||[]).forEach(it=>{if(it.pid&&d.products[it.pid])d.products[it.pid].stock=(+d.products[it.pid].stock||0)+(+it.qty||0);});
+      delete d.sales[s.id];
     });
-    notify('🗑️ تم حذف المرتجع');
+    notify('🗑️ تم الحذف وإعادة المخزون');
+  };
+
+  const list=[...sales].filter(s=>!filter||s.date.startsWith(filter)).sort((a,b)=>b.date.localeCompare(a.date));
+
+  return(<div>
+    <div className="page-header">
+      <div><div className="page-title">💰 المبيعات</div><div className="page-sub">{sales.length} فاتورة</div></div>
+      <Btn onClick={()=>{if(open){setEditId(null);setItems([{...ei}]);setNote('');setDate(today());setDiscount('');}setOpen(v=>!v);}}>
+        {open?(editId?'✕ إلغاء التعديل':'✕ إغلاق'):'🧾 فاتورة جديدة'}
+      </Btn>
+    </div>
+
+    {open&&<div className="invoice-panel">
+      <div className="invoice-header">
+        <div><div style={{fontSize:11,opacity:.7}}>فاتورة مبيعات</div><div style={{fontSize:17,fontWeight:900}}>{editId?'تعديل فاتورة':'فاتورة جديدة'}</div></div>
+        <div style={{textAlign:'left',fontSize:13}}><div style={{opacity:.7}}>التاريخ</div><div style={{fontWeight:800}}>{fmtDate(date)}</div></div>
+      </div>
+      <div className="form-grid" style={{gridTemplateColumns:'1fr 2fr',marginBottom:12}}>
+        <Inp label="التاريخ" type="date" value={date} onChange={e=>setDate(e.target.value)}/>
+        <Inp label="العميل / ملاحظة" value={note} onChange={e=>setNote(e.target.value)} placeholder="اسم العميل أو رقم الطلب"/>
+      </div>
+      <div style={{fontWeight:700,fontSize:13,marginBottom:8,color:'var(--text2)'}}>الأصناف:</div>
+      {items.map((it,i)=>(
+        <div key={i} className="items-row" style={{gridTemplateColumns:'2fr 60px 100px 90px auto'}}>
+          <Sel value={it.pid} onChange={e=>upd(i,'pid',e.target.value)}>
+            <option value="">— اختر منتج —</option>
+            {products.map(p=><option key={p.id} value={p.id}>{p.name} ({p.stock||0})</option>)}
+          </Sel>
+          <Inp type="number" value={it.qty} onChange={e=>upd(i,'qty',+e.target.value)} placeholder="كمية"/>
+          <Inp type="number" value={it.sellP} onChange={e=>upd(i,'sellP',+e.target.value)} placeholder="السعر" className="price-col"/>
+          <div className="fi total-col" style={{background:'var(--green-light)',color:'var(--green)',fontWeight:800,textAlign:'center'}}>{fmt(it.qty*it.sellP)}</div>
+          {items.length>1&&<Btn variant="ghost" onClick={()=>setItems(items.filter((_,j)=>j!==i))}>✕</Btn>}
+        </div>
+      ))}
+      <Btn variant="outline" size="sm" onClick={()=>setItems([...items,{...ei}])} style={{marginBottom:12}}>＋ صنف</Btn>
+      <div className="form-grid" style={{gridTemplateColumns:'1fr 1fr',marginBottom:12}}>
+        <Inp label="خصم (ر.س)" type="number" value={discount} onChange={e=>setDiscount(e.target.value)} placeholder="0"/>
+        <div className="fg"><label>الإجمالي بعد الخصم</label>
+          <div className="fi" style={{background:'var(--green-light)',color:'var(--green)',fontWeight:900,fontSize:16}}>{fmt(totals.rev)} ر.س</div>
+        </div>
+      </div>
+      <div className="stats-row">
+        <span className="stat-chip">المجموع: {fmt(totals.sub)}</span>
+        <span className="stat-chip" style={{color:'var(--red)'}}>التكلفة: {fmt(totals.cost)}</span>
+        <span className="stat-chip" style={{color:'var(--green)'}}>الربح: {fmt(totals.profit)}</span>
+      </div>
+      <Btn onClick={doSave}>{editId?'💾 حفظ التعديل':'✅ حفظ الفاتورة وتحديث المخزون'}</Btn>
+    </div>}
+
+    <Card>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12,gap:10,flexWrap:'wrap'}}>
+        <span style={{fontWeight:700}}>السجل ({list.length})</span>
+        <input className="fi" type="month" value={filter} onChange={e=>setFilter(e.target.value)} style={{width:'auto'}}/>
+      </div>
+      {list.length===0?<div style={{textAlign:'center',padding:28,color:'var(--text3)'}}>لا توجد مبيعات</div>
+      :<div className="tbl-wrap"><table className="tbl">
+        <thead><tr><th>التاريخ</th><th>العميل</th><th>الأصناف</th><th>الإجمالي</th><th>الربح</th><th></th></tr></thead>
+        <tbody>{list.map(s=>(
+          <tr key={s.id}>
+            <td>{fmtDate(s.date)}</td>
+            <td>{s.note||'—'}</td>
+            <td style={{fontSize:11,color:'var(--text3)',maxWidth:180}}>{(s.items||[]).map(it=>`${it.pname||'منتج'} ×${it.qty}`).join(' · ')}</td>
+            <td className="num pos">{fmt(s.total)}</td>
+            <td className="num" style={{color:s.profit>=0?'var(--green)':'var(--red)'}}>{fmt(s.profit)}</td>
+            <td><div className="btn-row">
+              <Btn variant="outline" size="sm" onClick={()=>startEdit(s)}>✏️</Btn>
+              <Btn variant="danger" size="sm" onClick={()=>delSale(s)}>🗑️</Btn>
+            </div></td>
+          </tr>
+        ))}</tbody>
+      </table></div>}
+    </Card>
+  </div>);
+}
+
+/* ── EXPENSES ────────────────────────────────────────────────── */
+function Expenses({expenses,onWrite}){
+  const[form,setForm]=useState({date:today(),type:'general',desc:'',amount:'',pid:''});
+  const[filter,setFilter]=useState('');
+  const[open,setOpen]=useState(false);
+  const upd=k=>e=>setForm(p=>({...p,[k]:e.target.value}));
+  const expType=EXP_TYPES.find(t=>t.id===form.type)||EXP_TYPES[0];
+  const submit=()=>{
+    if(!form.desc||!form.amount)return;
+    const id=uid();
+    onWrite(d=>d.expenses[id]={...form,amount:+form.amount,id});
+    const isCarExp=CAR_TYPES.includes(form.type);
+    notify(`✅ تم تسجيل المصروف ${isCarExp?'(يُخصم من صندوق السيارة فقط)':''}`);
+    setForm(p=>({...p,desc:'',amount:'',date:today()}));setOpen(false);
+  };
+  const list=[...expenses].filter(e=>!filter||e.date.startsWith(filter)).sort((a,b)=>b.date.localeCompare(a.date));
+  const total=list.reduce((s,e)=>s+(e.amount||0),0);
+  const carTotal=list.filter(e=>CAR_TYPES.includes(e.type)).reduce((s,e)=>s+(e.amount||0),0);
+
+  return(<div>
+    <div className="page-header">
+      <div><div className="page-title">📊 المصاريف</div><div className="page-sub">{expenses.length} مصروف</div></div>
+      <Btn onClick={()=>setOpen(!open)}>{open?'✕ إغلاق':'➕ مصروف جديد'}</Btn>
+    </div>
+
+    {open&&<Card style={{marginBottom:16,border:'2px solid var(--red-light)'}}>
+      <div className="card-title" style={{marginBottom:12}}>➕ إضافة مصروف</div>
+      <div className="alert info" style={{marginBottom:12}}>
+        <span className="alert-icon">ℹ️</span>
+        <span><strong>صيانة السيارة</strong> تُخصم من صندوق السيارة فقط. باقي المصاريف تُوزَّع على الجميع.</span>
+      </div>
+      <div className="form-grid">
+        <Inp label="التاريخ" type="date" value={form.date} onChange={upd('date')}/>
+        <Sel label="نوع المصروف" value={form.type} onChange={upd('type')}>
+          {EXP_TYPES.map(t=><option key={t.id} value={t.id}>{t.icon} {t.label}</option>)}
+        </Sel>
+        <Inp label="الوصف *" value={form.desc} onChange={upd('desc')} placeholder={`مثال: ${form.type==='car'?'تغيير زيت السيارة':form.type==='fuel'?'ديزل 50 لتر':'مصروف...'}`}/>
+        <Inp label="المبلغ *" type="number" value={form.amount} onChange={upd('amount')} placeholder="0"/>
+      </div>
+      {CAR_TYPES.includes(form.type)&&<div className="alert warn"><span className="alert-icon">🚗</span><span>هذا المصروف سيُخصم من <strong>صندوق السيارة فقط</strong></span></div>}
+      <Btn onClick={submit}>✅ تسجيل المصروف</Btn>
+    </Card>}
+
+    <div className="kpi-grid" style={{gridTemplateColumns:'repeat(3,1fr)',marginBottom:16}}>
+      <div className="kpi red"><div className="kpi-label">إجمالي المصاريف</div><div className="kpi-value">{fmt(total)}</div><div className="kpi-sub">ر.س</div></div>
+      <div className="kpi amber"><div className="kpi-label">صيانة السيارة</div><div className="kpi-value">{fmt(carTotal)}</div><div className="kpi-sub">من صندوق السيارة</div></div>
+      <div className="kpi purple"><div className="kpi-label">مصاريف عامة</div><div className="kpi-value">{fmt(total-carTotal)}</div><div className="kpi-sub">توزَّع على الجميع</div></div>
+    </div>
+
+    <Card>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12,gap:10,flexWrap:'wrap'}}>
+        <span style={{fontWeight:700}}>السجل ({list.length})</span>
+        <input className="fi" type="month" value={filter} onChange={e=>setFilter(e.target.value)} style={{width:'auto'}}/>
+      </div>
+      {list.length===0?<div style={{textAlign:'center',padding:28,color:'var(--text3)'}}>لا توجد مصاريف</div>
+      :<div className="tbl-wrap"><table className="tbl">
+        <thead><tr><th>التاريخ</th><th>النوع</th><th>الوصف</th><th>المبلغ</th><th>يُخصم من</th><th></th></tr></thead>
+        <tbody>{list.map(e=>{const t=EXP_TYPES.find(x=>x.id===e.type)||EXP_TYPES[0];return(
+          <tr key={e.id}>
+            <td>{fmtDate(e.date)}</td>
+            <td><span className={`exp-type ${t.cls}`}>{t.icon} {t.label}</span></td>
+            <td>{e.desc}</td>
+            <td className="num neg">{fmt(e.amount)}</td>
+            <td><span className={`badge ${CAR_TYPES.includes(e.type)?'badge-amber':'badge-blue'}`}>{CAR_TYPES.includes(e.type)?'🚗 السيارة فقط':'👥 الجميع'}</span></td>
+            <td><Btn variant="danger" size="sm" onClick={()=>{if(window.confirm('حذف؟')){onWrite(d=>delete d.expenses[e.id]);notify('🗑️ حُذف');}}}>🗑️</Btn></td>
+          </tr>
+        );})}
+        </tbody>
+      </table></div>}
+    </Card>
+  </div>);
+}
+
+/* ── CASH RECONCILIATION ─────────────────────────────────────── */
+function CashRecon({sales,cashRecon,onWrite}){
+  const[date,setDate]=useState(today());
+  const[cash,setCash]=useState('');
+  const[note,setNote]=useState('');
+  const expected=sales.filter(s=>s.date===date).reduce((a,s)=>a+(s.total||0),0);
+  const diff=(+cash||0)-expected;
+  const list=[...cashRecon].sort((a,b)=>b.date.localeCompare(a.date));
+  const save=()=>{
+    if(!cash)return;
+    const id=uid();
+    onWrite(d=>d.cashRecon[id]={id,date,expected,actual:+cash,diff:+cash-expected,note});
+    notify('✅ تم حفظ المطابقة');setCash('');setNote('');
+  };
+
+  return(<div>
+    <div className="page-header">
+      <div><div className="page-title">🧾 مطابقة الكاش</div><div className="page-sub">مقارنة البيع اليومي بالكاش الفعلي</div></div>
+    </div>
+    <div className="alert info" style={{marginBottom:16}}>
+      <span className="alert-icon">ℹ️</span>
+      <span>في نهاية كل يوم، أدخل الكاش الموجود معك لمقارنته بإجمالي المبيعات المسجّلة.</span>
+    </div>
+    <Card style={{marginBottom:16}}>
+      <div className="card-title" style={{marginBottom:12}}>📅 مطابقة جديدة</div>
+      <div className="form-grid" style={{gridTemplateColumns:'1fr 1fr 2fr',marginBottom:14}}>
+        <Inp label="التاريخ" type="date" value={date} onChange={e=>setDate(e.target.value)}/>
+        <Inp label="الكاش الفعلي (ر.س)" type="number" value={cash} onChange={e=>setCash(e.target.value)} placeholder="0"/>
+        <Inp label="ملاحظة" value={note} onChange={e=>setNote(e.target.value)} placeholder="اختياري"/>
+      </div>
+      <div className="stats-row" style={{marginBottom:14}}>
+        <span className="stat-chip">📊 المبيعات المسجّلة: <strong style={{color:'var(--green)'}}>{fmt(expected)} ر.س</strong></span>
+        {cash&&<span className="stat-chip">💵 الكاش الفعلي: <strong>{fmt(+cash)} ر.س</strong></span>}
+      </div>
+      {cash&&<div className={`recon-diff ${diff>0?'recon-pos':diff<0?'recon-neg':'recon-zero'}`}>
+        {diff===0?'✅ مطابق':''}
+        {diff>0?`+${fmt(diff)} ر.س زيادة`:''}
+        {diff<0?`${fmt(diff)} ر.س عجز`:''}
+      </div>}
+      {cash&&diff!==0&&<div className={`alert ${diff>0?'success':'danger'}`} style={{marginBottom:12}}>
+        <span className="alert-icon">{diff>0?'💚':'🔴'}</span>
+        <span>{diff>0?`يوجد زيادة في الكاش بمقدار ${fmt(Math.abs(diff))} ر.س`:`يوجد عجز في الكاش بمقدار ${fmt(Math.abs(diff))} ر.س — راجع الفواتير`}</span>
+      </div>}
+      <Btn onClick={save}>💾 حفظ المطابقة</Btn>
+    </Card>
+    <Card title={`سجل المطابقات (${list.length})`}>
+      {list.length===0?<div style={{textAlign:'center',padding:24,color:'var(--text3)'}}>لا توجد مطابقات مسجّلة</div>
+      :<div className="tbl-wrap"><table className="tbl">
+        <thead><tr><th>التاريخ</th><th>المبيعات المسجّلة</th><th>الكاش الفعلي</th><th>الفرق</th><th>الحالة</th><th>ملاحظة</th><th></th></tr></thead>
+        <tbody>{list.map(r=>(
+          <tr key={r.id}>
+            <td>{fmtDate(r.date)}</td>
+            <td className="num">{fmt(r.expected)}</td>
+            <td className="num">{fmt(r.actual)}</td>
+            <td className={`num ${r.diff>0?'pos':r.diff<0?'neg':''}`}>{r.diff>0?'+':''}{fmt(r.diff)}</td>
+            <td>{r.diff===0?<span className="badge badge-green">✅ مطابق</span>:r.diff>0?<span className="badge badge-blue">زيادة</span>:<span className="badge badge-red">عجز</span>}</td>
+            <td style={{color:'var(--text3)',fontSize:12}}>{r.note||'—'}</td>
+            <td><Btn variant="danger" size="sm" onClick={()=>{if(window.confirm('حذف؟')){onWrite(d=>delete d.cashRecon[r.id]);notify('🗑️ حُذف');}}}>🗑️</Btn></td>
+          </tr>
+        ))}</tbody>
+      </table></div>}
+    </Card>
+  </div>);
+}
+
+/* ── RETURNS ────────────────────────────────────────────────── */
+let _retBuf=[];
+function Returns({returns,products,onWrite}){
+  const[date,setDate]=useState(today());
+  const[note,setNote]=useState('');
+  const[reason,setReason]=useState('تالف');
+  const[items,setItems]=useState([]);
+  const[selPid,setSelPid]=useState('');const[selQty,setSelQty]=useState(1);
+  const[open,setOpen]=useState(false);
+  const REASONS=['تالف','خطأ في الطلب','لم يعجب العميل','جودة ضعيفة','أخرى'];
+
+  const addItem=()=>{
+    if(!selPid)return;const pr=products.find(p=>p.id===selPid);if(!pr)return;
+    _retBuf=[..._retBuf,{pid:pr.id,pname:pr.name,qty:+selQty||1,cost:+pr.buyP||0}];
+    setItems([..._retBuf]);setSelPid('');setSelQty(1);
+  };
+  const removeItem=i=>{_retBuf=_retBuf.filter((_,j)=>j!==i);setItems([..._retBuf]);};
+  const totalCost=items.reduce((s,it)=>s+(it.qty*it.cost),0);
+
+  const save=()=>{
+    if(!items.length)return;
+    const _id=uid(),_its=[..._retBuf],_date=date,_note=note,_reason=reason;
+    onWrite(d=>{
+      d.returns[_id]={id:_id,date:_date,note:_note,reason:_reason,items:_its,totalCost};
+      // ONLY restore stock — no P&L impact
+      _its.forEach(it=>{if(it.pid&&d.products[it.pid])d.products[it.pid].stock=(+d.products[it.pid].stock||0)+(+it.qty||0);});
+    });
+    _retBuf=[];setItems([]);setNote('');setDate(today());setOpen(false);
+    notify('✅ تم تسجيل المرتجع وإعادة المخزون');
   };
 
   const list=[...returns].sort((a,b)=>b.date.localeCompare(a.date));
 
   return(<div>
-    <h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>↩️ المرتجعات</h2>
-    <p style={{fontSize:13,color:'#94A3B8',marginBottom:14}}>تسجيل المرتجع يُعيد المخزون ويُعدّل أرقام المبيعات والأرباح تلقائياً</p>
-
-    <div className="card" style={{background:'#FFF7ED',border:'1px solid #FED7AA',marginBottom:14}}>
-      <div style={{fontWeight:700,fontSize:13,color:'#92400E',marginBottom:6}}>📌 كيف يعمل المرتجع؟</div>
-      <div style={{fontSize:12,color:'#78350F',lineHeight:1.9}}>
-        ✅ يُعيد الكمية للمخزون تلقائياً<br/>
-        ✅ يُقلل إجمالي المبيعات في التقارير<br/>
-        ✅ يُعدّل أرباح الشركاء تلقائياً
-      </div>
-    </div>
-
-    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
-      <span style={{fontWeight:700,fontSize:14}}>المرتجعات ({list.length})</span>
-      <Btn v="d" onClick={()=>{if(open){_dRBuf=[];setItems([]);}setOpen(v=>!v);}}>
+    <div className="page-header">
+      <div><div className="page-title">↩️ المرتجعات</div><div className="page-sub">إعادة المخزون فقط — لا تأثير على الأرباح</div></div>
+      <Btn variant="danger" onClick={()=>{if(open){_retBuf=[];setItems([]);}setOpen(v=>!v);}}>
         {open?'✕ إغلاق':'↩️ مرتجع جديد'}
       </Btn>
     </div>
-
-    {open&&<div className="card" style={{border:'2px solid #FECACA',marginBottom:14}}>
-      <div style={{fontWeight:800,fontSize:14,color:'#DC2626',marginBottom:12}}>↩️ تسجيل مرتجع جديد</div>
-      <div className="fgrid" style={{marginBottom:12}}>
+    <div className="alert success" style={{marginBottom:16}}>
+      <span className="alert-icon">✅</span>
+      <span>المرتجعات تُعيد الكمية للمخزون فقط ولا تؤثر على حسابات الأرباح أو الصناديق.</span>
+    </div>
+    {open&&<Card style={{marginBottom:16,border:'2px solid var(--red-light)'}}>
+      <div className="form-grid" style={{gridTemplateColumns:'1fr 1fr 1fr 2fr',marginBottom:12}}>
         <Inp label="التاريخ" type="date" value={date} onChange={e=>setDate(e.target.value)}/>
-        <div className="fg"><label>سبب الإرجاع</label>
-          <select className="fc" value={reason} onChange={e=>setReason(e.target.value)}>
-            {REASONS.map(r=><option key={r}>{r}</option>)}
-          </select>
-        </div>
-        <Inp label="اسم العميل / ملاحظة" value={note} onChange={e=>setNote(e.target.value)} placeholder="اختياري"/>
+        <Sel label="السبب" value={reason} onChange={e=>setReason(e.target.value)}>{REASONS.map(r=><option key={r}>{r}</option>)}</Sel>
+        <Inp label="اسم العميل" value={note} onChange={e=>setNote(e.target.value)} placeholder="اختياري"/>
       </div>
-
-      <div style={{fontWeight:700,fontSize:13,color:'#475569',marginBottom:8}}>الأصناف المرتجعة:</div>
-      <div style={{display:'grid',gridTemplateColumns:'2fr 70px 100px auto',gap:8,marginBottom:10,alignItems:'end'}}>
-        <div className="fg"><label>المنتج</label>
-          <select className="fc" value={selPid} onChange={e=>{setSelPid(e.target.value);const pr=products.find(p=>p.id===e.target.value);if(pr)setSelPrice(String(pr.sellP||''));}}>
-            <option value="">-- اختر منتج --</option>
-            {products.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}
-          </select>
-        </div>
-        <Inp label="الكمية" type="number" value={selQty} onChange={e=>setSelQty(+e.target.value)} placeholder="1"/>
-        <Inp label="سعر البيع" type="number" value={selPrice} onChange={e=>setSelPrice(e.target.value)} placeholder="سعر الفاتورة الأصلي"/>
-        <div className="fg"><label>&nbsp;</label><Btn v="d" style={{width:'100%'}} onClick={addItem}>＋ أضف</Btn></div>
+      <div style={{display:'grid',gridTemplateColumns:'2fr 80px auto',gap:8,marginBottom:10,alignItems:'end'}}>
+        <Sel value={selPid} onChange={e=>setSelPid(e.target.value)}><option value="">— اختر منتج —</option>{products.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</Sel>
+        <Inp type="number" value={selQty} onChange={e=>setSelQty(+e.target.value)} placeholder="كمية"/>
+        <Btn onClick={addItem}>＋</Btn>
       </div>
-
-      {items.length>0&&<>
-        <div style={{background:'#FEF2F2',borderRadius:10,border:'1px solid #FECACA',marginBottom:12}}>
-          <table style={{width:'100%',borderCollapse:'collapse',fontSize:13}}>
-            <thead><tr style={{background:'#DC2626',color:'white'}}>
-              {['المنتج','الكمية','سعر البيع','إجمالي الاسترداد','التكلفة',''].map(t=><th key={t} style={{padding:'7px 10px',background:'#DC2626',color:'white',textAlign:'right'}}>{t}</th>)}
-            </tr></thead>
-            <tbody>{items.map((it,i)=>(
-              <tr key={i} style={{borderBottom:'1px solid #FEE2E2'}}>
-                <td style={{padding:'7px 10px',fontWeight:700}}>{it.pname}</td>
-                <td style={{padding:'7px 10px',textAlign:'center'}}>{it.qty}</td>
-                <td style={{padding:'7px 10px',color:'#64748B'}}>{fmt(it.sellP)}</td>
-                <td style={{padding:'7px 10px',fontWeight:800,color:'#DC2626'}}>{fmt(it.qty*it.sellP)}</td>
-                <td style={{padding:'7px 10px',color:'#94A3B8'}}>{fmt(it.qty*it.cost)}</td>
-                <td style={{padding:'7px 10px'}}><Btn v="d" style={{padding:'3px 8px',fontSize:11}} onClick={()=>removeItem(i)}>✕</Btn></td>
-              </tr>
-            ))}</tbody>
-          </table>
-        </div>
-        <div style={{display:'flex',gap:12,marginBottom:12,flexWrap:'wrap',fontSize:13}}>
-          <span style={{background:'#FEF2F2',padding:'5px 12px',borderRadius:8,border:'1px solid #FECACA'}}>
-            إجمالي المسترد: <strong style={{color:'#DC2626'}}>{fmt(totalRefund)} ر.س</strong>
-          </span>
-          <span style={{background:'#F8FAFC',padding:'5px 12px',borderRadius:8,border:'1px solid #E2E8F0'}}>
-            التكلفة المُعادة: <strong style={{color:'#047857'}}>{fmt(totalCost)} ر.س</strong>
-          </span>
-        </div>
-        <Btn v="d" onClick={doSave}>💾 تسجيل المرتجع وإعادة المخزون</Btn>
-      </>}
-    </div>}
-
-    {list.length===0?<div className="card" style={{textAlign:'center',padding:32,color:'#94A3B8'}}>لا توجد مرتجعات مسجّلة</div>
-    :list.map(r=>(
-      <div key={r.id} className="card" style={{border:'1px solid #FECACA'}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:8,flexWrap:'wrap'}}>
-          <div>
-            <div style={{fontWeight:800,fontSize:14,color:'#DC2626'}}>↩️ {r.reason||'مرتجع'}</div>
-            <div style={{fontSize:12,color:'#94A3B8',margin:'3px 0'}}>{r.date}{r.note&&` — ${r.note}`}</div>
-            <div style={{fontSize:12,color:'#64748B'}}>{(r.items||[]).map(it=>`${it.pname} ×${it.qty}`).join(' · ')}</div>
-          </div>
-          <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <div style={{textAlign:'left'}}>
-              <div style={{fontWeight:800,color:'#DC2626',fontSize:15}}>{fmt(r.totalRefund)} ر.س</div>
-              <div style={{fontSize:11,color:'#94A3B8'}}>تكلفة: {fmt(r.totalCost)}</div>
-            </div>
-            {isAdmin&&<Btn v="d" style={{padding:'4px 10px',fontSize:12}} onClick={()=>delReturn(r)}>🗑️</Btn>}
-          </div>
-        </div>
-      </div>
-    ))}
-
-    {isAdmin&&list.length>0&&<div className="card" style={{background:'#F0FDF4',border:'1px solid #A7F3D0'}}>
-      <div style={{fontWeight:700,fontSize:13,color:'#047857',marginBottom:8}}>📊 ملخص المرتجعات</div>
-      <div style={{display:'flex',gap:12,flexWrap:'wrap',fontSize:13}}>
-        <span>عدد المرتجعات: <strong>{list.length}</strong></span>
-        <span>إجمالي المسترد: <strong style={{color:'#DC2626'}}>{fmt(list.reduce((s,r)=>s+(r.totalRefund||0),0))} ر.س</strong></span>
-        <span>التكلفة المُعادة للمخزون: <strong style={{color:'#047857'}}>{fmt(list.reduce((s,r)=>s+(r.totalCost||0),0))} ر.س</strong></span>
-      </div>
-    </div>}
+      {items.length>0&&<div className="tbl-wrap" style={{marginBottom:12}}>
+        <table className="tbl"><thead><tr><th>المنتج</th><th>الكمية</th><th>التكلفة</th><th></th></tr></thead>
+        <tbody>{items.map((it,i)=><tr key={i}><td>{it.pname}</td><td>{it.qty}</td><td>{fmt(it.qty*it.cost)}</td><td><Btn variant="danger" size="sm" onClick={()=>removeItem(i)}>✕</Btn></td></tr>)}</tbody>
+        </table></div>}
+      {items.length>0&&<Btn variant="danger" onClick={save}>💾 تسجيل المرتجع وإعادة المخزون</Btn>}
+    </Card>}
+    <Card>
+      {list.length===0?<div style={{textAlign:'center',padding:28,color:'var(--text3)'}}>لا توجد مرتجعات</div>
+      :<div className="tbl-wrap"><table className="tbl">
+        <thead><tr><th>التاريخ</th><th>السبب</th><th>العميل</th><th>الأصناف</th><th>التكلفة المُعادة</th><th></th></tr></thead>
+        <tbody>{list.map(r=><tr key={r.id}>
+          <td>{fmtDate(r.date)}</td><td><span className="badge badge-red">{r.reason}</span></td>
+          <td>{r.note||'—'}</td><td style={{fontSize:11}}>{(r.items||[]).map(it=>`${it.pname} ×${it.qty}`).join(' · ')}</td>
+          <td className="num">{fmt(r.totalCost)}</td>
+          <td><Btn variant="danger" size="sm" onClick={()=>{if(window.confirm('حذف؟')){onWrite(d=>{const ret=d.returns[r.id];if(ret)(ret.items||[]).forEach(it=>{if(it.pid&&d.products[it.pid])d.products[it.pid].stock=Math.max(0,(+d.products[it.pid].stock||0)-(+it.qty||0));});delete d.returns[r.id];});notify('🗑️ حُذف');}}}>🗑️</Btn></td>
+        </tr>)}</tbody>
+      </table></div>}
+    </Card>
   </div>);
 }
 
-function Settings({onLogout,onWrite,products,sales,expenses,withdrawals,capital,cfgPwds,onExcel}){
-  const[p,setP]=useState({mk:'',as:''});const[ok,setOk]=useState(false);
-  const savePwd=()=>{if(!p.mk&&!p.as)return;onWrite(d=>{if(p.mk)d.config.pwd_mk=p.mk;if(p.as)d.config.pwd_as=p.as;});setOk(true);setP({mk:'',as:''});setTimeout(()=>setOk(false),3000);notify('✅ تم تغيير كلمة المرور');};
-  const resetToken=()=>{if(window.confirm('هل تريد إعادة إدخال رمز الاتصال؟')){localStorage.removeItem(TOKEN_KEY);sessionStorage.removeItem('pnt_u');window.location.reload();}};
+/* ── FUNDS/SAFES ─────────────────────────────────────────────── */
+function Safes({sales,expenses,withdrawals,capital,returns,onWrite}){
+  const[form,setForm]=useState({pid:'muh',amount:'',note:'',date:today()});
+  const fin=useMemo(()=>calcFin(sales,expenses,withdrawals,returns),[sales,expenses,withdrawals]);
+  const capByP=id=>capital.filter(c=>c.pid===id).reduce((a,c)=>a+(c.amount||0),0);
+
+  const withdraw=()=>{
+    if(!form.amount)return;
+    const id=uid();
+    onWrite(d=>d.withdrawals[id]={...form,amount:+form.amount,id});
+    notify('✅ تم تسجيل السحب');
+    setForm(p=>({...p,amount:'',note:''}));
+  };
+
   return(<div>
-    <h2 style={{fontSize:20,fontWeight:900,marginBottom:4}}>⚙️ الإعدادات</h2><p style={{fontSize:13,color:'#94A3B8',marginBottom:14}}>إدارة الحسابات والنظام</p>
-    <div className="card" style={{background:'linear-gradient(135deg,#F0FDF4,#ECFDF5)',border:'2px solid #A7F3D0'}}>
-      <div style={{fontWeight:800,fontSize:15,color:'#047857',marginBottom:8}}>📥 تصدير إلى Excel</div>
-      <p style={{fontSize:13,color:'#065F46',marginBottom:14,lineHeight:1.7}}>تصدير جميع البيانات في ملف Excel كامل يشمل:<br/>✅ المنتجات · المبيعات التفصيلية · المصاريف · السحوبات · رأس المال · ملخص الصناديق · الأرباح الشهرية</p>
-      <button className="btn bxl" onClick={onExcel} style={{padding:'12px 24px',fontSize:15,display:'flex',alignItems:'center',gap:8}}>📊 تصدير Excel الآن</button>
+    <div className="page-header"><div><div className="page-title">🏦 الصناديق</div><div className="page-sub">أرصدة الشركاء</div></div></div>
+    <div className="funds-grid" style={{marginBottom:20}}>
+      {ACCOUNTS.map(ac=>{
+        const fa=fin.accs.find(x=>x.id===ac.id)||{share:0,drawn:0,carDeduct:0};
+        const cap=capByP(ac.id);
+        const bal=cap+fa.share-fa.drawn-(fa.carDeduct||0);
+        return(<div key={ac.id} className={`fund-card ${ac.id}`}>
+          <div className="fund-name">{ac.emoji} {ac.name} — {(ac.pct*100).toFixed(0)}%</div>
+          <div className="fund-amount" style={{color:bal>=0?'var(--green)':'var(--red)'}}>{fmt(bal)} <span style={{fontSize:14}}>ر.س</span></div>
+          <div className="fund-detail">
+            رأس المال: {fmt(cap)}<br/>
+            حصة الربح: {fmt(fa.share)}<br/>
+            السحوبات: {fmt(fa.drawn)}<br/>
+            {ac.id==='car'&&fa.carDeduct>0&&<>صيانة السيارة: -{fmt(fa.carDeduct)}<br/></>}
+          </div>
+        </div>);
+      })}
     </div>
-    <div className="card">
-      <div style={{fontWeight:800,fontSize:14,marginBottom:12}}>🔐 تغيير كلمات المرور</div>
-      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:10,marginBottom:12}}>
-        <Inp label="كلمة مرور محمد خالد الجديدة" type="password" value={p.mk} onChange={e=>setP(x=>({...x,mk:e.target.value}))} placeholder="اتركه فارغاً للإبقاء"/>
-        <Inp label="كلمة مرور علي سعيد الجديدة" type="password" value={p.as} onChange={e=>setP(x=>({...x,as:e.target.value}))} placeholder="اتركه فارغاً للإبقاء"/>
+    <Card title="سحب من صندوق" style={{marginBottom:16}}>
+      <div className="form-grid" style={{gridTemplateColumns:'1fr 1fr 1fr 2fr'}}>
+        <Inp label="التاريخ" type="date" value={form.date} onChange={e=>setForm(p=>({...p,date:e.target.value}))}/>
+        <Sel label="الصندوق" value={form.pid} onChange={e=>setForm(p=>({...p,pid:e.target.value}))}>
+          {ACCOUNTS.map(ac=><option key={ac.id} value={ac.id}>{ac.emoji} {ac.name}</option>)}
+        </Sel>
+        <Inp label="المبلغ" type="number" value={form.amount} onChange={e=>setForm(p=>({...p,amount:e.target.value}))} placeholder="0"/>
+        <Inp label="ملاحظة" value={form.note} onChange={e=>setForm(p=>({...p,note:e.target.value}))} placeholder="سبب السحب"/>
       </div>
-      <Btn onClick={savePwd}>{ok?'✅ تم التطبيق على جميع الأجهزة':'💾 حفظ كلمات المرور'}</Btn>
-    </div>
-    <div className="card">
-      <div style={{fontWeight:800,fontSize:14,marginBottom:12}}>👥 الصلاحيات</div>
-      <div style={{display:'flex',flexDirection:'column',gap:10}}>
-        <div style={{background:'#EFF6FF',borderRadius:10,padding:'12px 14px',border:'1px solid #BFDBFE'}}><div style={{fontWeight:800,color:'#1D4ED8',fontSize:14,marginBottom:4}}>👨‍💼 محمد خالد — مدير النظام</div><div style={{fontSize:12,color:'#3B82F6'}}>✅ جميع التبويبات · تعديل وحذف · تقارير · Excel · كلمات مرور</div></div>
-        <div style={{background:'#ECFDF5',borderRadius:10,padding:'12px 14px',border:'1px solid #A7F3D0'}}><div style={{fontWeight:800,color:'#047857',fontSize:14,marginBottom:4}}>👷 علي سعيد — موظف مبيعات</div><div style={{fontSize:12,color:'#059669',marginBottom:3}}>✅ إضافة منتجات · فواتير · مصاريف · سحبيات</div><div style={{fontSize:12,color:'#DC2626'}}>🚫 لا يرى أسعار الشراء · لا يحذف · لا يرى التقارير المالية</div></div>
+      <Btn onClick={withdraw}>💸 تسجيل السحب</Btn>
+    </Card>
+    <Card title="سجل السحوبات">
+      {withdrawals.length===0?<div style={{textAlign:'center',padding:24,color:'var(--text3)'}}>لا توجد سحوبات</div>
+      :<div className="tbl-wrap"><table className="tbl">
+        <thead><tr><th>التاريخ</th><th>الصندوق</th><th>المبلغ</th><th>ملاحظة</th><th></th></tr></thead>
+        <tbody>{[...withdrawals].sort((a,b)=>b.date.localeCompare(a.date)).map(w=>{const ac=ACCOUNTS.find(a=>a.id===w.pid)||ACCOUNTS[0];return(
+          <tr key={w.id}>
+            <td>{fmtDate(w.date)}</td>
+            <td><span className={`badge badge-${ac.color}`}>{ac.emoji} {ac.name}</span></td>
+            <td className="num neg">{fmt(w.amount)}</td>
+            <td style={{color:'var(--text3)'}}>{w.note||'—'}</td>
+            <td><Btn variant="danger" size="sm" onClick={()=>{if(window.confirm('حذف السحب؟')){onWrite(d=>delete d.withdrawals[w.id]);notify('🗑️ حُذف');}}}>🗑️</Btn></td>
+          </tr>
+        );})}
+        </tbody>
+      </table></div>}
+    </Card>
+  </div>);
+}
+
+/* ── CAPITAL ─────────────────────────────────────────────────── */
+function Capital({capital,onWrite}){
+  const[form,setForm]=useState({pid:'muh',amount:'',note:'',date:today()});
+  const save=()=>{
+    if(!form.amount)return;
+    const id=uid();onWrite(d=>d.capital[id]={...form,amount:+form.amount,id});
+    notify('✅ تم تسجيل رأس المال');setForm(p=>({...p,amount:'',note:''}));
+  };
+  return(<div>
+    <div className="page-header"><div><div className="page-title">💼 رأس المال</div></div></div>
+    <Card style={{marginBottom:16}}>
+      <div className="form-grid" style={{gridTemplateColumns:'1fr 1fr 1fr 2fr'}}>
+        <Inp label="التاريخ" type="date" value={form.date} onChange={e=>setForm(p=>({...p,date:e.target.value}))}/>
+        <Sel label="الشريك" value={form.pid} onChange={e=>setForm(p=>({...p,pid:e.target.value}))}>
+          {ACCOUNTS.map(ac=><option key={ac.id} value={ac.id}>{ac.name}</option>)}
+        </Sel>
+        <Inp label="المبلغ" type="number" value={form.amount} onChange={e=>setForm(p=>({...p,amount:e.target.value}))} placeholder="0"/>
+        <Inp label="ملاحظة" value={form.note} onChange={e=>setForm(p=>({...p,note:e.target.value}))} placeholder="اختياري"/>
       </div>
+      <Btn onClick={save}>✅ تسجيل رأس مال</Btn>
+    </Card>
+    <Card title="سجل رأس المال">
+      <div className="tbl-wrap"><table className="tbl">
+        <thead><tr><th>التاريخ</th><th>الشريك</th><th>المبلغ</th><th>ملاحظة</th><th></th></tr></thead>
+        <tbody>{[...capital].sort((a,b)=>b.date.localeCompare(a.date)).map(c=>{const ac=ACCOUNTS.find(a=>a.id===c.pid)||ACCOUNTS[0];return(
+          <tr key={c.id}>
+            <td>{fmtDate(c.date)}</td>
+            <td><span className={`badge badge-${ac.color}`}>{ac.name}</span></td>
+            <td className="num pos">{fmt(c.amount)}</td>
+            <td style={{color:'var(--text3)'}}>{c.note||'—'}</td>
+            <td><Btn variant="danger" size="sm" onClick={()=>{if(window.confirm('حذف؟')){onWrite(d=>delete d.capital[c.id]);notify('🗑️ حُذف');}}}>🗑️</Btn></td>
+          </tr>
+        );})}
+        </tbody>
+      </table></div>
+    </Card>
+  </div>);
+}
+
+/* ── MONTHLY REPORT ──────────────────────────────────────────── */
+function MonthlyReport({sales,expenses,withdrawals,returns,capital}){
+  const[year,setYear]=useState(String(new Date().getFullYear()));
+  const months=Array.from({length:12},(_,i)=>`${year}-${String(i+1).padStart(2,'0')}`);
+  const mData=useMemo(()=>months.map(m=>({key:m,...calcFin(sales,expenses,withdrawals,returns,m)})),[sales,expenses,withdrawals,returns,year]);
+  const totals={totalRev:mData.reduce((s,m)=>s+m.totalRev,0),totalExp:mData.reduce((s,m)=>s+m.totalExp,0),netProfit:mData.reduce((s,m)=>s+m.netProfit,0)};
+  const mn=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  return(<div>
+    <div className="page-header">
+      <div><div className="page-title">📅 التقارير الشهرية</div></div>
+      <select className="fi" value={year} onChange={e=>setYear(e.target.value)} style={{width:'auto'}}>
+        {['2023','2024','2025','2026'].map(y=><option key={y}>{y}</option>)}
+      </select>
     </div>
-    <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-      <Btn v="d" onClick={onLogout} style={{padding:'10px 18px',fontSize:14}}>🚪 تسجيل الخروج</Btn>
-      <Btn v="g" onClick={resetToken} style={{padding:'10px 18px',fontSize:13}}>🔑 تغيير رمز الاتصال</Btn>
+    <div className="kpi-grid" style={{gridTemplateColumns:'repeat(3,1fr)',marginBottom:16}}>
+      <div className="kpi green"><div className="kpi-label">إجمالي المبيعات</div><div className="kpi-value">{fmt(totals.totalRev)}</div><div className="kpi-sub">ر.س</div></div>
+      <div className="kpi red"><div className="kpi-label">إجمالي المصاريف</div><div className="kpi-value">{fmt(totals.totalExp)}</div><div className="kpi-sub">ر.س</div></div>
+      <div className="kpi purple"><div className="kpi-label">إجمالي الأرباح</div><div className="kpi-value">{fmt(totals.netProfit)}</div><div className="kpi-sub">ر.س</div></div>
+    </div>
+    <Card>
+      <div className="tbl-wrap"><table className="tbl">
+        <thead><tr><th>الشهر</th><th>المبيعات</th><th>التكلفة</th><th>المصاريف</th><th>صافي الربح</th>{ACCOUNTS.map(ac=><th key={ac.id}>{ac.name}</th>)}</tr></thead>
+        <tbody>{mData.filter(m=>m.salesCount>0||m.expCount>0).map((m,i)=>(
+          <tr key={m.key}>
+            <td style={{fontWeight:700}}>{mn[+m.key.slice(5)-1]}</td>
+            <td className="num pos">{fmt(m.totalRev)}</td>
+            <td className="num neg">{fmt(m.totalCost)}</td>
+            <td className="num neg">{fmt(m.totalExp)}</td>
+            <td className={`num ${m.netProfit>=0?'pos':'neg'}`} style={{fontWeight:800}}>{fmt(m.netProfit)}</td>
+            {m.accs.map(ac=><td key={ac.id} className="num" style={{color:ac.net>=0?'var(--green)':'var(--red)'}}>{fmt(ac.net)}</td>)}
+          </tr>
+        ))}
+        <tr style={{fontWeight:900,background:'#F8FAFC'}}>
+          <td>الإجمالي</td><td className="num pos">{fmt(totals.totalRev)}</td><td className="num">—</td>
+          <td className="num neg">{fmt(totals.totalExp)}</td><td className={`num ${totals.netProfit>=0?'pos':'neg'}`}>{fmt(totals.netProfit)}</td>
+          {ACCOUNTS.map(ac=>{const t=mData.reduce((s,m)=>{const fa=m.accs.find(x=>x.id===ac.id)||{net:0};return s+fa.net;},0);return<td key={ac.id} className="num">{fmt(t)}</td>;})}
+        </tr>
+        </tbody>
+      </table></div>
+    </Card>
+  </div>);
+}
+
+/* ── P&L ─────────────────────────────────────────────────────── */
+function PL({sales,expenses,withdrawals,returns,capital}){
+  const[year,setYear]=useState(String(new Date().getFullYear()));
+  const months=Array.from({length:12},(_,i)=>`${year}-${String(i+1).padStart(2,'0')}`);
+  const mData=useMemo(()=>months.map(m=>({key:m,...calcFin(sales,expenses,withdrawals,returns,m)})),[sales,expenses,withdrawals,returns,year]);
+  const fin=calcFin(sales,expenses,withdrawals,returns);
+  const mn=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  return(<div>
+    <div className="page-header">
+      <div><div className="page-title">📈 الأرباح والخسائر</div></div>
+      <select className="fi" value={year} onChange={e=>setYear(e.target.value)} style={{width:'auto'}}>
+        {['2023','2024','2025','2026'].map(y=><option key={y}>{y}</option>)}
+      </select>
+    </div>
+    <div className="funds-grid" style={{marginBottom:20}}>
+      {fin.accs.map(ac=><div key={ac.id} className={`fund-card ${ac.id}`}>
+        <div className="fund-name">{ac.emoji} {ac.name}</div>
+        <div className="fund-amount" style={{color:ac.share>=0?'var(--green)':'var(--red)'}}>{fmt(ac.share)}</div>
+        <div className="fund-detail">حصة {(ac.pct*100).toFixed(0)}% من صافي الربح</div>
+      </div>)}
+    </div>
+    <Card>
+      <div className="tbl-wrap"><table className="tbl">
+        <thead><tr><th>الشهر</th><th>المبيعات</th><th>المصاريف</th><th>صافي الربح</th>{ACCOUNTS.map(ac=><th key={ac.id}>{ac.name} ({(ac.pct*100).toFixed(0)}%)</th>)}</tr></thead>
+        <tbody>{mData.filter(m=>m.salesCount>0||m.expCount>0).map(m=>(
+          <tr key={m.key}>
+            <td style={{fontWeight:700}}>{mn[+m.key.slice(5)-1]}</td>
+            <td className="num pos">{fmt(m.totalRev)}</td>
+            <td className="num neg">{fmt(m.totalExp)}</td>
+            <td className={`num ${m.netProfit>=0?'pos':'neg'}`} style={{fontWeight:800}}>{fmt(m.netProfit)}</td>
+            {m.accs.map(ac=><td key={ac.id} className="num" style={{color:ac.share>=0?'var(--green)':'var(--red)'}}>{fmt(ac.share)}</td>)}
+          </tr>
+        ))}</tbody>
+      </table></div>
+    </Card>
+  </div>);
+}
+
+/* ── SETTINGS ────────────────────────────────────────────────── */
+function Settings({onWrite,onLogout}){
+  const[logo,setLogo]=useState(localStorage.getItem('dah_logo')||'');
+  const saveLogo=e=>{const r=new FileReader();r.onload=ev=>{localStorage.setItem('dah_logo',ev.target.result);setLogo(ev.target.result);notify('✅ تم حفظ الشعار');};r.readAsDataURL(e.target.files[0]);};
+  const resetData=()=>{
+    if(!window.confirm('⚠️ سيتم مسح جميع البيانات نهائياً! هل أنت متأكد؟'))return;
+    if(!window.confirm('تأكيد أخير: مسح كل المبيعات والمصاريف والمنتجات؟'))return;
+    onWrite(d=>{d.products={};d.sales={};d.expenses={};d.withdrawals={};d.capital={};d.returns={};d.cashRecon={};});
+    notify('🔄 تم تصفير جميع البيانات');
+  };
+  return(<div>
+    <div className="page-header"><div><div className="page-title">⚙️ الإعدادات</div></div></div>
+    <div style={{display:'grid',gap:16}}>
+      <Card title="شعار المتجر">
+        <div style={{display:'flex',alignItems:'center',gap:16,marginBottom:12}}>
+          <div style={{width:64,height:64,borderRadius:12,background:'var(--bg)',border:'2px dashed var(--border)',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden'}}>
+            {logo?<img src={logo} style={{width:'100%',height:'100%',objectFit:'cover'}}/>:<span style={{fontSize:28}}>🎨</span>}
+          </div>
+          <div><div style={{fontWeight:700,marginBottom:4}}>شعار المتجر</div><div style={{fontSize:12,color:'var(--text3)',marginBottom:8}}>يظهر في الشريط الجانبي</div>
+            <label className="btn btn-outline btn-sm" style={{cursor:'pointer'}}>📷 رفع صورة<input type="file" accept="image/*" onChange={saveLogo} style={{display:'none'}}/></label>
+          </div>
+        </div>
+      </Card>
+      <Card title="معلومات التوكن">
+        <div className="alert info"><span className="alert-icon">🔑</span><span>Token محفوظ: <strong>{getToken().slice(0,10)}...{getToken().slice(-4)}</strong></span></div>
+        <Btn variant="outline" onClick={()=>{localStorage.removeItem(TOKEN_KEY);onLogout();}}>🔓 تغيير التوكن</Btn>
+      </Card>
+      <Card title="إعادة تعيين البيانات" style={{border:'1px solid var(--red-light)'}}>
+        <div className="alert danger"><span className="alert-icon">⚠️</span><span>هذا الإجراء سيمسح جميع البيانات نهائياً ولا يمكن التراجع عنه.</span></div>
+        <Btn variant="danger" onClick={resetData}>🗑️ مسح جميع البيانات</Btn>
+      </Card>
+      <Card title="عن النظام">
+        <div style={{fontSize:13,color:'var(--text2)',lineHeight:2}}>
+          <div>الإصدار: <strong>v{APP_VER}</strong></div>
+          <div>نظام محاسبة دهانات ومستلزمات البناء</div>
+          <div>محمد خالد 40% · علي سعيد 40% · السيارة 20%</div>
+        </div>
+      </Card>
     </div>
   </div>);
 }
 
-/* ══ MAIN APP ══════════════════════════════════════ */
-function App(){
-  const[user,setUser]=useState(()=>{try{const u=sessionStorage.getItem('pnt_u');return u?JSON.parse(u):null;}catch{return null;}});
-  const[tab,setTab]=useState(0);
-  const[products,setProducts]=useState([]);const[sales,setSales]=useState([]);
-  const[expenses,setExpenses]=useState([]);const[withdrawals,setWithdrawals]=useState([]);
-  const[capital,setCapital]=useState([]);const[returns,setReturns]=useState([]);
-  const[cfgPwds,setCfgPwds]=useState({mk:'1234',as:'5678'});
-  const[syncState,setSyncState]=useState('loading');const[lastTs,setLastTs]=useState(0);
-  const[moreOpen,setMoreOpen]=useState(false);const[hasToken,setHasToken]=useState(!!getToken());
+/* ── AUTH SCREENS ────────────────────────────────────────────── */
+const USERS=[
+  {u:'mk',p:'1234',name:'محمد خالد',role:'admin'},
+  {u:'as',p:'5678',name:'علي سعيد',role:'admin'},  // Ali now has full admin access
+];
 
-  const applyData=(data)=>{
-    setProducts(Object.values(data.products||{}));setSales(Object.values(data.sales||{}));
-    setExpenses(Object.values(data.expenses||{}));setWithdrawals(Object.values(data.withdrawals||{}));
-    setCapital(Object.values(data.capital||{}));setReturns(Object.values(data.returns||{}));
-    setCfgPwds({mk:data.config?.pwd_mk||'1234',as:data.config?.pwd_as||'5678'});
-    setLastTs(data.ts||0);
+function SetupScreen({onDone}){
+  const[token,setToken]=useState('');
+  return(<div className="auth-page">
+    <div className="auth-card">
+      <div className="auth-logo"><div className="icon">🎨</div><div className="name">دهانات محمد خالد</div><div className="sub">نظام المحاسبة</div></div>
+      <div className="auth-title">🔑 إعداد الاتصال بـ GitHub</div>
+      <div className="alert warn" style={{marginBottom:14}}><span className="alert-icon">ℹ️</span><span>أدخل رمز GitHub Personal Access Token للبدء</span></div>
+      <Inp label="GitHub Token" value={token} onChange={e=>setToken(e.target.value)} placeholder="ghp_..." style={{marginBottom:14,fontFamily:'monospace'}}/>
+      <Btn className="btn-lg" style={{width:'100%'}} onClick={()=>{if(!token.startsWith('ghp_'))return notify('❌ Token غير صحيح');setToken(t=>t.trim());localStorage.setItem(TOKEN_KEY,token.trim());onDone();}}>✅ حفظ والبدء</Btn>
+    </div>
+  </div>);
+}
+
+function LoginScreen({onLogin}){
+  const[u,setU]=useState('');const[p,setP]=useState('');const[err,setErr]=useState('');
+  const login=()=>{const user=USERS.find(x=>x.u===u&&x.p===p);if(user){onLogin(user);}else setErr('كلمة المرور أو اسم المستخدم خاطئ');};
+  return(<div className="auth-page">
+    <div className="auth-card">
+      <div className="auth-logo"><div className="icon">🎨</div><div className="name">دهانات محمد خالد</div><div className="sub">نظام المحاسبة v{APP_VER}</div></div>
+      <Inp label="اسم المستخدم" value={u} onChange={e=>{setU(e.target.value);setErr('');}} placeholder="mk أو as" style={{marginBottom:10}}/>
+      <Inp label="كلمة المرور" type="password" value={p} onChange={e=>{setP(e.target.value);setErr('');}} placeholder="••••" style={{marginBottom:10}} onKeyDown={e=>e.key==='Enter'&&login()}/>
+      {err&&<div className="alert danger" style={{marginBottom:10}}><span className="alert-icon">❌</span>{err}</div>}
+      <Btn style={{width:'100%'}} onClick={login}>🔓 تسجيل الدخول</Btn>
+    </div>
+  </div>);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   APP
+══════════════════════════════════════════════════════════════ */
+const NAV_ITEMS=[
+  {id:0,ico:'🏠',lbl:'الرئيسية',section:'الرئيسية'},
+  {id:1,ico:'📦',lbl:'المنتجات',section:'المخزون'},
+  {id:2,ico:'💰',lbl:'المبيعات',section:'المبيعات'},
+  {id:3,ico:'📊',lbl:'المصاريف',section:'المصاريف'},
+  {id:4,ico:'🧾',lbl:'مطابقة الكاش',section:'المطابقة'},
+  {id:5,ico:'↩️',lbl:'المرتجعات',section:'المرتجعات'},
+  {id:6,ico:'🏦',lbl:'الصناديق',section:'الصناديق'},
+  {id:7,ico:'💼',lbl:'رأس المال',section:'المالية'},
+  {id:8,ico:'📅',lbl:'التقارير الشهرية',section:'التحليل'},
+  {id:9,ico:'📈',lbl:'الأرباح والخسائر',section:'التحليل'},
+  {id:10,ico:'⚙️',lbl:'الإعدادات',section:'النظام'},
+];
+const BNAV_ITEMS=[
+  {id:0,ico:'🏠',lbl:'الرئيسية'},
+  {id:2,ico:'💰',lbl:'مبيعات'},
+  {id:3,ico:'📊',lbl:'مصاريف'},
+  {id:6,ico:'🏦',lbl:'صناديق'},
+  {id:10,ico:'⚙️',lbl:'إعدادات'},
+];
+
+function App(){
+  const[user,setUser]=useState(()=>{try{return JSON.parse(sessionStorage.getItem('dah_user'));}catch{return null;}});
+  const[hasToken,setHasToken]=useState(!!getToken());
+  const[syncState,setSyncState]=useState('loading');
+  const[tab,setTab]=useState(0);
+  const[lastTs,setLastTs]=useState(0);
+  const[products,setProducts]=useState([]);
+  const[sales,setSales]=useState([]);
+  const[expenses,setExpenses]=useState([]);
+  const[withdrawals,setWithdrawals]=useState([]);
+  const[capital,setCapital]=useState([]);
+  const[returns,setReturns]=useState([]);
+  const[cashRecon,setCashRecon]=useState([]);
+  const logo=localStorage.getItem('dah_logo')||'';
+
+  const applyData=d=>{
+    setProducts(Object.values(d.products||{}));
+    setSales(Object.values(d.sales||{}));
+    setExpenses(Object.values(d.expenses||{}));
+    setWithdrawals(Object.values(d.withdrawals||{}));
+    setCapital(Object.values(d.capital||{}));
+    setReturns(Object.values(d.returns||{}));
+    setCashRecon(Object.values(d.cashRecon||{}));
+    setLastTs(d.ts||0);
   };
 
   useEffect(()=>{
     if(!getToken()){setSyncState('notoken');return;}
-    ghRead().then(data=>{applyData(data);setSyncState('ok');}).catch(()=>setSyncState('err'));
-    // Auto-retry on mobile if stuck after 20s
-    const autoRetry=setTimeout(()=>{
-      if(syncState==='loading'){
-        ghRead().then(data=>{applyData(data);setSyncState('ok');}).catch(()=>setSyncState('err'));
-      }
-    },20000);
-    const poll=setInterval(()=>{
-      ghRead().then(data=>{if((data.ts||0)>lastTs){applyData(data);notify('🔄 تم تحديث البيانات');}setSyncState('ok');}).catch(()=>setSyncState('err'));
-    },30000);
+    ghRead().then(d=>{applyData(d);setSyncState('ok');}).catch(()=>setSyncState('err'));
+    const poll=setInterval(()=>{ghRead().then(d=>{if(d.ts>lastTs){applyData(d);}}).catch(()=>{});},30000);
     return()=>clearInterval(poll);
   },[hasToken]);
 
-  const onWrite=useCallback((updater)=>{
+  const onWrite=useCallback(updater=>{
     setSyncState('busy');
-    ghWrite(updater).then(data=>{applyData(data);setSyncState('ok');}).catch(()=>{setSyncState('err');notify('❌ خطأ في الحفظ، حاول مجدداً');});
+    ghWrite(updater).then(d=>{applyData(d);setSyncState('ok');}).catch(()=>{setSyncState('err');notify('❌ خطأ في الحفظ');});
   },[lastTs]);
 
-  const handleLogin=u=>{setUser(u);sessionStorage.setItem('pnt_u',JSON.stringify(u));setTab(u.role==='admin'?0:2);};
-  const handleLogout=()=>{sessionStorage.removeItem('pnt_u');setUser(null);};
-  const onExcel=()=>exportExcel(products,sales,expenses,withdrawals,capital,returns);
+  const handleLogin=u=>{setUser(u);sessionStorage.setItem('dah_user',JSON.stringify(u));};
+  const handleLogout=()=>{setUser(null);sessionStorage.removeItem('dah_user');};
 
-  const partnerBal=useMemo(()=>{
-    const fin=calcFin(sales,expenses,withdrawals,returns);
-    return PARTNERS.map(p=>{
-      const pd=fin.partners.find(x=>x.id===p.id);
-      const capTotal=capital.filter(c=>c.pid===p.id).reduce((a,x)=>a+(x.amount||0),0);
-      const share=pd?.share||0;const drawn=pd?.drawn||0;
-      return{...p,share,drawn,capTotal,netBalance:capTotal+share-drawn};
-    });
-  },[sales,expenses,withdrawals,capital]);
+  const syncLabel={ok:'محفوظ ✓',busy:'جاري الحفظ...',err:'خطأ في الاتصال',loading:'جاري التحميل...',notoken:''};
 
-  if(syncState==='notoken'||!hasToken)return<SetupScreen onDone={()=>{setHasToken(true);setSyncState('loading');}}/>;
-  if(syncState==='err')return(<div className="splash">
-    <div style={{fontSize:40,marginBottom:12}}>⚠️</div>
-    <div style={{fontWeight:800,fontSize:16,color:'#DC2626',marginBottom:8}}>تعذّر الاتصال بالخادم</div>
-    <div style={{fontSize:13,color:'#64748B',marginBottom:20}}>تحقق من الإنترنت ثم أعد المحاولة</div>
-    <button className="btn bp" onClick={()=>{setSyncState('loading');ghRead().then(d=>{applyData(d);setSyncState('ok');}).catch(()=>setSyncState('err'));}} style={{padding:'10px 24px',fontSize:14}}>🔄 إعادة المحاولة</button>
-  </div>);
-  if(syncState==='loading')return<div className="splash"><div className="splash-icon">🎨</div><div style={{fontSize:16,fontWeight:800,color:'#1D4ED8'}}>جاري تحميل البيانات...</div></div>;
-  if(!user)return<LoginScreen onLogin={handleLogin} cfgPwds={cfgPwds}/>;
-
-  const TABS=user.role==='admin'?ADMIN_TABS:SALES_TABS;
-  const isAdmin=user.role==='admin';
-  const bottomTabs=TABS.slice(0,5);const moreTabs=TABS.slice(5);
-  const goTab=id=>{setTab(id);setMoreOpen(false);};
-  const syncLabel={ok:'متزامن ☁️',busy:'جاري الحفظ...',err:'خطأ في الاتصال'};
+  if(!hasToken||syncState==='notoken')return<SetupScreen onDone={()=>{setHasToken(true);setSyncState('loading');}}/>;
+  if(syncState==='loading')return<div className="splash">
+    <div className="splash-icon">🎨</div>
+    <div className="spinner"/>
+    <div className="splash-text">جاري تحميل البيانات...</div>
+  </div>;
+  if(syncState==='err')return<div className="splash">
+    <div className="splash-icon" style={{fontSize:48}}>⚠️</div>
+    <div style={{color:'white',fontSize:16,fontWeight:800,marginBottom:8}}>تعذّر الاتصال</div>
+    <div style={{color:'rgba(255,255,255,.6)',fontSize:13,marginBottom:20}}>تحقق من الإنترنت</div>
+    <button className="btn btn-outline" onClick={()=>{setSyncState('loading');ghRead().then(d=>{applyData(d);setSyncState('ok');}).catch(()=>setSyncState('err'));}}>🔄 إعادة المحاولة</button>
+  </div>;
+  if(!user)return<LoginScreen onLogin={handleLogin}/>;
 
   const renderContent=()=>{
+    const p={sales,products,expenses,withdrawals,capital,returns,cashRecon,onWrite};
     switch(tab){
-      case 0:return isAdmin?<Dashboard sales={sales} expenses={expenses} withdrawals={withdrawals} capital={capital} returns={returns} partnerBal={partnerBal} onExcel={onExcel}/>:null;
+      case 0:return<Dashboard {...p}/>;
       case 1:return<Products products={products} onWrite={onWrite}/>;
       case 2:return<Sales sales={sales} products={products} onWrite={onWrite}/>;
       case 3:return<Expenses expenses={expenses} onWrite={onWrite}/>;
-      case 4:return<Safes withdrawals={withdrawals} partnerBal={partnerBal} onWrite={onWrite}/>;
-      case 5:return isAdmin?<MonthlyReport sales={sales} expenses={expenses} withdrawals={withdrawals} returns={returns}/>:null;
-      case 6:return isAdmin?<PL sales={sales} expenses={expenses} withdrawals={withdrawals} capital={capital} returns={returns}/>:null;
-      case 7:return isAdmin?<Settings onLogout={handleLogout} onWrite={onWrite} products={products} sales={sales} expenses={expenses} withdrawals={withdrawals} capital={capital} cfgPwds={cfgPwds} onExcel={onExcel}/>:null;
-      case 8:return isAdmin?<Capital capital={capital} partnerBal={partnerBal} onWrite={onWrite}/>:null;
-      case 9:return<Returns returns={returns} products={products} sales={sales} onWrite={onWrite}/>;
+      case 4:return<CashRecon sales={sales} cashRecon={cashRecon} onWrite={onWrite}/>;
+      case 5:return<Returns returns={returns} products={products} onWrite={onWrite}/>;
+      case 6:return<Safes sales={sales} expenses={expenses} withdrawals={withdrawals} capital={capital} returns={returns} onWrite={onWrite}/>;
+      case 7:return<Capital capital={capital} onWrite={onWrite}/>;
+      case 8:return<MonthlyReport sales={sales} expenses={expenses} withdrawals={withdrawals} returns={returns} capital={capital}/>;
+      case 9:return<PL sales={sales} expenses={expenses} withdrawals={withdrawals} returns={returns} capital={capital}/>;
+      case 10:return<Settings onWrite={onWrite} onLogout={handleLogout}/>;
       default:return null;
     }
   };
 
+  const sections=[...new Set(NAV_ITEMS.map(n=>n.section))];
+  const curNav=NAV_ITEMS.find(n=>n.id===tab);
+
   return(<AuthCtx.Provider value={{user}}>
-    <header className="app-header"><div className="hinner">
-      <div className="hrow">
-        <div style={{display:'flex',alignItems:'center',gap:10}}>
-          <span style={{fontSize:22}}>🎨</span>
-          <div>
-            <div style={{fontWeight:900,fontSize:15,lineHeight:1.2}}>دهانات ومستلزمات البناء</div>
-            <div style={{fontSize:11,opacity:.85,display:'flex',alignItems:'center',gap:4}}>
-              {user.name} · {isAdmin?'مدير':'موظف'}
-              <span className={`sync-dot ${syncState}`}></span>
-              <span style={{fontSize:10}}>{syncLabel[syncState]||''}</span>
-            </div>
+    <div className="layout">
+      {/* Sidebar */}
+      <div className="sidebar">
+        <div className="sidebar-logo">
+          <div className="logo-box">
+            <div className="logo-img">{logo?<img src={logo} style={{width:'100%',height:'100%',objectFit:'cover',borderRadius:10}}/>:'🎨'}</div>
+            <div><div className="logo-text">دهانات محمد خالد</div><div className="logo-sub">نظام المحاسبة</div></div>
           </div>
         </div>
-        <button onClick={handleLogout} style={{background:'rgba(255,255,255,.18)',border:'none',color:'white',padding:'6px 12px',borderRadius:8,cursor:'pointer',fontFamily:"'Cairo',sans-serif",fontSize:12}}>خروج</button>
+        <div className="sidebar-nav">
+          {sections.map(sec=>(
+            <div key={sec} className="nav-section">
+              <div className="nav-label">{sec}</div>
+              {NAV_ITEMS.filter(n=>n.section===sec).map(n=>(
+                <button key={n.id} className={`nav-item ${tab===n.id?'active':''}`} onClick={()=>setTab(n.id)}>
+                  <span className="ico">{n.ico}</span>{n.lbl}
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="sidebar-user">
+          <div className="user-card">
+            <div className="user-avatar">{user.name[0]}</div>
+            <div className="user-info"><div className="user-name">{user.name}</div><div className="user-role">مدير النظام</div></div>
+            <button className="logout-btn" onClick={handleLogout} title="تسجيل خروج">⏻</button>
+          </div>
+        </div>
       </div>
-      <div className="dtabs">{TABS.map(t=><button key={t.id} className={`dtab ${tab===t.id?'act':''}`} onClick={()=>setTab(t.id)}>{t.ico} {t.lbl}</button>)}</div>
-    </div></header>
-    <div className="content">{renderContent()}</div>
-    {isAdmin&&<button className="excel-fab" onClick={onExcel}>📊 Excel</button>}
-    {moreTabs.length>0&&<><div className={`mov ${moreOpen?'open':''}`} onClick={()=>setMoreOpen(false)}/><div className={`mmenu ${moreOpen?'open':''}`}>{moreTabs.map(t=><button key={t.id} className={`mmi ${tab===t.id?'act':''}`} onClick={()=>goTab(t.id)}><span>{t.ico}</span>{t.lbl}</button>)}</div></>}
-    <nav className="bnav">
-      {bottomTabs.map(t=><button key={t.id} className={`bni ${tab===t.id?'act':''}`} onClick={()=>setTab(t.id)}><span className="ico">{t.ico}</span>{t.lbl}</button>)}
-      {moreTabs.length>0&&<button className={`bni ${moreTabs.some(t=>t.id===tab)||moreOpen?'act':''}`} onClick={()=>setMoreOpen(v=>!v)}><span className="ico">⋯</span>المزيد</button>}
-    </nav>
+
+      {/* Main */}
+      <div className="main">
+        {/* Mobile topbar */}
+        <div className="mob-topbar">
+          <div className="mob-logo">🎨 دهانات</div>
+          <div className="mob-sync" style={{background:syncState==='ok'?'rgba(5,150,105,.3)':syncState==='busy'?'rgba(217,119,6,.3)':'rgba(220,38,38,.3)',color:'white',borderRadius:6,padding:'3px 8px',fontSize:11}}>
+            {syncLabel[syncState]}
+          </div>
+          <span style={{color:'white',fontSize:13}}>{user.name}</span>
+        </div>
+
+        {/* Topbar */}
+        <div className="topbar">
+          <div className="topbar-title">{curNav?.ico} {curNav?.lbl}</div>
+          <div className="topbar-date">{new Date().toLocaleDateString('ar-SA')}</div>
+          <div className={`sync-badge ${syncState==='ok'?'ok':syncState==='busy'?'busy':'err'}`}>
+            <div className="sync-dot"/>
+            {syncLabel[syncState]}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="content">{renderContent()}</div>
+      </div>
+
+      {/* Bottom nav */}
+      <nav className="bnav">
+        <div className="bnav-inner">
+          {BNAV_ITEMS.map(n=>(
+            <button key={n.id} className={`bnav-item ${tab===n.id?'active':''}`} onClick={()=>setTab(n.id)}>
+              <span className="ico">{n.ico}</span>{n.lbl}
+            </button>
+          ))}
+        </div>
+      </nav>
+    </div>
   </AuthCtx.Provider>);
 }
 
