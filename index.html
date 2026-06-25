@@ -1027,7 +1027,7 @@ function PL({sales,expenses,withdrawals,returns,capital}){
 }
 
 /* ── SETTINGS ────────────────────────────────────────────────── */
-function Settings({onWrite,onLogout}){
+function Settings({onWrite,onLogout,onExcel}){
   const[logo,setLogo]=useState(localStorage.getItem('dah_logo')||'');
   const saveLogo=e=>{const r=new FileReader();r.onload=ev=>{localStorage.setItem('dah_logo',ev.target.result);setLogo(ev.target.result);notify('✅ تم حفظ الشعار');};r.readAsDataURL(e.target.files[0]);};
   const resetData=()=>{
@@ -1057,6 +1057,12 @@ function Settings({onWrite,onLogout}){
         <div className="alert danger"><span className="alert-icon">⚠️</span><span>هذا الإجراء سيمسح جميع البيانات نهائياً ولا يمكن التراجع عنه.</span></div>
         <Btn variant="danger" onClick={resetData}>🗑️ مسح جميع البيانات</Btn>
       </Card>
+      <Card title="تصدير البيانات">
+        <div style={{marginBottom:10,fontSize:13,color:'var(--text2)'}}>تصدير كامل البيانات إلى ملف Excel (8 أوراق)</div>
+        <Btn variant="success" onClick={()=>onExcel()} style={{gap:8}}>
+          📊 تصدير Excel
+        </Btn>
+      </Card>
       <Card title="عن النظام">
         <div style={{fontSize:13,color:'var(--text2)',lineHeight:2}}>
           <div>الإصدار: <strong>v{APP_VER}</strong></div>
@@ -1066,6 +1072,49 @@ function Settings({onWrite,onLogout}){
       </Card>
     </div>
   </div>);
+}
+
+/* ── EXCEL EXPORT ────────────────────────────────────────────── */
+function exportExcel(products,sales,expenses,withdrawals,capital,returns,cashRecon){
+  if(!window.XLSX){notify('❌ مكتبة Excel لم تُحمَّل');return;}
+  const wb=XLSX.utils.book_new();
+  const add=(name,rows)=>{if(rows.length){const ws=XLSX.utils.json_to_sheet(rows);XLSX.utils.book_append_sheet(wb,ws,name);}};
+
+  // Sheet 1: Products
+  add('المنتجات',products.map(p=>({'الاسم':p.name,'الفئة':p.cat,'الوحدة':p.unit||'قطعة','سعر الشراء':+p.buyP||0,'سعر البيع':+p.sellP||0,'المخزون':+p.stock||0,'الباركود':p.barcode||''})));
+
+  // Sheet 2: Sales
+  add('المبيعات',[...sales].sort((a,b)=>a.date.localeCompare(b.date)).map(s=>({'التاريخ':s.date,'العميل':s.note||'','الأصناف':(s.items||[]).map(it=>it.pname+' ×'+it.qty).join(' · '),'الإجمالي':+s.total||0,'التكلفة':+s.cost||0,'الربح':+s.profit||0,'الخصم':+s.discount||0})));
+
+  // Sheet 3: Expenses
+  const expTypeName=id=>EXP_TYPES.find(t=>t.id===id)?.label||id;
+  add('المصاريف',[...expenses].sort((a,b)=>a.date.localeCompare(b.date)).map(e=>({'التاريخ':e.date,'النوع':expTypeName(e.type),'الوصف':e.desc,'المبلغ':+e.amount||0,'يُخصم من':CAR_TYPES.includes(e.type)?'السيارة فقط':'الجميع'})));
+
+  // Sheet 4: Withdrawals
+  const accName=id=>ACCOUNTS.find(a=>a.id===id)?.name||id;
+  add('السحوبات',[...withdrawals].sort((a,b)=>a.date.localeCompare(b.date)).map(w=>({'التاريخ':w.date,'الصندوق':accName(w.pid),'المبلغ':+w.amount||0,'ملاحظة':w.note||''})));
+
+  // Sheet 5: Capital
+  add('رأس المال',[...capital].sort((a,b)=>a.date.localeCompare(b.date)).map(c=>({'التاريخ':c.date,'الشريك':accName(c.pid),'المبلغ':+c.amount||0,'ملاحظة':c.note||''})));
+
+  // Sheet 6: Returns
+  add('المرتجعات',[...returns].sort((a,b)=>a.date.localeCompare(b.date)).map(r=>({'التاريخ':r.date,'السبب':r.reason||'','العميل':r.note||'','الأصناف':(r.items||[]).map(it=>it.pname+' ×'+it.qty).join(' · '),'التكلفة المُعادة':+r.totalCost||0})));
+
+  // Sheet 7: Cash Reconciliation
+  add('مطابقة الكاش',[...cashRecon].sort((a,b)=>a.date.localeCompare(b.date)).map(r=>({'التاريخ':r.date,'المبيعات المسجّلة':+r.expected||0,'الكاش الفعلي':+r.actual||0,'الفرق':+r.diff||0,'الحالة':r.diff===0?'مطابق':r.diff>0?'زيادة':'عجز','ملاحظة':r.note||''})));
+
+  // Sheet 8: Monthly Summary
+  const months=Array.from(new Set([...sales,...expenses].map(x=>mk(x.date)))).sort();
+  add('الملخص الشهري',months.map(m=>{
+    const fin=calcFin(sales,expenses,withdrawals,returns,m);
+    const row={'الشهر':m,'المبيعات':fin.totalRev,'تكلفة البضاعة':fin.totalCost,'الربح الإجمالي':fin.grossProfit,'المصاريف العامة':fin.generalExp,'مصاريف السيارة':fin.carExp,'صافي الربح':fin.netProfit};
+    fin.accs.forEach(ac=>{row[ac.name+' (حصة)']=ac.share;});
+    return row;
+  }));
+
+  const dt=new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb,`دهانات_محمد_خالد_${dt}.xlsx`);
+  notify('✅ تم تصدير Excel!');
 }
 
 /* ── AUTH SCREENS ────────────────────────────────────────────── */
@@ -1165,7 +1214,7 @@ const BNAV_ITEMS=[
   {id:2,ico:'💰',lbl:'مبيعات'},
   {id:3,ico:'📊',lbl:'مصاريف'},
   {id:6,ico:'🏦',lbl:'صناديق'},
-  {id:10,ico:'⚙️',lbl:'إعدادات'},
+  {id:4,ico:'🧾',lbl:'مطابقة'},
 ];
 
 function App(){
@@ -1228,7 +1277,7 @@ function App(){
   const renderContent=()=>{
     const p={sales,products,expenses,withdrawals,capital,returns,cashRecon,onWrite};
     switch(tab){
-      case 0:return<Dashboard {...p}/>;
+      case 0:return<Dashboard sales={sales} products={products} expenses={expenses} withdrawals={withdrawals} capital={capital} returns={returns} cashRecon={cashRecon} onWrite={onWrite}/>;
       case 1:return<Products products={products} onWrite={onWrite}/>;
       case 2:return<Sales sales={sales} products={products} onWrite={onWrite}/>;
       case 3:return<Expenses expenses={expenses} onWrite={onWrite}/>;
@@ -1238,7 +1287,7 @@ function App(){
       case 7:return<Capital capital={capital} onWrite={onWrite}/>;
       case 8:return<MonthlyReport sales={sales} expenses={expenses} withdrawals={withdrawals} returns={returns} capital={capital}/>;
       case 9:return<PL sales={sales} expenses={expenses} withdrawals={withdrawals} returns={returns} capital={capital}/>;
-      case 10:return<Settings onWrite={onWrite} onLogout={handleLogout}/>;
+      case 10:return<Settings onWrite={onWrite} onLogout={handleLogout} onExcel={()=>exportExcel(products,sales,expenses,withdrawals,capital,returns,cashRecon)}/>;
       default:return null;
     }
   };
@@ -1292,6 +1341,7 @@ function App(){
         <div className="topbar">
           <div className="topbar-title">{curNav?.ico} {curNav?.lbl}</div>
           <div className="topbar-date">{new Date().toLocaleDateString('ar-SA')}</div>
+          <button onClick={()=>exportExcel(products,sales,expenses,withdrawals,capital,returns,cashRecon)} title="تصدير Excel" style={{background:'var(--green)',color:'white',border:'none',borderRadius:8,padding:'6px 12px',cursor:'pointer',fontFamily:"'Cairo',sans-serif",fontSize:12,fontWeight:700,display:'flex',alignItems:'center',gap:4}}>📊 Excel</button>
           <div className={`sync-badge ${syncState==='ok'?'ok':syncState==='busy'?'busy':'err'}`}>
             <div className="sync-dot"/>
             {syncLabel[syncState]}
