@@ -1088,15 +1088,58 @@ function SetupScreen({onDone}){
 }
 
 function LoginScreen({onLogin}){
-  const[u,setU]=useState('');const[p,setP]=useState('');const[err,setErr]=useState('');
-  const login=()=>{const user=USERS.find(x=>x.u===u&&x.p===p);if(user){onLogin(user);}else setErr('كلمة المرور أو اسم المستخدم خاطئ');};
+  const[sel,setSel]=useState(null);
+  const[p,setP]=useState('');const[err,setErr]=useState('');
+  const login=()=>{
+    if(!sel)return;
+    const user=USERS.find(x=>x.u===sel.u&&x.p===p);
+    if(user){onLogin(user);}else{setErr('كلمة المرور خاطئة');setP('');}
+  };
   return(<div className="auth-page">
     <div className="auth-card">
-      <div className="auth-logo"><div className="icon">🎨</div><div className="name">دهانات محمد خالد</div><div className="sub">نظام المحاسبة v{APP_VER}</div></div>
-      <Inp label="اسم المستخدم" value={u} onChange={e=>{setU(e.target.value);setErr('');}} placeholder="mk أو as" style={{marginBottom:10}}/>
-      <Inp label="كلمة المرور" type="password" value={p} onChange={e=>{setP(e.target.value);setErr('');}} placeholder="••••" style={{marginBottom:10}} onKeyDown={e=>e.key==='Enter'&&login()}/>
-      {err&&<div className="alert danger" style={{marginBottom:10}}><span className="alert-icon">❌</span>{err}</div>}
-      <Btn style={{width:'100%'}} onClick={login}>🔓 تسجيل الدخول</Btn>
+      <div className="auth-logo">
+        <div className="icon">🎨</div>
+        <div className="name">دهانات محمد خالد</div>
+        <div className="sub">نظام المحاسبة v{APP_VER}</div>
+      </div>
+      {!sel?(<>
+        <div style={{fontWeight:700,fontSize:14,marginBottom:12,color:'var(--text2)'}}>اختر حسابك:</div>
+        <div style={{display:'grid',gap:10}}>
+          {USERS.map(usr=>(
+            <button key={usr.u} onClick={()=>{setSel(usr);setErr('');setP('');}}
+              style={{display:'flex',alignItems:'center',gap:14,padding:'14px 16px',background:'var(--bg)',border:'2px solid var(--border)',borderRadius:'var(--r)',cursor:'pointer',textAlign:'right',transition:'all .15s',fontFamily:"'Cairo',sans-serif"}}
+              onMouseEnter={e=>{e.currentTarget.style.borderColor='var(--purple)';e.currentTarget.style.background='var(--purple-light)';}}
+              onMouseLeave={e=>{e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.background='var(--bg)';}}>
+              <div style={{width:44,height:44,borderRadius:10,background:'var(--purple)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontSize:18,fontWeight:900,flexShrink:0}}>
+                {usr.name[0]}
+              </div>
+              <div>
+                <div style={{fontWeight:800,fontSize:15,color:'var(--text)'}}>{usr.name}</div>
+                <div style={{fontSize:12,color:'var(--text3)'}}>مدير النظام — صلاحيات كاملة</div>
+              </div>
+              <div style={{marginRight:'auto',color:'var(--text3)',fontSize:18}}>←</div>
+            </button>
+          ))}
+        </div>
+      </>):(
+        <div>
+          <button onClick={()=>{setSel(null);setP('');setErr('');}}
+            style={{display:'flex',alignItems:'center',gap:8,background:'none',border:'none',color:'var(--text3)',cursor:'pointer',marginBottom:16,fontFamily:"'Cairo',sans-serif",fontSize:13}}>
+            → العودة
+          </button>
+          <div style={{display:'flex',alignItems:'center',gap:12,padding:'12px 14px',background:'var(--purple-light)',borderRadius:'var(--r-sm)',marginBottom:16}}>
+            <div style={{width:36,height:36,borderRadius:8,background:'var(--purple)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontWeight:900,fontSize:15}}>{sel.name[0]}</div>
+            <div><div style={{fontWeight:800}}>{sel.name}</div><div style={{fontSize:12,color:'var(--purple)'}}>أدخل كلمة المرور</div></div>
+          </div>
+          <Inp label="كلمة المرور" type="password" value={p}
+            onChange={e=>{setP(e.target.value);setErr('');}}
+            placeholder="••••" style={{marginBottom:10}}
+            onKeyDown={e=>e.key==='Enter'&&login()}
+            autoFocus/>
+          {err&&<div className="alert danger" style={{marginBottom:10}}><span className="alert-icon">❌</span>{err}</div>}
+          <Btn style={{width:'100%'}} onClick={login}>🔓 دخول</Btn>
+        </div>
+      )}
     </div>
   </div>);
 }
