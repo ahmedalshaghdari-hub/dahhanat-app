@@ -201,20 +201,36 @@ select.fi{cursor:pointer;}
 .recon-neg{color:var(--red);}
 .recon-zero{color:var(--text3);}
 
+/* ── Mobile Drawer ─────────────────────────────────────────── */
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;backdrop-filter:blur(2px);}
+.drawer-overlay.open{display:block;}
+.drawer{position:fixed;top:0;right:-280px;width:280px;height:100dvh;background:var(--navy);z-index:201;transition:right .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow-y:auto;}
+.drawer.open{right:0;}
+.drawer-header{padding:16px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;}
+.drawer-logo{color:white;font-size:15px;font-weight:900;}
+.drawer-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:22px;cursor:pointer;padding:4px;}
+.drawer-nav{padding:10px 8px;flex:1;}
+.mob-menu-btn{background:none;border:none;color:white;font-size:22px;cursor:pointer;padding:4px 8px;border-radius:6px;}
+
 /* ── Responsive ────────────────────────────────────────────── */
 @media(max-width:768px){
   .sidebar{display:none;}
   .bnav{display:block;}
   .mob-topbar{display:flex;}
-  .content{padding:14px;padding-bottom:72px;}
+  .content{padding:14px;padding-bottom:76px;}
   .kpi-grid{grid-template-columns:repeat(2,1fr);}
   .items-row{grid-template-columns:1fr 60px;gap:6px;}
   .items-row .price-col,.items-row .total-col{display:none;}
   .main{padding-top:0;}
+  .topbar{display:none;}
+  .funds-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .tbl th,.tbl td{padding:8px 8px;font-size:12px;}
 }
 @media(min-width:769px){
   .mob-topbar{display:none!important;}
   .bnav{display:none!important;}
+  .drawer,.drawer-overlay{display:none!important;}
 }
 
 /* ── Loading / splash ──────────────────────────────────────── */
@@ -1213,15 +1229,15 @@ const BNAV_ITEMS=[
   {id:0,ico:'🏠',lbl:'الرئيسية'},
   {id:2,ico:'💰',lbl:'مبيعات'},
   {id:3,ico:'📊',lbl:'مصاريف'},
+  {id:5,ico:'↩️',lbl:'مرتجعات'},
   {id:6,ico:'🏦',lbl:'صناديق'},
-  {id:4,ico:'🧾',lbl:'مطابقة'},
 ];
 
 function App(){
   const[user,setUser]=useState(()=>{try{return JSON.parse(sessionStorage.getItem('dah_user'));}catch{return null;}});
   const[hasToken,setHasToken]=useState(!!getToken());
   const[syncState,setSyncState]=useState('loading');
-  const[tab,setTab]=useState(0);
+  const[tab,setTab]=useState(0);const[drawerOpen,setDrawerOpen]=useState(false);
   const[lastTs,setLastTs]=useState(0);
   const[products,setProducts]=useState([]);
   const[sales,setSales]=useState([]);
@@ -1328,13 +1344,45 @@ function App(){
 
       {/* Main */}
       <div className="main">
+        {/* Mobile Drawer */}
+        <div className={`drawer-overlay ${drawerOpen?'open':''}`} onClick={()=>setDrawerOpen(false)}/>
+        <div className={`drawer ${drawerOpen?'open':''}`}>
+          <div className="drawer-header">
+            <div className="drawer-logo">🎨 دهانات محمد خالد</div>
+            <button className="drawer-close" onClick={()=>setDrawerOpen(false)}>✕</button>
+          </div>
+          <div className="drawer-nav">
+            {[...new Set(NAV_ITEMS.map(n=>n.section))].map(sec=>(
+              <div key={sec} style={{marginBottom:4}}>
+                <div className="nav-label">{sec}</div>
+                {NAV_ITEMS.filter(n=>n.section===sec).map(n=>(
+                  <button key={n.id} className={`nav-item ${tab===n.id?'active':''}`}
+                    onClick={()=>{setTab(n.id);setDrawerOpen(false);}}>
+                    <span className="ico">{n.ico}</span>{n.lbl}
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div style={{padding:'12px 8px',borderTop:'1px solid rgba(255,255,255,.08)'}}>
+            <div className="user-card" style={{marginBottom:8}}>
+              <div className="user-avatar">{user.name[0]}</div>
+              <div className="user-info"><div className="user-name">{user.name}</div><div className="user-role">مدير النظام</div></div>
+            </div>
+            <button onClick={handleLogout} style={{width:'100%',padding:'9px',background:'rgba(220,38,38,.2)',border:'1px solid rgba(220,38,38,.3)',borderRadius:8,color:'#FCA5A5',cursor:'pointer',fontFamily:"'Cairo',sans-serif",fontWeight:700,fontSize:13}}>⏻ تسجيل خروج</button>
+          </div>
+        </div>
+
         {/* Mobile topbar */}
         <div className="mob-topbar">
+          <button className="mob-menu-btn" onClick={()=>setDrawerOpen(true)}>☰</button>
           <div className="mob-logo">🎨 دهانات</div>
-          <div className="mob-sync" style={{background:syncState==='ok'?'rgba(5,150,105,.3)':syncState==='busy'?'rgba(217,119,6,.3)':'rgba(220,38,38,.3)',color:'white',borderRadius:6,padding:'3px 8px',fontSize:11}}>
-            {syncLabel[syncState]}
+          <div style={{display:'flex',alignItems:'center',gap:8}}>
+            <div style={{background:syncState==='ok'?'rgba(5,150,105,.3)':syncState==='busy'?'rgba(217,119,6,.3)':'rgba(220,38,38,.3)',color:'white',borderRadius:6,padding:'3px 8px',fontSize:10,fontWeight:700}}>
+              {syncState==='ok'?'✓':'...'}
+            </div>
+            <button onClick={()=>exportExcel(products,sales,expenses,withdrawals,capital,returns,cashRecon)} style={{background:'rgba(255,255,255,.1)',border:'none',color:'white',borderRadius:6,padding:'5px 8px',cursor:'pointer',fontFamily:"'Cairo',sans-serif",fontSize:11,fontWeight:700}}>📊</button>
           </div>
-          <span style={{color:'white',fontSize:13}}>{user.name}</span>
         </div>
 
         {/* Topbar */}
@@ -1360,6 +1408,9 @@ function App(){
               <span className="ico">{n.ico}</span>{n.lbl}
             </button>
           ))}
+          <button className="bnav-item" onClick={()=>setDrawerOpen(true)}>
+            <span className="ico">☰</span>المزيد
+          </button>
         </div>
       </nav>
     </div>
