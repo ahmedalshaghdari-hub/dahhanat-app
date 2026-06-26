@@ -383,71 +383,98 @@ function Card({title,action,children,style}){return(
 // ══════════════════════════════════════════════════════════════
 
 /* ── DASHBOARD ──────────────────────────────────────────────── */
-function Dashboard({sales,expenses,withdrawals,capital,returns,products}){
+function Dashboard({sales,products,expenses,withdrawals,capital,returns,cashRecon,onWrite}){
   const cm=today().slice(0,7);
-  const fin=useMemo(()=>calcFin(sales,expenses,withdrawals,returns,cm),[sales,expenses,withdrawals,cm]);
+  const fin=useMemo(()=>calcFin(sales,expenses,withdrawals,returns,cm),[sales,expenses,withdrawals,returns,cm]);
   const totCap=capital.reduce((a,c)=>a+(c.amount||0),0);
   const lowStock=products.filter(p=>(+p.stock||0)<5).sort((a,b)=>(+a.stock||0)-(+b.stock||0));
   const todaySales=sales.filter(s=>s.date===today());
   const todayRev=todaySales.reduce((a,s)=>a+(s.total||0),0);
+  const todayProfit=todaySales.reduce((a,s)=>a+(s.profit||0),0);
+  const margin=fin.totalRev>0?((fin.netProfit/fin.totalRev)*100).toFixed(1):0;
+  const totalDrawn=fin.accs.reduce((a,ac)=>a+ac.drawn,0);
 
   return(<div>
     <div className="page-header">
-      <div><div className="page-title">لوحة التحكم</div>
+      <div><div className="page-title">📊 لوحة التحكم</div>
         <div className="page-sub">{new Date().toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div>
       </div>
     </div>
 
-    {/* Today */}
-    <div className="alert info" style={{marginBottom:16}}>
-      <span className="alert-icon">📅</span>
-      <div>اليوم: <strong>{fmtDate(today())}</strong> — مبيعات اليوم: <strong style={{color:'var(--green)'}}>{fmt(todayRev)} ر.س</strong> ({todaySales.length} فاتورة)</div>
+    {/* Today banner */}
+    <div style={{background:'linear-gradient(135deg,var(--navy) 0%,var(--purple2) 100%)',borderRadius:'var(--r)',padding:'14px 18px',marginBottom:16,color:'white',display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:10}}>
+      <div><div style={{fontSize:12,opacity:.7,marginBottom:3}}>📅 اليوم — {fmtDate(today())}</div>
+        <div style={{fontSize:15,fontWeight:800}}>{todaySales.length} فاتورة · {fmt(todayRev)} ر.س مبيعات اليوم</div></div>
+      <div style={{textAlign:'left'}}><div style={{fontSize:11,opacity:.7}}>ربح اليوم</div>
+        <div style={{fontSize:22,fontWeight:900,color:todayProfit>=0?'#6EE7B7':'#FCA5A5'}}>{fmt(todayProfit)} ر.س</div></div>
     </div>
 
-    {/* KPIs */}
-    <div className="kpi-grid">
-      <div className="kpi green"><div className="kpi-label">مبيعات الشهر</div><div className="kpi-value" style={{color:'var(--green)'}}>{fmt(fin.totalRev)}</div><div className="kpi-sub">ر.س</div><div className="kpi-icon">💰</div></div>
-      <div className="kpi red"><div className="kpi-label">المصاريف الإجمالية</div><div className="kpi-value" style={{color:'var(--red)'}}>{fmt(fin.totalExp)}</div><div className="kpi-sub">ر.س</div><div className="kpi-icon">📉</div></div>
-      <div className="kpi purple"><div className="kpi-label">صافي الربح</div><div className="kpi-value" style={{color:fin.netProfit>=0?'var(--green)':'var(--red)'}}>{fmt(fin.netProfit)}</div><div className="kpi-sub">ر.س</div><div className="kpi-icon">📊</div></div>
-      <div className="kpi blue"><div className="kpi-label">رأس المال</div><div className="kpi-value" style={{color:'var(--blue)'}}>{fmt(totCap)}</div><div className="kpi-sub">ر.س</div><div className="kpi-icon">🏦</div></div>
+    {/* 6 KPI Cards */}
+    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))',gap:12,marginBottom:16}}>
+      <div className="kpi green"><div className="kpi-icon">💰</div><div className="kpi-label">إجمالي المبيعات</div><div className="kpi-value" style={{color:'var(--green)'}}>{fmt(fin.totalRev)}</div><div className="kpi-sub">ر.س — هذا الشهر</div></div>
+      <div className="kpi blue"><div className="kpi-icon">📈</div><div className="kpi-label">إجمالي الأرباح</div><div className="kpi-value" style={{color:'var(--blue)'}}>{fmt(fin.grossProfit)}</div><div className="kpi-sub">مبيعات − تكلفة البضاعة</div></div>
+      <div className="kpi red"><div className="kpi-icon">📉</div><div className="kpi-label">إجمالي المصروفات</div><div className="kpi-value" style={{color:'var(--red)'}}>{fmt(fin.totalExp)}</div><div className="kpi-sub">عامة + سيارة</div></div>
+      <div className="kpi" style={{borderRight:`3px solid ${fin.netProfit>=0?'var(--green)':'var(--red)'}`}}><div className="kpi-icon">🏆</div><div className="kpi-label">صافي الربح</div><div className="kpi-value" style={{color:fin.netProfit>=0?'var(--green)':'var(--red)'}}>{fmt(fin.netProfit)}</div><div className="kpi-sub">هامش {margin}%</div></div>
+      <div className="kpi purple"><div className="kpi-icon">🏦</div><div className="kpi-label">رأس المال</div><div className="kpi-value" style={{color:'var(--purple)'}}>{fmt(totCap)}</div><div className="kpi-sub">إجمالي</div></div>
+      <div className="kpi amber"><div className="kpi-icon">💸</div><div className="kpi-label">السحوبات</div><div className="kpi-value" style={{color:'var(--amber)'}}>{fmt(totalDrawn)}</div><div className="kpi-sub">هذا الشهر</div></div>
     </div>
+
+    {/* Breakdown table */}
+    <Card style={{marginBottom:16}}>
+      <div className="card-header"><span className="card-title">📋 تفصيل الشهر الحالي — {cm}</span></div>
+      {[
+        {label:'إجمالي المبيعات',val:fin.totalRev,clr:'var(--green)',sign:'',bold:false},
+        {label:'− تكلفة البضاعة المباعة',val:fin.totalCost,clr:'var(--text2)',sign:'−',bold:false},
+        {label:'= إجمالي الأرباح (Gross)',val:fin.grossProfit,clr:'var(--blue)',sign:'',bold:true},
+        {label:'− المصاريف العامة',val:fin.generalExp,clr:'var(--red)',sign:'−',bold:false},
+        {label:'− مصاريف السيارة (صندوق السيارة)',val:fin.carExp,clr:'var(--amber)',sign:'−',bold:false},
+        {label:'= صافي الربح',val:fin.netProfit,clr:fin.netProfit>=0?'var(--green)':'var(--red)',sign:'',bold:true},
+      ].map((r,i)=>(
+        <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'9px 4px',borderBottom:i<5?'1px solid var(--border)':'none',background:r.bold?'#F8FAFC':'transparent'}}>
+          <span style={{fontSize:13,color:r.bold?'var(--text)':'var(--text2)',fontWeight:r.bold?800:500}}>{r.label}</span>
+          <span style={{fontSize:14,fontWeight:r.bold?900:700,color:r.clr,fontFamily:'system-ui'}}>{r.sign}{fmt(r.val)} ر.س</span>
+        </div>
+      ))}
+    </Card>
 
     {/* Partner balances */}
-    <div className="funds-grid" style={{marginBottom:20}}>
-      {fin.accs.map(ac=><div key={ac.id} className={`fund-card ${ac.id}`}>
-        <div className="fund-name">{ac.emoji} {ac.name}</div>
-        <div className="fund-amount" style={{color:ac.net>=0?'var(--green)':'var(--red)'}}>{fmt(ac.net)}</div>
-        <div className="fund-detail">
-          حصة الربح: {fmt(ac.share)}<br/>
-          السحوبات: {fmt(ac.drawn)}<br/>
-          {ac.id==='car'&&ac.carDeduct>0&&<>صيانة: {fmt(ac.carDeduct)}<br/></>}
-          النسبة: {(ac.pct*100).toFixed(0)}%
+    <div style={{fontWeight:800,fontSize:14,color:'var(--text)',marginBottom:10}}>💼 حصة كل شريك من صافي الربح</div>
+    <div className="funds-grid" style={{marginBottom:16}}>
+      {fin.accs.map(ac=>(
+        <div key={ac.id} className={`fund-card ${ac.id}`}>
+          <div className="fund-name">{ac.emoji} {ac.name} — {(ac.pct*100).toFixed(0)}%</div>
+          <div className="fund-amount" style={{color:ac.net>=0?'var(--green)':'var(--red)'}}>{fmt(ac.net)} <span style={{fontSize:12}}>ر.س</span></div>
+          <div className="fund-detail">
+            حصة الربح: <strong style={{color:'var(--green)'}}>{fmt(ac.share)}</strong><br/>
+            السحوبات: <strong style={{color:'var(--red)'}}>−{fmt(ac.drawn)}</strong><br/>
+            {ac.id==='car'&&ac.carDeduct>0&&<>صيانة السيارة: <strong style={{color:'var(--amber)'}}>−{fmt(ac.carDeduct)}</strong><br/></>}
+          </div>
         </div>
-      </div>)}
+      ))}
     </div>
 
-    {/* Low stock alert */}
     {lowStock.length>0&&<div className="alert warn" style={{marginBottom:16}}>
       <span className="alert-icon">⚠️</span>
-      <div><strong>تنبيه مخزون منخفض:</strong> {lowStock.map(p=>`${p.name} (${p.stock||0})`).join(' · ')}</div>
+      <div><strong>مخزون منخفض ({lowStock.length} منتج):</strong> {lowStock.map(p=>`${p.name} (${+p.stock||0})`).join(' · ')}</div>
     </div>}
 
-    {/* Recent sales */}
-    <Card title={`آخر المبيعات (${sales.slice(-5).length})`}>
+    <Card title="📋 آخر المبيعات">
       {sales.length===0?<div style={{textAlign:'center',padding:24,color:'var(--text3)'}}>لا توجد مبيعات بعد</div>
       :<div className="tbl-wrap"><table className="tbl">
-        <thead><tr><th>التاريخ</th><th>العميل</th><th>الإجمالي</th><th>الحالة</th></tr></thead>
-        <tbody>{[...sales].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,6).map(s=>(
+        <thead><tr><th>التاريخ</th><th>العميل</th><th>المبيعات</th><th>الربح</th></tr></thead>
+        <tbody>{[...sales].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8).map(s=>(
           <tr key={s.id}>
-            <td>{fmtDate(s.date)}</td><td>{s.note||'—'}</td>
+            <td>{fmtDate(s.date)}</td>
+            <td style={{maxWidth:120}}>{s.note||'—'}</td>
             <td className="num pos">{fmt(s.total)}</td>
-            <td><span className="badge badge-green">✓ مكتمل</span></td>
+            <td className="num" style={{color:(s.profit||0)>=0?'var(--green)':'var(--red)'}}>{fmt(s.profit||0)}</td>
           </tr>
         ))}</tbody>
       </table></div>}
     </Card>
   </div>);
 }
+
 
 /* ── PRODUCTS ────────────────────────────────────────────────── */
 function Products({products,onWrite}){
