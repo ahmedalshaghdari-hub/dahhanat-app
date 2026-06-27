@@ -619,29 +619,59 @@ function Sales({sales,products,onWrite}){
         <Inp label="العميل / ملاحظة" value={note} onChange={e=>setNote(e.target.value)} placeholder="اسم العميل أو رقم الطلب"/>
       </div>
       <div style={{fontWeight:700,fontSize:13,marginBottom:8,color:'var(--text2)'}}>الأصناف:</div>
-      {items.map((it,i)=>(
-        <div key={i} className="items-row" style={{gridTemplateColumns:'2fr 60px 100px 90px auto'}}>
-          <Sel value={it.pid} onChange={e=>upd(i,'pid',e.target.value)}>
-            <option value="">— اختر منتج —</option>
-            {products.map(p=><option key={p.id} value={p.id}>{p.name} ({p.stock||0})</option>)}
-          </Sel>
-          <Inp type="number" value={it.qty} onChange={e=>upd(i,'qty',+e.target.value)} placeholder="كمية"/>
-          <Inp type="number" value={it.sellP} onChange={e=>upd(i,'sellP',+e.target.value)} placeholder="السعر" className="price-col"/>
-          <div className="fi total-col" style={{background:'var(--green-light)',color:'var(--green)',fontWeight:800,textAlign:'center'}}>{fmt(it.qty*it.sellP)}</div>
-          {items.length>1&&<Btn variant="ghost" onClick={()=>setItems(items.filter((_,j)=>j!==i))}>✕</Btn>}
+      {/* Items header */}
+      <div style={{display:'grid',gridTemplateColumns:'2fr 60px 100px 100px 100px 80px auto',gap:8,marginBottom:6,padding:'0 4px'}}>
+        {['المنتج','الكمية','سعر الشراء 🔒','سعر البيع','الإجمالي','الربح 🔒',''].map(lbl=>(
+          <div key={lbl} style={{fontSize:11,fontWeight:700,color:lbl.includes('🔒')?'var(--purple)':'var(--text3)'}}>{lbl}</div>
+        ))}
+      </div>
+      {items.map((it,i)=>{
+        const itemProfit=(+it.qty*+it.sellP)-(+it.qty*+it.buyP);
+        const itemMargin=it.sellP>0&&it.buyP>0?(((it.sellP-it.buyP)/it.sellP)*100).toFixed(0):'—';
+        return(
+        <div key={i} style={{background:i%2===0?'var(--bg)':'white',borderRadius:8,padding:'8px',marginBottom:6,border:'1px solid var(--border)'}}>
+          <div style={{display:'grid',gridTemplateColumns:'2fr 60px 100px 100px 100px 80px auto',gap:8,alignItems:'center'}}>
+            <Sel value={it.pid} onChange={e=>upd(i,'pid',e.target.value)}>
+              <option value="">— اختر منتج —</option>
+              {products.map(p=><option key={p.id} value={p.id}>{p.name} ({p.stock||0})</option>)}
+            </Sel>
+            <Inp type="number" value={it.qty} onChange={e=>upd(i,'qty',+e.target.value)} placeholder="كمية"/>
+            {/* سعر الشراء — داخلي فقط */}
+            <div style={{position:'relative'}}>
+              <input className="fi" type="number" value={it.buyP||''} onChange={e=>upd(i,'buyP',+e.target.value)} placeholder="0"
+                style={{background:'#F5F3FF',borderColor:'#DDD6FE',color:'var(--purple)',fontWeight:700,paddingLeft:20}}/>
+              <span style={{position:'absolute',left:6,top:'50%',transform:'translateY(-50%)',fontSize:10,color:'var(--purple)',opacity:.6}}>🔒</span>
+            </div>
+            <Inp type="number" value={it.sellP} onChange={e=>upd(i,'sellP',+e.target.value)} placeholder="0"/>
+            {/* الإجمالي */}
+            <div className="fi" style={{background:'var(--green-light)',color:'var(--green)',fontWeight:800,textAlign:'center',border:'1.5px solid #A7F3D0'}}>
+              {fmt(it.qty*it.sellP)}
+            </div>
+            {/* الربح — داخلي فقط */}
+            <div className="fi" style={{background:itemProfit>=0?'#F5F3FF':'var(--red-light)',color:itemProfit>=0?'var(--purple)':'var(--red)',fontWeight:800,textAlign:'center',border:`1.5px solid ${itemProfit>=0?'#DDD6FE':'#FCA5A5'}`,fontSize:12}}>
+              {fmt(itemProfit)}<br/>
+              <span style={{fontSize:10,opacity:.8}}>{itemMargin}%</span>
+            </div>
+            {items.length>1&&<Btn variant="ghost" onClick={()=>setItems(items.filter((_,j)=>j!==i))}>✕</Btn>}
+          </div>
         </div>
-      ))}
-      <Btn variant="outline" size="sm" onClick={()=>setItems([...items,{...ei}])} style={{marginBottom:12}}>＋ صنف</Btn>
+        );
+      })}
+      <Btn variant="outline" size="sm" onClick={()=>setItems([...items,{...ei}])} style={{marginBottom:12}}>＋ إضافة صنف</Btn>
       <div className="form-grid" style={{gridTemplateColumns:'1fr 1fr',marginBottom:12}}>
         <Inp label="خصم (ر.س)" type="number" value={discount} onChange={e=>setDiscount(e.target.value)} placeholder="0"/>
         <div className="fg"><label>الإجمالي بعد الخصم</label>
           <div className="fi" style={{background:'var(--green-light)',color:'var(--green)',fontWeight:900,fontSize:16}}>{fmt(totals.rev)} ر.س</div>
         </div>
       </div>
-      <div className="stats-row">
-        <span className="stat-chip">المجموع: {fmt(totals.sub)}</span>
-        <span className="stat-chip" style={{color:'var(--red)'}}>التكلفة: {fmt(totals.cost)}</span>
-        <span className="stat-chip" style={{color:'var(--green)'}}>الربح: {fmt(totals.profit)}</span>
+      <div style={{background:'#F5F3FF',border:'1px solid #DDD6FE',borderRadius:10,padding:'10px 14px',marginBottom:12}}>
+        <div style={{fontSize:11,color:'var(--purple)',fontWeight:700,marginBottom:6}}>🔒 ملخص داخلي — لا يظهر للعميل</div>
+        <div style={{display:'flex',gap:12,flexWrap:'wrap',fontSize:13}}>
+          <span>إجمالي المبيعات: <strong style={{color:'var(--green)'}}>{fmt(totals.sub)} ر.س</strong></span>
+          <span>تكلفة البضاعة: <strong style={{color:'var(--red)'}}>{fmt(totals.cost)} ر.س</strong></span>
+          <span>إجمالي الربح: <strong style={{color:'var(--purple)'}}>{fmt(totals.profit)} ر.س</strong></span>
+          <span>هامش الربح: <strong style={{color:'var(--purple)'}}>{totals.sub>0?((totals.profit/totals.sub)*100).toFixed(1):0}%</strong></span>
+        </div>
       </div>
       <Btn onClick={doSave}>{editId?'💾 حفظ التعديل':'✅ حفظ الفاتورة وتحديث المخزون'}</Btn>
     </div>}
