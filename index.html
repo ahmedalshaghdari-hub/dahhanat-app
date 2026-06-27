@@ -284,41 +284,80 @@ const fmtDate=d=>{if(!d)return'';const[y,m,day]=d.split('-');return`${day}/${m}/
 const getToken=()=>localStorage.getItem(TOKEN_KEY)||'';
 const setToken=t=>localStorage.setItem(TOKEN_KEY,t);
 
-// ── GitHub API ────────────────────────────────────────────────
+// ── GitHub API (robust write with retry) ──────────────────────
 let _sha=null,_cache=null,_writing=false,_queue=[];
+const KEYS=['products','sales','expenses','withdrawals','capital','returns','cashRecon'];
 
-async function ghRead(){
+// Safe base64 encode/decode for Unicode Arabic text
+function b64enc(obj){
+  const bytes=new TextEncoder().encode(JSON.stringify(obj));
+  let bin='';bytes.forEach(b=>bin+=String.fromCharCode(b));
+  return btoa(bin);
+}
+function b64dec(str){
+  const bin=atob(str.replace(/\s/g,''));
+  const bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+async function ghFetchSha(){
   const t=getToken();if(!t)throw new Error('no token');
   const _p=fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/data.json`,
     {headers:{Authorization:`Bearer ${t}`,Accept:'application/vnd.github.v3+json'}});
-  const _t=new Promise((_,rj)=>setTimeout(()=>rj(new Error('timeout')),15000));
-  const r=await Promise.race([_p,_t]);
+  const _timeout=new Promise((_,rj)=>setTimeout(()=>rj(new Error('timeout')),15000));
+  const r=await Promise.race([_p,_timeout]);
   if(!r.ok)throw new Error('read '+r.status);
   const f=await r.json();
   _sha=f.sha;
-  _cache=JSON.parse(decodeURIComponent(escape(atob(f.content.replace(/\s/g,'')))));
-  ['products','sales','expenses','withdrawals','capital','returns','cashRecon'].forEach(k=>{if(!_cache[k])_cache[k]={};});
+  _cache=b64dec(f.content);
+  KEYS.forEach(k=>{if(!_cache[k])_cache[k]={};});
   return _cache;
 }
+
+// Public read function
+const ghRead=ghFetchSha;
 
 async function processQ(){
   if(_writing||!_queue.length)return;
   _writing=true;
   const{updater,res,rej}=_queue.shift();
-  try{
-    const data=_cache?JSON.parse(JSON.stringify(_cache)):await ghRead();
-    ['products','sales','expenses','withdrawals','capital','returns','cashRecon'].forEach(k=>{if(!data[k])data[k]={};});
-    updater(data);
-    data.ts=Date.now();
-    const content=btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-    const t=getToken();
-    const r=await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/data.json`,
-      {method:'PUT',headers:{Authorization:`Bearer ${t}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
-       body:JSON.stringify({message:'update',content,sha:_sha})});
-    if(!r.ok)throw new Error('write '+r.status);
-    const j=await r.json();_sha=j.content.sha;_cache=data;res(data);
-  }catch(e){rej(e);}
-  finally{_writing=false;processQ();}
+  let tries=3;
+  while(tries>0){
+    tries--;
+    try{
+      // Always use fresh cache; if stale or missing, re-read first
+      if(!_cache||!_sha)await ghFetchSha();
+      const data=JSON.parse(JSON.stringify(_cache));
+      KEYS.forEach(k=>{if(!data[k])data[k]={};});
+      updater(data);
+      data.ts=Date.now();
+      const t=getToken();
+      const putFetch=fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/data.json`,
+        {method:'PUT',
+         headers:{Authorization:`Bearer ${t}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+         body:JSON.stringify({message:'update v'+Date.now(),content:b64enc(data),sha:_sha})});
+      const putTimeout=new Promise((_,rj)=>setTimeout(()=>rj(new Error('write timeout')),20000));
+      const r=await Promise.race([putFetch,putTimeout]);
+      if(r.status===409||r.status===422){
+        // SHA conflict — re-read fresh SHA and retry
+        _sha=null;_cache=null;
+        await new Promise(ok=>setTimeout(ok,600));
+        continue;
+      }
+      if(!r.ok)throw new Error('write '+r.status);
+      const j=await r.json();
+      _sha=j.content.sha;
+      _cache=data;
+      res(data);
+      _writing=false;processQ();return;
+    }catch(e){
+      if(tries>0){_sha=null;_cache=null;await new Promise(ok=>setTimeout(ok,800));continue;}
+      rej(e);_writing=false;processQ();return;
+    }
+  }
+  rej(new Error('max retries exceeded'));
+  _writing=false;processQ();
 }
 
 function ghWrite(updater){
@@ -1319,19 +1358,31 @@ function App(){
   useEffect(()=>{
     if(!getToken()){setSyncState('notoken');return;}
     ghRead().then(d=>{applyData(d);setSyncState('ok');}).catch(()=>setSyncState('err'));
-    const poll=setInterval(()=>{ghRead().then(d=>{if(d.ts>lastTs){applyData(d);}}).catch(()=>{});},30000);
+    const poll=setInterval(()=>{
+      // Don't poll while writing (prevents SHA conflicts)
+      if(_writing||_queue.length>0)return;
+      ghRead().then(d=>{if(d.ts>lastTs){applyData(d);}}).catch(()=>{});
+    },30000);
     return()=>clearInterval(poll);
   },[hasToken]);
 
   const onWrite=useCallback(updater=>{
     setSyncState('busy');
-    ghWrite(updater).then(d=>{applyData(d);setSyncState('ok');}).catch(()=>{setSyncState('err');notify('❌ خطأ في الحفظ');});
-  },[lastTs]);
+    ghWrite(updater).then(d=>{applyData(d);setSyncState('ok');}).catch(e=>{
+      setSyncState('err');
+      console.error('write error:',e);
+      notify('❌ خطأ في الحفظ — جاري إعادة المحاولة تلقائياً');
+      // Auto-retry after 3s
+      setTimeout(()=>{
+        ghWrite(updater).then(d=>{applyData(d);setSyncState('ok');notify('✅ تم الحفظ');}).catch(()=>setSyncState('err'));
+      },3000);
+    });
+  },[]);
 
   const handleLogin=u=>{setUser(u);sessionStorage.setItem('dah_user',JSON.stringify(u));};
   const handleLogout=()=>{setUser(null);sessionStorage.removeItem('dah_user');};
 
-  const syncLabel={ok:'محفوظ ✓',busy:'جاري الحفظ...',err:'خطأ في الاتصال',loading:'جاري التحميل...',notoken:''};
+  const syncLabel={ok:'محفوظ ✓',busy:`جاري الحفظ...${_queue.length>0?' ('+_queue.length+')':''}`,err:'⚠️ لم يُحفظ — يُعاد تلقائياً',loading:'جاري التحميل...',notoken:''};
 
   if(!hasToken||syncState==='notoken')return<SetupScreen onDone={()=>{setHasToken(true);setSyncState('loading');}}/>;
   if(syncState==='loading')return<div className="splash">
