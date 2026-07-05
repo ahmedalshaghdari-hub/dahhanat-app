@@ -364,6 +364,90 @@ function ghWrite(updater){
   return new Promise((res,rej)=>{_queue.push({updater,res,rej});processQ();});
 }
 
+
+// ── Date Filter Utility ───────────────────────────────────────
+function getWeekRange(){
+  const d=new Date();d.setHours(0,0,0,0);
+  const day=d.getDay();const diff=d.getDate()-day+(day===0?-6:1);
+  const mon=new Date(d.setDate(diff));const sun=new Date(mon);sun.setDate(sun.getDate()+6);
+  return{from:mon.toISOString().slice(0,10),to:sun.toISOString().slice(0,10)};
+}
+function applyDateFilter(items,filter){
+  if(!filter||filter.type==='all')return items;
+  return items.filter(item=>{
+    const d=item.date||'';
+    if(filter.type==='day')   return d===filter.value;
+    if(filter.type==='month') return d.startsWith(filter.value);
+    if(filter.type==='year')  return d.startsWith(filter.value);
+    if(filter.type==='week')  return d>=filter.from&&d<=filter.to;
+    if(filter.type==='range') return d>=filter.from&&d<=filter.to;
+    return true;
+  });
+}
+function useDateFilter(defaultType='month'){
+  const cm=today().slice(0,7);
+  const[filterType,setFilterType]=useState(defaultType);
+  const[filterValue,setFilterValue]=useState(cm);
+  const[rangeFrom,setRangeFrom]=useState(today().slice(0,8)+'01');
+  const[rangeTo,setRangeTo]=useState(today());
+  const week=getWeekRange();
+
+  const filter=useMemo(()=>{
+    if(filterType==='all')   return{type:'all'};
+    if(filterType==='day')   return{type:'day',value:filterValue};
+    if(filterType==='month') return{type:'month',value:filterValue};
+    if(filterType==='year')  return{type:'year',value:filterValue};
+    if(filterType==='week')  return{type:'week',from:week.from,to:week.to};
+    if(filterType==='range') return{type:'range',from:rangeFrom,to:rangeTo};
+    return{type:'all'};
+  },[filterType,filterValue,rangeFrom,rangeTo]);
+
+  const label=filter.type==='all'?'الكل':
+    filter.type==='day'?`يوم: ${fmtDate(filterValue)}`:
+    filter.type==='month'?`شهر: ${filterValue}`:
+    filter.type==='year'?`سنة: ${filterValue}`:
+    filter.type==='week'?`الأسبوع (${fmtDate(week.from)} — ${fmtDate(week.to)})`:
+    `${fmtDate(rangeFrom)} — ${fmtDate(rangeTo)}`;
+
+  return{filter,filterType,setFilterType,filterValue,setFilterValue,rangeFrom,setRangeFrom,rangeTo,setRangeTo,label};
+}
+
+function DateFilter({hook}){
+  const{filterType,setFilterType,filterValue,setFilterValue,rangeFrom,setRangeFrom,rangeTo,setRangeTo}=hook;
+  const cm=today().slice(0,7);const cy=today().slice(0,4);
+  const TYPES=[
+    {id:'all',lbl:'الكل'},
+    {id:'day',lbl:'يوم محدد'},
+    {id:'week',lbl:'هذا الأسبوع'},
+    {id:'month',lbl:'شهر محدد'},
+    {id:'year',lbl:'سنة محددة'},
+    {id:'range',lbl:'نطاق تاريخ'},
+  ];
+  return(
+    <div style={{background:'var(--bg)',border:'1px solid var(--border)',borderRadius:'var(--r-sm)',padding:'10px 12px',marginBottom:14}}>
+      <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:filterType!=='all'&&filterType!=='week'?10:0}}>
+        {TYPES.map(t=>(
+          <button key={t.id} onClick={()=>setFilterType(t.id)}
+            style={{padding:'5px 12px',borderRadius:20,border:'1.5px solid',fontSize:12,fontWeight:700,cursor:'pointer',fontFamily:"'Cairo',sans-serif",
+              background:filterType===t.id?'var(--purple)':'white',
+              color:filterType===t.id?'white':'var(--text2)',
+              borderColor:filterType===t.id?'var(--purple)':'var(--border)'}}>
+            {t.lbl}
+          </button>
+        ))}
+      </div>
+      {filterType==='day'&&<input type="date" className="fi" defaultValue={today()} onChange={e=>setFilterValue(e.target.value)} style={{width:'auto',marginTop:8}}/>}
+      {filterType==='month'&&<input type="month" className="fi" defaultValue={cm} onChange={e=>setFilterValue(e.target.value)} style={{width:'auto',marginTop:8}}/>}
+      {filterType==='year'&&<input type="number" className="fi" defaultValue={cy} min="2020" max="2030" onChange={e=>setFilterValue(e.target.value)} style={{width:120,marginTop:8}}/>}
+      {filterType==='range'&&<div style={{display:'flex',gap:8,alignItems:'center',marginTop:8,flexWrap:'wrap'}}>
+        <input type="date" className="fi" defaultValue={rangeFrom} onChange={e=>setRangeFrom(e.target.value)} style={{width:'auto'}}/>
+        <span style={{color:'var(--text3)',fontSize:13}}>إلى</span>
+        <input type="date" className="fi" defaultValue={rangeTo} onChange={e=>setRangeTo(e.target.value)} style={{width:'auto'}}/>
+      </div>}
+    </div>
+  );
+}
+
 // ── Notification ──────────────────────────────────────────────
 let _notifTimer=null;
 function notify(msg){
@@ -592,7 +676,7 @@ function Sales({sales,products,onWrite}){
   const[items,setItems]=useState([{...ei}]);
   const[discount,setDiscount]=useState('');
   const[open,setOpen]=useState(false);
-  const[filter,setFilter]=useState('');
+  const df=useDateFilter('month');
   const[editId,setEditId]=useState(null);
 
   const upd=(i,k,v)=>{const n=[...items];n[i]={...n[i],[k]:v};
@@ -638,7 +722,7 @@ function Sales({sales,products,onWrite}){
     notify('🗑️ تم الحذف وإعادة المخزون');
   };
 
-  const list=[...sales].filter(s=>!filter||s.date.startsWith(filter)).sort((a,b)=>b.date.localeCompare(a.date));
+  const list=applyDateFilter([...sales],df.filter).sort((a,b)=>b.date.localeCompare(a.date));
 
   return(<div>
     <div className="page-header">
@@ -716,10 +800,11 @@ function Sales({sales,products,onWrite}){
     </div>}
 
     <Card>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12,gap:10,flexWrap:'wrap'}}>
-        <span style={{fontWeight:700}}>السجل ({list.length})</span>
-        <input className="fi" type="month" value={filter} onChange={e=>setFilter(e.target.value)} style={{width:'auto'}}/>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8,gap:10}}>
+        <span style={{fontWeight:700}}>الفواتير ({list.length})</span>
+        <span style={{fontSize:12,color:'var(--purple)',fontWeight:600}}>{df.label}</span>
       </div>
+      <DateFilter hook={df}/>
       {list.length===0?<div style={{textAlign:'center',padding:28,color:'var(--text3)'}}>لا توجد مبيعات</div>
       :<div className="tbl-wrap"><table className="tbl">
         <thead><tr><th>التاريخ</th><th>العميل</th><th>الأصناف</th><th>الإجمالي</th><th>الربح</th><th></th></tr></thead>
@@ -744,8 +829,9 @@ function Sales({sales,products,onWrite}){
 /* ── EXPENSES ────────────────────────────────────────────────── */
 function Expenses({expenses,onWrite}){
   const[form,setForm]=useState({date:today(),type:'general',desc:'',amount:'',pid:''});
-  const[filter,setFilter]=useState('');
+  const df=useDateFilter('month');
   const[open,setOpen]=useState(false);
+  const[groupBy,setGroupBy]=useState('list');
   const upd=k=>e=>setForm(p=>({...p,[k]:e.target.value}));
   const expType=EXP_TYPES.find(t=>t.id===form.type)||EXP_TYPES[0];
   const submit=()=>{
@@ -756,9 +842,19 @@ function Expenses({expenses,onWrite}){
     notify(`✅ تم تسجيل المصروف ${isCarExp?'(يُخصم من صندوق السيارة فقط)':''}`);
     setForm(p=>({...p,desc:'',amount:'',date:today()}));setOpen(false);
   };
-  const list=[...expenses].filter(e=>!filter||e.date.startsWith(filter)).sort((a,b)=>b.date.localeCompare(a.date));
+  const list=applyDateFilter([...expenses],df.filter).sort((a,b)=>b.date.localeCompare(a.date));
   const total=list.reduce((s,e)=>s+(e.amount||0),0);
   const carTotal=list.filter(e=>CAR_TYPES.includes(e.type)).reduce((s,e)=>s+(e.amount||0),0);
+  // Group by month for monthly view
+  const byMonth=useMemo(()=>{
+    const groups={};
+    [...expenses].sort((a,b)=>a.date.localeCompare(b.date)).forEach(e=>{
+      const m=mk(e.date);if(!groups[m])groups[m]={month:m,items:[],total:0,car:0};
+      groups[m].items.push(e);groups[m].total+=e.amount||0;
+      if(CAR_TYPES.includes(e.type))groups[m].car+=e.amount||0;
+    });
+    return Object.values(groups).reverse();
+  },[expenses]);
 
   return(<div>
     <div className="page-header">
@@ -791,10 +887,11 @@ function Expenses({expenses,onWrite}){
     </div>
 
     <Card>
-      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12,gap:10,flexWrap:'wrap'}}>
-        <span style={{fontWeight:700}}>السجل ({list.length})</span>
-        <input className="fi" type="month" value={filter} onChange={e=>setFilter(e.target.value)} style={{width:'auto'}}/>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8,gap:10}}>
+        <span style={{fontWeight:700}}>الفواتير ({list.length})</span>
+        <span style={{fontSize:12,color:'var(--purple)',fontWeight:600}}>{df.label}</span>
       </div>
+      <DateFilter hook={df}/>
       {list.length===0?<div style={{textAlign:'center',padding:28,color:'var(--text3)'}}>لا توجد مصاريف</div>
       :<div className="tbl-wrap"><table className="tbl">
         <thead><tr><th>التاريخ</th><th>النوع</th><th>الوصف</th><th>المبلغ</th><th>يُخصم من</th><th></th></tr></thead>
@@ -810,6 +907,32 @@ function Expenses({expenses,onWrite}){
         );})}
         </tbody>
       </table></div>}
+      {groupBy==='month'&&<div style={{marginTop:16}}>
+        <div style={{fontWeight:800,fontSize:14,marginBottom:10}}>📅 المصاريف الشهرية — جميع الشهور</div>
+        {byMonth.map(g=>(
+          <div key={g.month} style={{marginBottom:10,border:'1px solid var(--border)',borderRadius:'var(--r)',overflow:'hidden'}}>
+            <div style={{background:'var(--navy)',color:'white',padding:'8px 14px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <span style={{fontWeight:800}}>{g.month}</span>
+              <div style={{display:'flex',gap:12,fontSize:12}}>
+                <span>الإجمالي: <strong>{fmt(g.total)}</strong></span>
+                {g.car>0&&<span style={{color:'#FCD34D'}}>سيارة: <strong>{fmt(g.car)}</strong></span>}
+              </div>
+            </div>
+            <div className="tbl-wrap"><table className="tbl" style={{borderRadius:0}}>
+              <tbody>{g.items.map(e=>{const t=EXP_TYPES.find(x=>x.id===e.type)||EXP_TYPES[0];return(
+                <tr key={e.id}>
+                  <td style={{width:90}}>{fmtDate(e.date)}</td>
+                  <td><span className={`exp-type ${t.cls}`}>{t.icon} {t.label}</span></td>
+                  <td>{e.desc}</td>
+                  <td className="num neg">{fmt(e.amount)}</td>
+                  <td><span className={`badge ${CAR_TYPES.includes(e.type)?'badge-amber':'badge-blue'}`}>{CAR_TYPES.includes(e.type)?'🚗 سيارة':'👥 الجميع'}</span></td>
+                </tr>
+              );})}
+              </tbody>
+            </table></div>
+          </div>
+        ))}
+      </div>}
     </Card>
   </div>);
 }
@@ -821,7 +944,8 @@ function CashRecon({sales,cashRecon,onWrite}){
   const[note,setNote]=useState('');
   const expected=sales.filter(s=>s.date===date).reduce((a,s)=>a+(s.total||0),0);
   const diff=(+cash||0)-expected;
-  const list=[...cashRecon].sort((a,b)=>b.date.localeCompare(a.date));
+  const dfR=useDateFilter('month');
+  const list=applyDateFilter([...cashRecon],dfR.filter).sort((a,b)=>b.date.localeCompare(a.date));
   const save=()=>{
     if(!cash)return;
     const id=uid();
@@ -859,7 +983,7 @@ function CashRecon({sales,cashRecon,onWrite}){
       </div>}
       <Btn onClick={save}>💾 حفظ المطابقة</Btn>
     </Card>
-    <Card title={`سجل المطابقات (${list.length})`}>
+    <Card title={`سجل المطابقات (${list.length}) — ${dfR.label}`}><DateFilter hook={dfR}/>
       {list.length===0?<div style={{textAlign:'center',padding:24,color:'var(--text3)'}}>لا توجد مطابقات مسجّلة</div>
       :<div className="tbl-wrap"><table className="tbl">
         <thead><tr><th>التاريخ</th><th>المبيعات المسجّلة</th><th>الكاش الفعلي</th><th>الفرق</th><th>الحالة</th><th>ملاحظة</th><th></th></tr></thead>
@@ -910,7 +1034,8 @@ function Returns({returns,products,onWrite}){
     notify('✅ تم تسجيل المرتجع وإعادة المخزون');
   };
 
-  const list=[...returns].sort((a,b)=>b.date.localeCompare(a.date));
+  const dfRet=useDateFilter('month');
+  const list=applyDateFilter([...returns],dfRet.filter).sort((a,b)=>b.date.localeCompare(a.date));
 
   return(<div>
     <div className="page-header">
@@ -940,8 +1065,8 @@ function Returns({returns,products,onWrite}){
         </table></div>}
       {items.length>0&&<Btn variant="danger" onClick={save}>💾 تسجيل المرتجع وإعادة المخزون</Btn>}
     </Card>}
-    <Card>
-      {list.length===0?<div style={{textAlign:'center',padding:28,color:'var(--text3)'}}>لا توجد مرتجعات</div>
+    <Card><div style={{marginBottom:6,fontWeight:600,fontSize:13,color:'var(--purple)'}}>{dfRet.label}</div><DateFilter hook={dfRet}/>
+      {list.length===0?<div style={{textAlign:'center',padding:28,color:'var(--text3)'}}>لا توجد مرتجعات في هذه الفترة</div>
       :<div className="tbl-wrap"><table className="tbl">
         <thead><tr><th>التاريخ</th><th>السبب</th><th>العميل</th><th>الأصناف</th><th>التكلفة المُعادة</th><th></th></tr></thead>
         <tbody>{list.map(r=><tr key={r.id}>
